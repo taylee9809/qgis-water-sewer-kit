@@ -1,0 +1,185 @@
+{
+  "_설명": "qgis-water-sewer-kit 프로젝트 설정. 프로젝트 루트에 sewer.config.json 으로 둔다. 00-onboard 스킬이 그 팀 데이터를 조사해 채운다. '_' 로 시작하는 키는 설명이라 무시된다. 값은 우리 팀 실시설계 용역의 실제 구성을 예시로 넣어 둔 것.",
+  "kit_version": 1,
+
+  "project": {
+    "name": "예시 하수관로 실시설계",
+    "root": ".",
+    "crs": "EPSG:5186"
+  },
+  "_project": "root = 이 파일 기준 프로젝트 루트(상대 또는 절대). 아래 모든 상대경로의 기준. crs 는 레이어 좌표계와 같아야 한다.",
+
+  "db": {
+    "default_src": "postgis",
+    "postgis": {
+      "host": "localhost",
+      "port": 5432,
+      "dbname": "SEWER_DB",
+      "user": "postgres",
+      "password_env": "SEWER_PG_PASSWORD",
+      "geom_col": "geom"
+    }
+  },
+  "_db": "PostGIS 를 안 쓰면 db.postgis 를 지우고 모든 layers 의 src 를 GPKG 경로로 둔다. 비밀번호는 절대 여기 적지 않는다 — password_env 가 가리키는 환경변수로 준다.",
+
+  "layers": {
+    "plan_pipe":            {"src": "data/실시설계_통합.gpkg", "layer": "노선_실시설계"},
+    "plan_manhole":         {"src": "data/실시설계_통합.gpkg", "layer": "계획맨홀_실시설계"},
+    "plan_pump":            {"src": "data/실시설계_통합.gpkg", "layer": "맨홀펌프장_실시설계"},
+    "house":                {"src": "data/실시설계_통합.gpkg", "layer": "배수설비가구_실시설계"},
+    "asbuilt_pipe":         {"src": "postgis", "layer": "asbuilt_pipe_burwon"},
+    "asbuilt_manhole":      {"src": "postgis", "layer": "asbuilt_manhole"},
+    "asbuilt_pump":         {"src": "postgis", "layer": "asbuilt_pump_burwon"},
+    "asbuilt_service_pipe": {"src": "postgis", "layer": "asbuilt_service_pipe"},
+    "asbuilt_inlet":        {"src": "postgis", "layer": "asbuilt_inlet"},
+    "asbuilt_house":        {"src": "postgis", "layer": "asbuilt_house"},
+    "asbuilt_house_pump":   {"src": "postgis", "layer": "asbuilt_house_pump"},
+    "obstacle_poly":        {"src": "data/지장물_정본.gpkg", "layer": "지장물_폴리곤_정본"},
+    "obstacle_line":        {"src": "data/지장물_정본.gpkg", "layer": "지장물_중심선_정본"},
+    "obstacle_review":      {"src": "data/지장물_확인필요.gpkg", "layer": "지장물_확인필요"},
+    "obstacle_review_line": {"src": "data/지장물_확인필요.gpkg", "layer": "확인필요_중심선"},
+    "water_pipe":           {"src": "postgis", "layer": "waterworks_pipe"},
+    "service_area":         {"src": "postgis", "layer": "처리구역"},
+    "road_boundary":        {"src": "postgis", "layer": "00도로경계_면"},
+    "bridge":               {"src": "postgis", "layer": "00교량"},
+    "parcel":               {"src": "postgis", "layer": "지적"}
+  },
+  "_layers": "논리 이름 → 실제 레이어. 논리 이름은 standard/data-standard.md 에 정의. 없는 레이어는 키를 지운다(그 레이어를 쓰는 검토는 건너뛴다고 안내된다).",
+
+  "fields": {
+    "plan_pipe": {
+      "pipe_id": "관번호", "district": "지구", "area": "처리구역", "kind": "구분",
+      "length_m": "연장_m", "dia_mm": "관경",
+      "us_invert": "상류관저고", "ds_invert": "하류관저고", "us_ground": "상류지반고",
+      "slope_permil": "경사퍼밀", "us_cover": "상류토피",
+      "flow_m3d": "누가유량_m3d", "velocity_mps": "실유속_mps", "judge": "수리판정",
+      "obstacles": "종단지장물", "asof": "자료기준일", "source": "출처"
+    },
+    "plan_manhole": {
+      "mh_id": "맨홀번호", "district": "지구", "kind": "구분", "mh_type": "맨홀호수",
+      "ground": "지반고", "out_invert": "유출관저고", "depth": "심도", "drop": "단차",
+      "asof": "자료기준일", "connect_to": "접속맨홀"
+    },
+    "plan_pump": {
+      "pump_id": "펌프장", "district": "지구", "kind": "구분", "discharge_to": "토출대상",
+      "flow_m3d": "누가유량_m3d", "q_m3min": "적용용량_m3min", "head_m": "전양정_m",
+      "power_kw": "적용동력_kW", "force_main_m": "압송연장_m", "in_invert": "유입관저고_m",
+      "asof": "자료기준일"
+    },
+    "house": {
+      "house_id": "배수설비명", "district": "지구", "new_or_old": "기존_신규",
+      "q_m3d": "Q_m3d", "assigned_mh": "배정맨홀"
+    },
+    "asbuilt_pipe": {
+      "pipe_id": "관번호", "district": "지구", "status": "구분", "flow_kind": "자연유하/압송",
+      "dia_mm": "관경", "length_m": "연장",
+      "us_mh": "상류맨홀", "ds_mh": "하류맨홀",
+      "us_ground": "상류지반고", "ds_ground": "하류지반고",
+      "us_invert": "상류관저고", "ds_invert": "하류관저고",
+      "slope": "구배", "material": "관종", "source": "자료출처"
+    },
+    "asbuilt_manhole": {
+      "mh_id": "맨홀번호", "district": "지구", "status": "구분",
+      "ground": "지반고", "depth": "맨홀깊이", "source": "자료출처",
+      "_out_invert": "유출관저고 필드가 있으면 \"out_invert\" 로 매핑. 없으면 40 스킬이 지반고 − 맨홀깊이로 계산한다."
+    },
+    "obstacle_poly": {
+      "obs_id": "지장물번호", "class": "분류", "type": "종류", "label": "표기",
+      "width_m": "규격_폭m", "height_m": "규격_깊이m", "dia_mm": "관경mm",
+      "invert_start": "관저_시점", "invert_end": "관저_종점",
+      "fix_note": "보정기록"
+    },
+    "parcel": {"jibun": "JIBUN"},
+    "water_pipe": {"dia_mm": "관경", "material": "관종", "status": "상태", "cover": "토피_GIS"},
+    "service_area": {"subarea": "처리분구", "in_scope": "금회대상여부", "existing_or_plan": "기존/계획"}
+  },
+  "_fields": "레이어별 논리 필드 → 실제 필드명. 그 팀 필드가 다르면 오른쪽 값만 바꾼다. 없는 필드는 지운다.",
+
+  "values": {
+    "kind_gravity": "자연유하",
+    "kind_pressure": "압송",
+    "status_new": "신설",
+    "status_reuse": "기존활용",
+    "status_abandon": "기존폐쇄"
+  },
+  "_values": "코드값. 같은 뜻을 그 팀이 다른 말로 쓰면(예: 압송 → 가압) 여기만 바꾼다.",
+
+  "dem": ["data/DEM_실측_1m.tif", "data/DEM_통합_5m.tif"],
+  "_dem": "앞에서부터 우선. 1 m 실측이 없으면 5 m 로 내려간다. 지반고·토피 계산에 쓴다.",
+
+  "design": {
+    "min_cover_m": 1.0,
+    "min_slope_permil": 5.0,
+    "manning_n": 0.011,
+    "min_dia_mm": 200,
+    "pressure_max_d_mm": 100,
+    "drop_manhole_m": 0.6,
+    "mh_max_spacing_m": 75,
+    "min_velocity_mps": 0.6,
+    "max_velocity_mps": 3.0
+  },
+  "_design": "설계기준 값. KDS 61 40 00 기준값이 기본. 과업 기준(발주처 협의·사내 기준)이 다르면 여기서 바꾸고 근거를 standard 노트에 남긴다. pressure_max_d_mm 이하 관경은 압송으로 본다.",
+
+  "survey": {
+    "dxf_dir": "00 측량조사",
+    "design_check_gpkg": "data/실시설계_통합.gpkg",
+    "build_gpkg": "data/지장물_빌드.gpkg",
+    "current_districts": ["예시지구A", "예시지구B"],
+    "flo": ["00 외주설계사(실시설계)/YYMMDD from.설계사 …/예시.flo"],
+    "parcel_encoding": "cp949"
+  },
+  "_survey": "11-survey-to-qgis: dxf_dir = 측량현황도 DXF 폴더 · design_check_gpkg = 종단 교차검증용 설계 GPKG · build_gpkg = 02 빌드 결과 GPKG · current_districts = 금회 검토 지구(노선 근접 정렬·목록 범위) · flo = 지장물 교차검증에 쓸 설계사 .flo 목록 · parcel_encoding = 지적 shp 인코딩. fields.obstacle_poly.fix_note = 보정 기록 필드, fields.parcel.jibun = 지번 필드(끝 글자가 지목).",
+
+  "asbuilt": {
+    "src_dir": "기초자료/준공도서",
+    "offsets": {
+      "_예": "지구명: [dx, dy] — 준공도 DXF 좌표에 더해 프로젝트 좌표계로 맞추는 값. 기지 맨홀 3점 이상으로 산정해 0.2 m 이내 수렴 확인 후 적는다.",
+      "예시지구": [71.45, 100305.77]
+    },
+    "dxf_layers": {
+      "_설명": "준공도 DXF 레이어명. 설계사 도면 규격마다 다르다 — layer_probe_color.py 로 레이어 목록·색을 먼저 보고 적는다. 없으면 스크립트 내장 예시(아래와 같은 한 설계사 규격)를 쓴다.",
+      "pipe_no": "0_신설계획오수관-관번호",
+      "pipe_len": "0_신설계획오수관-연장",
+      "pipe_dia": "0_신설계획오수관-관경",
+      "pipe_name": "!!_계획오수관로명",
+      "mh_text": "종평용맨홀텍스트",
+      "probe": ["0_신설계획오수관", "0_신설계획오수관-관번호", "오수관로라인", "기존맨홀", "신설맨홀", "신설오수맨홀", "0_신설오수받이", "0_소형오수맨홀"],
+      "inlet_points": ["0_신설오수받이", "0_소형오수맨홀"],
+      "inlet_blocks": ["오수받이"],
+      "service_lines": ["0_옥내연결관", "0_옥외연결관"]
+    },
+    "profile": {
+      "_설명": "asb_bands.py 종단 밴드 행 y 좌표(이름: y, 순서 = 출력 순서). 도면 시트마다 다르니 layer_probe 로 잰 값을 적는다. 아래는 한 시트 예시. label_y = [하한, 상한] 은 종단 영역 관번호·맨홀명 글자의 y 범위(선택).",
+      "bands": {"간격": 341370, "누가": 341385, "지반고": 341400, "관저고": 341415, "깊이": 341430, "맨홀IL": 341445},
+      "band_tol": 4
+    }
+  },
+
+  "review_vendor": {
+    "exchange_dirs": ["00 외주설계사(실시설계)"],
+    "delivery_pattern": "^(\\d{6})\\s*\\(?\\d*\\)?\\s*from",
+    "input_patterns": {
+      "plan": ["평면도.dxf", "*평면*.dxf"],
+      "profile": ["종단면도.dxf", "*종단*.dxf"],
+      "flo": ["*.flo"],
+      "out": ["*.OUT"],
+      "dwg": ["*.dwg"]
+    },
+    "asbuilt_asof": "",
+    "profile": {
+      "row_pitch": 1000, "label_y_lo": 100, "label_y_hi": 160,
+      "bar_layer": "j_table3", "bar_points": 4, "bar_flat_tol": 20,
+      "name_pattern": "^[A-Z]+[-A-Z0-9]*-\\d+$",
+      "len_label_pattern": "^L=([0-9.]+)M$", "len_label_y_lo": 123, "len_label_y_hi": 128,
+      "pressure_word": "압송"
+    },
+    "asbuilt_note": "",
+    "_asbuilt_note": "A4 에서 최근접 준공 맨홀이 100 m 넘게 떨어질 때 덧붙일 안내문(예: '이 지구 준공 맨홀은 다른 레이어에 있다'). 비우면 기본 문구.",
+    "memo": {"layers": ["j_none"], "min_text_height": 20},
+    "tolerance": {"length_m": 0.06, "invert_m": 0.05, "node_snap_m": 12.0}
+  },
+  "_review_vendor": "40-review-vendor: 납품 폴더 위치·이름 규칙·종단면도 서식 상수·허용차. 종단 서식(profile)은 설계사 도면 서식마다 다르다 — 처음 쓸 때 band_dump.py 로 재어서 고친다.",
+
+  "outputs": {"root": "_산출"},
+  "_outputs": "킷이 만드는 모든 산출물의 루트. 원본 폴더에는 쓰지 않는다."
+}

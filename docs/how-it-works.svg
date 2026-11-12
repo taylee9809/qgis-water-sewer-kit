@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 400" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif" role="img" aria-label="How the kit adapts to a project">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#57606a"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1100" height="400" rx="12" fill="#ffffff"/>
+  <text x="24" y="36" font-size="18" font-weight="700" fill="#24292f">설정 파일 하나로 프로젝트에 맞춘다</text>
+  <text x="24" y="56" font-size="12.5" fill="#57606a">One config file adapts every skill to your project — rename in the config, not in your data</text>
+
+  <!-- A: team data -->
+  <rect x="24" y="150" width="170" height="110" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="109" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#24292f">그 팀 데이터</text>
+  <text x="109" y="198" text-anchor="middle" font-size="12" fill="#57606a">Your data</text>
+  <text x="109" y="224" text-anchor="middle" font-size="13" fill="#24292f">GPKG · PostGIS</text>
+  <text x="109" y="244" text-anchor="middle" font-size="13" fill="#24292f">QGIS 프로젝트(.qgz)</text>
+
+  <!-- B: onboarding -->
+  <rect x="230" y="130" width="190" height="150" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="325" y="160" text-anchor="middle" font-size="15" font-weight="700" fill="#24292f">00-onboard</text>
+  <text x="325" y="178" text-anchor="middle" font-size="12" fill="#57606a">온보딩 스킬 · onboarding</text>
+  <text x="248" y="208" font-size="13" fill="#24292f">① 조사 — probe</text>
+  <text x="248" y="231" font-size="13" fill="#24292f">② 대응표 — mapping</text>
+  <text x="248" y="254" font-size="13" fill="#24292f">③ 질문 5개 안팎 — ask</text>
+
+  <!-- C: config -->
+  <rect x="456" y="150" width="200" height="110" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="556" y="181" text-anchor="middle" font-size="15" font-weight="700" fill="#24292f" font-family="Consolas,'Courier New',monospace">sewer.config.json</text>
+  <text x="556" y="200" text-anchor="middle" font-size="12" fill="#57606a">프로젝트마다 하나 · per project</text>
+  <text x="556" y="224" text-anchor="middle" font-size="13" fill="#24292f">레이어 · 필드 · DB · 기준값</text>
+  <text x="556" y="244" text-anchor="middle" font-size="12" fill="#57606a">layers · fields · DB · criteria</text>
+  <text x="556" y="290" text-anchor="middle" font-size="12" fill="#57606a">스킬은 lib/kitconfig.py 로 이 파일만 읽는다</text>
+  <text x="556" y="307" text-anchor="middle" font-size="12" fill="#57606a">skills read only this file</text>
+
+  <!-- connectors -->
+  <g fill="none" stroke="#57606a" stroke-width="1.5">
+    <path d="M194 205H228" marker-end="url(#a)"/>
+    <path d="M420 205H454" marker-end="url(#a)"/>
+    <path d="M656 205H684"/>
+    <path d="M684 78V326"/>
+    <path d="M684 78H710" marker-end="url(#a)"/>
+    <path d="M684 128H710" marker-end="url(#a)"/>
+    <path d="M684 178H710" marker-end="url(#a)"/>
+    <path d="M684 228H710" marker-end="url(#a)"/>
+    <path d="M684 278H710" marker-end="url(#a)"/>
+    <path d="M684 326H710" marker-end="url(#a)"/>
+    <path d="M912 78H930V326"/>
+    <path d="M912 128H930"/><path d="M912 178H930"/><path d="M912 228H930"/><path d="M912 278H930"/><path d="M912 326H930"/>
+    <path d="M930 205H948" marker-end="url(#a)"/>
+  </g>
+
+  <!-- D: skills -->
+  <g>
+    <rect x="712" y="58" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="75" font-size="13" font-weight="700" fill="#24292f">11 측량도 → 지장물</text>
+    <text x="724" y="91" font-size="11" fill="#57606a">Survey DXF → obstacles</text>
+    <rect x="712" y="108" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="125" font-size="13" font-weight="700" fill="#24292f">12 준공도 → DB</text>
+    <text x="724" y="141" font-size="11" fill="#57606a">As-built DXF → DB</text>
+    <rect x="712" y="158" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="175" font-size="13" font-weight="700" fill="#24292f">30 설계 · 수리계산</text>
+    <text x="724" y="191" font-size="11" fill="#57606a">Design &amp; hydraulics</text>
+    <rect x="712" y="208" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="225" font-size="13" font-weight="700" fill="#24292f">32 노선 최적화</text>
+    <text x="724" y="241" font-size="11" fill="#57606a">Route alternatives</text>
+    <rect x="712" y="258" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="275" font-size="13" font-weight="700" fill="#24292f">40 외주 납품물 검토</text>
+    <text x="724" y="291" font-size="11" fill="#57606a">Vendor deliverable review</text>
+    <rect x="712" y="306" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="323" font-size="13" font-weight="700" fill="#24292f">51 조판 · 삽도</text>
+    <text x="724" y="339" font-size="11" fill="#57606a">Layouts &amp; figures</text>
+  </g>
+
+  <!-- E: outputs -->
+  <rect x="950" y="150" width="126" height="110" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="1013" y="181" text-anchor="middle" font-size="15" font-weight="700" fill="#24292f">_산출</text>
+  <text x="1013" y="199" text-anchor="middle" font-size="12" fill="#57606a">outputs</text>
+  <text x="1013" y="225" text-anchor="middle" font-size="12.5" fill="#24292f">원본은 읽기만</text>
+  <text x="1013" y="243" text-anchor="middle" font-size="11" fill="#57606a">sources read-only</text>
+
+  <text x="24" y="380" font-size="12" fill="#57606a">레이어 이름이 달라도 같은 스킬이 돈다 · 비밀번호는 설정 파일이 아니라 환경변수로 — passwords live in environment variables, never in the config</text>
+</svg>

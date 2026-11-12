@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 660" font-family="'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR',sans-serif" role="img" aria-label="Workflow stages 00 to 80">
+  <defs>
+    <marker id="f" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#57606a"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="760" height="660" rx="12" fill="#ffffff"/>
+  <text x="24" y="32" font-size="16" font-weight="700" fill="#24292f">자료를 먼저 DB로 올려야 설계·검토가 선다</text>
+  <text x="24" y="50" font-size="12" fill="#57606a">Workflow 00–80 — build the database first; design and review stand on it</text>
+
+  <!-- bands -->
+  <rect x="24" y="66" width="712" height="168" rx="8" fill="#f6f8fa"/>
+  <text x="40" y="88" font-size="11.5" font-weight="700" fill="#57606a">착수 · 자료 → DB  ·  Data to DB</text>
+  <rect x="24" y="262" width="712" height="206" rx="8" fill="#f6f8fa"/>
+  <text x="40" y="284" font-size="11.5" font-weight="700" fill="#57606a">설계 · 검토  ·  Design &amp; review</text>
+  <rect x="24" y="496" width="712" height="108" rx="8" fill="#f6f8fa"/>
+  <text x="40" y="518" font-size="11.5" font-weight="700" fill="#57606a">성과품 · 마무리  ·  Deliverables</text>
+
+  <!-- connectors -->
+  <g fill="none" stroke="#57606a" stroke-width="1.25">
+    <path d="M170 156H200" marker-end="url(#f)"/>
+    <path d="M340 156H356V120H375" marker-end="url(#f)"/>
+    <path d="M340 156H356V192H375" marker-end="url(#f)"/>
+    <path d="M525 120H545V156H565" marker-end="url(#f)"/>
+    <path d="M525 192H545V156H565" marker-end="url(#f)"/>
+    <path d="M380 234V262" marker-end="url(#f)"/>
+    <path d="M250 334H335" marker-end="url(#f)"/>
+    <path d="M335 350H250" marker-end="url(#f)"/>
+    <path d="M150 368V400" marker-end="url(#f)"/>
+    <path d="M200 316V294H630V316" marker-end="url(#f)"/>
+    <path d="M550 342H485" stroke-dasharray="4 4" marker-end="url(#f)"/>
+    <path d="M380 468V496" marker-end="url(#f)"/>
+    <path d="M160 562H180" marker-end="url(#f)"/>
+    <path d="M300 562H320" marker-end="url(#f)"/>
+    <path d="M440 562H460" marker-end="url(#f)"/>
+    <path d="M580 562H600" marker-end="url(#f)"/>
+  </g>
+  <text x="517" y="332" text-anchor="middle" font-size="11" fill="#57606a">지적 반영</text>
+
+  <!-- band 1 -->
+  <rect x="30" y="130" width="140" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="100" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">00 착수</text>
+  <text x="100" y="170" text-anchor="middle" font-size="11" fill="#57606a">Kickoff · onboarding</text>
+  <rect x="200" y="130" width="140" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="270" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">10 자료수집</text>
+  <text x="270" y="170" text-anchor="middle" font-size="11" fill="#57606a">Data intake</text>
+  <rect x="375" y="94" width="150" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="450" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">11 측량 → QGIS</text>
+  <text x="450" y="134" text-anchor="middle" font-size="11" fill="#57606a">Survey → obstacles</text>
+  <rect x="375" y="166" width="150" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="450" y="188" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">12 준공도 → QGIS</text>
+  <text x="450" y="206" text-anchor="middle" font-size="11" fill="#57606a">As-built → DB</text>
+  <rect x="565" y="130" width="150" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="640" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">20 기준 확정</text>
+  <text x="640" y="170" text-anchor="middle" font-size="11" fill="#57606a">Areas &amp; design flows</text>
+
+  <!-- band 2 -->
+  <rect x="50" y="316" width="200" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="150" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">30 노선 설계·수리계산</text>
+  <text x="150" y="356" text-anchor="middle" font-size="11" fill="#57606a">Route design &amp; hydraulics</text>
+  <rect x="75" y="400" width="150" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="150" y="422" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">31 펌프장 용량</text>
+  <text x="150" y="440" text-anchor="middle" font-size="11" fill="#57606a">Pump station sizing</text>
+  <rect x="335" y="316" width="150" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="410" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">32 노선 최적화</text>
+  <text x="410" y="356" text-anchor="middle" font-size="11" fill="#57606a">Route alternatives</text>
+  <rect x="550" y="316" width="160" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="630" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">40 외주 납품물 검토</text>
+  <text x="630" y="356" text-anchor="middle" font-size="11" fill="#57606a">Vendor review</text>
+
+  <!-- band 3 -->
+  <rect x="40" y="536" width="120" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="100" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">50 종단면도</text>
+  <text x="100" y="576" text-anchor="middle" font-size="11" fill="#57606a">Profiles</text>
+  <rect x="180" y="536" width="120" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="240" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">51 조판·삽도</text>
+  <text x="240" y="576" text-anchor="middle" font-size="11" fill="#57606a">Layouts</text>
+  <rect x="320" y="536" width="120" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="380" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">60 사업비</text>
+  <text x="380" y="576" text-anchor="middle" font-size="11" fill="#57606a">Cost</text>
+  <rect x="460" y="536" width="120" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="520" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">70 보고서</text>
+  <text x="520" y="576" text-anchor="middle" font-size="11" fill="#57606a">Report</text>
+  <rect x="600" y="536" width="120" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="660" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">80 검토 대응</text>
+  <text x="660" y="576" text-anchor="middle" font-size="11" fill="#57606a">Responses → 30</text>
+
+  <!-- legend -->
+  <rect x="24" y="626" width="28" height="16" rx="4" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="60" y="639" font-size="12" fill="#24292f">스킬이 있는 단계 · stage with a skill</text>
+  <line x1="300" y1="634" x2="336" y2="634" stroke="#57606a" stroke-width="1.25" stroke-dasharray="4 4"/>
+  <text x="344" y="639" font-size="12" fill="#24292f">되먹임 · feedback</text>
+</svg>
