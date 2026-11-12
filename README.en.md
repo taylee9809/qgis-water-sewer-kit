@@ -9,7 +9,9 @@ People don't memorize procedures; Claude reads the kit's skills and runs them.
 > Right now the kit contains **sewer-network skills only**. Water-supply skills are planned.
 > The skills and docs are written in Korean, following Korean design standards (KDS) and Korean drawing conventions.
 
-![One config file adapts the kit to your project](docs/how-it-works.svg)
+![One config file adapts the kit to your project — Korean](docs/how-it-works.svg)
+
+![One config file adapts the kit to your project — English](docs/how-it-works.en.svg)
 
 The skills and scripts never hard-code layer names. They read layers, fields, the database connection and design
 criteria from a single `sewer.config.json` at the project root. If your layer names differ, you change the config —
@@ -32,9 +34,12 @@ Requirements: Claude Code · QGIS 3.22+ (3.40 LTR recommended) · Python 3.10+. 
 | "Review the consultant's delivery" (folder name only) | 40 | `검토요약.md` — findings on lengths, network, connection inverts, designer notes | Each finding as "delivered vs reference — difference — impact" |
 | "Make a location figure for this section" | 51 | Print layout + 300 dpi image | Overlaps, clipping, empty legends (by eye) |
 | Other stages (cost, report, review responses) | — | Claude writes project scripts under `scripts\` | Sources of numbers; standards vs assumptions |
+| "Send my kit changes back" | 90 | A bundle of fixes, failure notes and new tools → PR, issue or file | Zero hits in the name scan; what is being sent |
 
 ## Workflow
-![Workflow stages 00–80](docs/workflow.svg)
+![Workflow stages 00–80 — Korean](docs/workflow.svg)
+
+![Workflow stages 00–80 — English](docs/workflow.en.svg)
 
 For each request Claude first decides which stage it belongs to. Stages with a skill follow the skill; the rest get
 project-specific scripts. **Vendor review (40) only holds if the as-built DB (12) is right** — check stage 12 before
@@ -49,7 +54,7 @@ stage 40.
 ## Layout
 | Folder | Contents |
 |---|---|
-| `skills\` | Seven skills — 00-onboard · 11 · 12 · 30 · 32 · 40 · 51 |
+| `skills\` | Eight skills — 00-onboard · 11 · 12 · 30 · 32 · 40 · 51 · 90-kit-feedback |
 | `lib\kitconfig.py` | Config loader used by every script (paths, layers, fields, DB; passwords only via environment variables) |
 | `standard\` | Data standard (logical layers and fields) · workflow · two pitfall notes (reading DXF / QGIS & PostGIS) |
 | `templates\` | `sewer.config.example.json` (a real project's layout as the example) · a `CLAUDE.md` for project folders |
@@ -69,6 +74,9 @@ each team's Claude writes them from the method.
 - [Sewer Profile Viewer](https://github.com/taylee9809/qgis-sewer-profile) — QGIS plugin: route section tree + profile view. Claude installs it during setup.
 - [QGIS MCP](https://github.com/jjsantos01/qgis_mcp) (optional) — lets Claude drive a running QGIS.
 
-## Updates and feedback
-- Update with `git pull` in the kit folder; skills are linked by junctions, so nothing needs re-linking.
-- Found a new pitfall or a procedure you repeat? Open an issue and it will go into `standard\` and the skills.
+## Sending changes back, and updating
+- Use the kit on a **`local`** branch (created at install). Each team's fixes stay there as commits and survive updates.
+- To send fixes, failures or new tools back, tell Claude **"send my kit changes back"** — 90-kit-feedback bundles them, scans for your project's place names, paths and passwords, and **asks you before** sending a PR, an issue or a file.
+- The maintainer reviews (including a regression run) and merges; everyone gets it on the next update. Anything not merged stays on your `local` branch.
+- Update: `git -C <kit> fetch origin` → `git -C <kit> rebase origin/main`. Skills are linked by junctions, so nothing needs re-linking.
+- Details: [CONTRIBUTING.md](CONTRIBUTING.md) · maintainer process: [MAINTAINING.md](MAINTAINING.md) · [CHANGELOG.md](CHANGELOG.md)

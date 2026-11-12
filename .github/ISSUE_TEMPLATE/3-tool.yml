@@ -1,0 +1,41 @@
+name: "추가 도구 · New tool or skill"
+description: 프로젝트에서 두 번 이상 쓴 스크립트·절차를 킷에 올리자는 제안 · Propose a script or procedure for the kit
+title: "[도구] "
+labels: ["new-tool"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        코드는 PR 로 보내거나(권장), 90-kit-feedback 이 만든 꾸러미 zip 을 첨부해 주세요. 지구명·경로·비밀번호는 빼고.
+        Send code as a PR (preferred) or attach the bundle zip from 90-kit-feedback.
+  - type: textarea
+    id: what
+    attributes:
+      label: 하는 일 · What it does
+    validations:
+      required: true
+  - type: input
+    id: stage
+    attributes:
+      label: 업무 단계 · Workflow stage
+      description: "00~80 중 (예: 50 종단면도, 60 사업비)"
+  - type: textarea
+    id: io
+    attributes:
+      label: 입력과 산출 · Inputs and outputs
+  - type: textarea
+    id: used
+    attributes:
+      label: 얼마나 썼나 · How often it was used
+  - type: checkboxes
+    id: ready
+    attributes:
+      label: 일반화 · Generalized
+      options:
+        - label: 경로·레이어·필드를 kitconfig 로 읽는다 · reads paths/layers/fields via kitconfig
+        - label: 프로젝트 고유명·비밀번호가 없다 · no project names or passwords
+        - label: 원본 데이터를 읽기만 한다 · reads source data only
+  - type: input
+    id: link
+    attributes:
+      label: PR·첨부 · PR or attachment

@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 400" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" role="img" aria-label="One config file adapts the kit to your project">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#57606a"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1100" height="400" rx="12" fill="#ffffff"/>
+  <text x="24" y="36" font-size="18" font-weight="700" fill="#24292f">One config file adapts the kit to your project</text>
+  <text x="24" y="56" font-size="12.5" fill="#57606a">Skills never hard-code layer names — rename things in the config, not in your data</text>
+
+  <rect x="24" y="150" width="170" height="110" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="109" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#24292f">Your data</text>
+  <text x="109" y="198" text-anchor="middle" font-size="12" fill="#57606a">survey · as-built · design</text>
+  <text x="109" y="224" text-anchor="middle" font-size="13" fill="#24292f">GPKG · PostGIS</text>
+  <text x="109" y="244" text-anchor="middle" font-size="13" fill="#24292f">QGIS project (.qgz)</text>
+
+  <rect x="230" y="130" width="190" height="150" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="325" y="160" text-anchor="middle" font-size="15" font-weight="700" fill="#24292f">00-onboard</text>
+  <text x="325" y="178" text-anchor="middle" font-size="12" fill="#57606a">onboarding skill</text>
+  <text x="248" y="208" font-size="13" fill="#24292f">① Probe your data</text>
+  <text x="248" y="231" font-size="13" fill="#24292f">② Map layers &amp; fields</text>
+  <text x="248" y="254" font-size="13" fill="#24292f">③ Ask about 5 questions</text>
+
+  <rect x="456" y="150" width="200" height="110" rx="10" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="556" y="181" text-anchor="middle" font-size="15" font-weight="700" fill="#24292f" font-family="Consolas,'Courier New',monospace">sewer.config.json</text>
+  <text x="556" y="200" text-anchor="middle" font-size="12" fill="#57606a">one per project</text>
+  <text x="556" y="224" text-anchor="middle" font-size="13" fill="#24292f">layers · fields · database</text>
+  <text x="556" y="244" text-anchor="middle" font-size="13" fill="#24292f">design criteria</text>
+  <text x="556" y="290" text-anchor="middle" font-size="12" fill="#57606a">Skills read only this file,</text>
+  <text x="556" y="307" text-anchor="middle" font-size="12" fill="#57606a">through lib/kitconfig.py</text>
+
+  <g fill="none" stroke="#57606a" stroke-width="1.5">
+    <path d="M194 205H228" marker-end="url(#a)"/>
+    <path d="M420 205H454" marker-end="url(#a)"/>
+    <path d="M656 205H684"/>
+    <path d="M684 78V326"/>
+    <path d="M684 78H710" marker-end="url(#a)"/>
+    <path d="M684 128H710" marker-end="url(#a)"/>
+    <path d="M684 178H710" marker-end="url(#a)"/>
+    <path d="M684 228H710" marker-end="url(#a)"/>
+    <path d="M684 278H710" marker-end="url(#a)"/>
+    <path d="M684 326H710" marker-end="url(#a)"/>
+    <path d="M912 78H930V326"/>
+    <path d="M912 128H930"/><path d="M912 178H930"/><path d="M912 228H930"/><path d="M912 278H930"/><path d="M912 326H930"/>
+    <path d="M930 205H948" marker-end="url(#a)"/>
+  </g>
+
+  <g>
+    <rect x="712" y="58" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="75" font-size="13" font-weight="700" fill="#24292f">11 Survey → obstacles</text>
+    <text x="724" y="91" font-size="11" fill="#57606a">polygons + review list</text>
+    <rect x="712" y="108" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="125" font-size="13" font-weight="700" fill="#24292f">12 As-built → database</text>
+    <text x="724" y="141" font-size="11" fill="#57606a">loading + source check</text>
+    <rect x="712" y="158" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="175" font-size="13" font-weight="700" fill="#24292f">30 Design &amp; hydraulics</text>
+    <text x="724" y="191" font-size="11" fill="#57606a">inverts · sizes · pumps</text>
+    <rect x="712" y="208" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="225" font-size="13" font-weight="700" fill="#24292f">32 Route alternatives</text>
+    <text x="724" y="241" font-size="11" fill="#57606a">force main → gravity</text>
+    <rect x="712" y="258" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="275" font-size="13" font-weight="700" fill="#24292f">40 Vendor review</text>
+    <text x="724" y="291" font-size="11" fill="#57606a">findings A1–A5</text>
+    <rect x="712" y="306" width="200" height="40" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+    <text x="724" y="323" font-size="13" font-weight="700" fill="#24292f">51 Layouts &amp; figures</text>
+    <text x="724" y="339" font-size="11" fill="#57606a">print layouts · 300 dpi</text>
+  </g>
+
+  <rect x="950" y="150" width="126" height="110" rx="10" fill="#f6f8fa" stroke="#8c959f" stroke-width="1.25"/>
+  <text x="1013" y="181" text-anchor="middle" font-size="15" font-weight="700" fill="#24292f">Outputs</text>
+  <text x="1013" y="199" text-anchor="middle" font-size="12" fill="#57606a">_산출 folder</text>
+  <text x="1013" y="225" text-anchor="middle" font-size="12.5" fill="#24292f">sources are</text>
+  <text x="1013" y="243" text-anchor="middle" font-size="12.5" fill="#24292f">read-only</text>
+
+  <text x="24" y="380" font-size="12" fill="#57606a">Same skills work whatever your layers are called · passwords live in environment variables, never in the config</text>
+</svg>

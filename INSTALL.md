@@ -17,9 +17,11 @@
 
 ```powershell
 git clone https://github.com/taylee9809/qgis-water-sewer-kit "D:\도구\qgis-water-sewer-kit"
+git -C "D:\도구\qgis-water-sewer-kit" switch -c local
 ```
-- git 이 없으면 저장소 페이지의 **Code → Download ZIP** 으로 받아 같은 위치에 푼다.
-- 업데이트: 킷 폴더에서 `git pull`.
+- **`local` 브랜치에서 쓴다.** 이 팀이 킷을 고치면 여기에 커밋으로 남고, 관리자 판(`main`)은 그대로라 업데이트·피드백이 깔끔하다(90-kit-feedback).
+- 업데이트: `git -C <킷> fetch origin` 후 `local` 에서 `git -C <킷> rebase origin/main`. 이 팀이 고친 것 중 관리자 판에 들어간 것은 rebase 가 알아서 합친다.
+- git 이 없으면 저장소 페이지의 **Code → Download ZIP** 으로 받아 같은 위치에 푼다. 이때는 고친 것을 커밋으로 남길 수 없으니, 고칠 일이 생기면 git 설치를 권한다.
 
 ## 2. 스킬 연결 — 정션
 각 스킬 폴더를 사용자 스킬 폴더에 **디렉터리 정션**으로 건다(관리자 권한 불필요). 복사하지 않는다 —
@@ -50,5 +52,6 @@ Get-ChildItem "$kit\skills" -Directory | ForEach-Object {
 ## 5. 확인
 - [ ] `<프로젝트>\sewer.config.json` 이 있고 `check_config.py` 치명 0
 - [ ] `<프로젝트>\CLAUDE.md` 의 킷 경로가 실제 경로
-- [ ] `%USERPROFILE%\.claude\skills\` 에 7개 정션
+- [ ] `%USERPROFILE%\.claude\skills\` 에 8개 정션
+- [ ] `git -C <킷> branch --show-current` 가 `local`
 - [ ] QGIS 에서 Sewer Profile Viewer 패널이 열리고 계획관로 레이어로 구간 트리가 뜬다

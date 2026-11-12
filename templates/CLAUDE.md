@@ -6,7 +6,7 @@
 - 킷 위치: `<킷 경로>` ← 00-onboard 가 실제 경로로 바꾼다
 - 설정: 이 폴더의 `sewer.config.json` — 레이어·필드·DB·기준값은 **전부 여기서** 읽는다
 - 표준: `<킷>\standard\data-standard.md`(논리 레이어·필드) · `workflow.md`(단계 00~80) · `pitfalls-dxf.md` · `pitfalls-qgis-postgis.md`
-- 스킬: 00-onboard · 11-survey-to-qgis · 12-asbuilt-ingest · 30-route-design · 32-route-optimize · 40-review-vendor · 51-layout-figure
+- 스킬: 00-onboard · 11-survey-to-qgis · 12-asbuilt-ingest · 30-route-design · 32-route-optimize · 40-review-vendor · 51-layout-figure · 90-kit-feedback
 
 ## 일하는 방식
 1. 요청이 오면 **어느 단계(00~80)인지** 먼저 정하고, 스킬이 있으면 그 스킬대로 한다. 없으면 `workflow.md` 의 「스킬 없는 단계」대로.
@@ -17,8 +17,15 @@
 6. 수치를 보고할 때 **기준값(KDS·조례·과업 기준)과 자체 가정을 구분**한다. 임계값을 바꿨으면 숨기지 않는다.
 7. 사람이 판단할 애매한 건은 "오류 0" 으로 덮지 말고 **확인 목록**(3~5건)으로 올린다. 자료가 없으면 "0건" 이 아니라 "미조사".
 8. 기준값을 바꾸거나 노선·대안을 정하면 `결정기록.md` 에 날짜·결정·근거를 한 줄로 남긴다.
-9. 새 함정을 만나면 킷 함정 노트에 넣자고 제안한다(원리만, 회차 수치 없이). 두 번 반복된 절차는 스킬로 올리자고 제안한다.
-10. 셸 heredoc 안에 파이썬을 길게 넣지 말고 스크립트 파일로 쓴다. 실행은 `python -X utf8`.
+9. 셸 heredoc 안에 파이썬을 길게 넣지 말고 스크립트 파일로 쓴다. 실행은 `python -X utf8`.
+
+## 킷을 고칠 때 (90-kit-feedback)
+- 킷은 **`local` 브랜치에서만** 고친다. `main` 은 관리자 판 그대로 둔다. 고칠 때마다 커밋 하나: `[스킬번호] 무엇을 — 왜`.
+- 고친 내용은 일반적이어야 한다 — 이 프로젝트의 지구·경로·업체 이름을 킷 코드·주석·커밋 메시지에 쓰지 않는다.
+- 못 고친 실패는 `<outputs.root>\kit-feedback\notes\` 에 기록만 남긴다(양식은 90-kit-feedback 스킬).
+- 새 함정은 킷 함정 노트에, 두 번 쓴 프로젝트 스크립트는 킷 스킬로 올릴 후보다 — `local` 에 넣거나 꾸러미에 같이 보낸다.
+- 작업을 마칠 때 `local` 에 `origin/main` 에 없는 커밋이나 실패 기록이 있으면 **"킷에 보낼까요?" 라고 한 번 묻는다.** 승인 없이 보내지 않는다.
+- 킷 업데이트: `git -C <킷> fetch origin` → `local` 에서 `git -C <킷> rebase origin/main`. 충돌하면 관리자 판을 기본으로.
 
 ## 이 프로젝트
 <!-- 00-onboard 가 채운다 -->

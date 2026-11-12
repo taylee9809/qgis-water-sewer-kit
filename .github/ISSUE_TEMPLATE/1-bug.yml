@@ -1,0 +1,44 @@
+name: "안 됨 · Something doesn't work"
+description: 킷 스크립트·스킬이 안 돌거나 결과가 이상할 때 · A kit script or skill fails or gives a wrong result
+title: "[스킬번호] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **프로젝트 지구명·경로·좌표·업체명·비밀번호는 빼고** 적어 주세요. 90-kit-feedback 스킬이 만든 `summary.md` 를 그대로 붙여도 됩니다.
+        Please leave out project place names, paths, coordinates, company names and passwords.
+  - type: dropdown
+    id: skill
+    attributes:
+      label: 스킬 · Skill
+      options: ["00-onboard", "11-survey-to-qgis", "12-asbuilt-ingest", "30-route-design", "32-route-optimize", "40-review-vendor", "51-layout-figure", "90-kit-feedback", "lib / standard / 기타"]
+    validations:
+      required: true
+  - type: textarea
+    id: command
+    attributes:
+      label: 실행한 명령 · Command
+      description: 킷 경로는 <킷>, 프로젝트 경로는 <프로젝트> 로 바꿔 적기
+      render: shell
+  - type: textarea
+    id: symptom
+    attributes:
+      label: 증상 · What happened
+      description: 오류 마지막 몇 줄, 기대한 것과 실제 · last lines of the error, expected vs actual
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: 데이터 상황 · Data situation
+      description: 어떤 형식·규약이라 안 됐나 (예 다른 설계사 도면 규격, 종단 밴드 y 가 다름, PostGIS 사용)
+  - type: textarea
+    id: workaround
+    attributes:
+      label: 임시 우회 · Workaround
+  - type: input
+    id: version
+    attributes:
+      label: 킷 판 · Kit version
+      description: "git -C <킷> log -1 --format=%h 결과"
