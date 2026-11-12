@@ -85,7 +85,7 @@ each team's Claude writes them from the method.
 ## Companion tools
 - [Sewer Profile Viewer](https://github.com/taylee9809/qgis-sewer-profile) — QGIS plugin: route section tree + profile view. Claude installs it during setup.
 - [QGIS MCP](https://github.com/jjsantos01/qgis_mcp) (optional) — lets Claude drive a running QGIS.
-- [korean-engineering-mcp](https://github.com/taylee9809/korean-engineering-mcp) (optional) — search Korean construction standards (KDS/KCS) and statutes, verify citations, look up standard estimates. Skill 30 uses it to check clauses against the source. If the repository doesn't open, ask the maintainer for access; each user gets their own API keys.
+- [korean-engineering-mcp](https://github.com/sonmeggy/korean-engineering-mcp) (optional) — search Korean construction standards (KDS/KCS) and statutes, verify citations, look up standard estimates. Skill 30 uses it to check clauses against the source. Each user gets their own API keys.
 
 ## Sending changes back, and updating
 - Use the kit on a **`local`** branch (created at install). Each team's fixes stay there as commits and survive updates.

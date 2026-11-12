@@ -78,7 +78,7 @@ QGIS 데이터 위에서 상·하수도 설계·검토를 하고, 반복 작업�
 ## 함께 쓰는 도구
 - [Sewer Profile Viewer](https://github.com/taylee9809/qgis-sewer-profile) — 노선 구간 트리 + 종단도 QGIS 플러그인. 설치 과정에서 Claude 가 함께 깐다.
 - [QGIS MCP](https://github.com/jjsantos01/qgis_mcp) (선택) — Claude 가 켜져 있는 QGIS 를 직접 조작.
-- [korean-engineering-mcp](https://github.com/taylee9809/korean-engineering-mcp) (선택) — KDS/KCS 건설기준·법제처 법령 검색, 인용 검증, 표준품셈. 30 스킬이 조문을 원문으로 확인할 때 쓴다. 저장소가 안 열리면 관리자에게 접근을 요청하고, API 키는 각자 발급받는다.
+- [korean-engineering-mcp](https://github.com/sonmeggy/korean-engineering-mcp) (선택) — KDS/KCS 건설기준·법제처 법령 검색, 인용 검증, 표준품셈. 30 스킬이 조문을 원문으로 확인할 때 쓴다. API 키는 각자 발급받는다.
 
 ## 고친 것 돌려보내기와 업데이트
 - 킷은 **`local` 브랜치**에서 쓴다(설치 때 만듦). 각 팀이 고친 것은 여기에 커밋으로 남아 업데이트 때 사라지지 않는다.
