@@ -134,7 +134,8 @@ def main():
         missing_cols = [f'{lg}→{col}' for lg, col in mapped.items() if col not in cols]
         need = [lg for lg in REQUIRED.get(key, []) if lg not in mapped]
         bad = bool(missing_cols or need)
-        srs_txt = '' if (want_srid is None or srid in (None, want_srid)) else f' · ⚠ 좌표계 {srid} ≠ {want_srid}'
+        # 위치 없는 표(유량기준·수리계산 회차 등)는 srid 가 0/-1/None — 좌표계 비교에서 뺀다
+        srs_txt = '' if (want_srid is None or srid in (None, 0, -1, want_srid)) else f' · ⚠ 좌표계 {srid} ≠ {want_srid}'
         rep.append(f'- {"❌" if bad else "✅"} **{key}** = {tname} · {n}건{srs_txt}')
         if missing_cols:
             rep.append(f'  - 매핑했지만 실제로 없는 필드: {", ".join(missing_cols)}')
@@ -150,7 +151,7 @@ def main():
                     rep.append(f'  - ⚠ {lg}(`{col}`) 채움률 {filled * 100 // n}% — 비어 있는 행은 판정에서 빠진다')
         # 코드값 (관로 레이어만 — 맨홀·펌프장의 '구분'은 뜻이 다르다)
         kcol = {'plan_pipe': mapped.get('kind'), 'asbuilt_pipe': mapped.get('flow_kind')}.get(key)
-        if kcol and kcol in cols:
+        if kcol and kcol in cols and n:          # 빈 레이어(새 DB)는 코드값 검사 생략
             vals = [str(r[0]) for r in run(f'select distinct "{kcol}" from {tname} where "{kcol}" is not null limit 20')]
             exp = [cfg.value('kind_gravity'), cfg.value('kind_pressure')]
             miss = [v for v in exp if v and v not in vals]

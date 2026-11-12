@@ -45,6 +45,18 @@ For each request Claude first decides which stage it belongs to. Stages with a s
 project-specific scripts. **Vendor review (40) only holds if the as-built DB (12) is right** — check stage 12 before
 stage 40.
 
+## Examples of the output
+Made on real projects; place names, pipe IDs and river names are masked (`OO`, `XX-`).
+
+**An A3 profile sheet** — the consultant's drawing format, with pipe IDs, inverts and cover read from the bands and redrawn. Vendor review (40) reads this format.
+![A3 profile sheet example](docs/examples/profile-sheet.png)
+
+**A review profile** — a pipe at a treatment-plant inlet checked against a river crossing, flood level and cover (30·32).
+![Review profile example](docs/examples/review-profile.png)
+
+**Manhole pump-station wet-well check** — whether pump output plus storage still holds when inflow changes, per station (31).
+![Wet-well check example](docs/examples/pump-wetwell-check.png)
+
 ## Before you trust a result
 - **Are the sources untouched?** The kit only reads source data and writes outputs under `_산출\`. Any DB change must come with the backup table name and the number of rows changed.
 - **Is "zero" different from "not surveyed"?** Where there is no survey, obstacles are "not surveyed", not "zero crossings".
@@ -56,8 +68,8 @@ stage 40.
 |---|---|
 | `skills\` | Eight skills — 00-onboard · 11 · 12 · 30 · 32 · 40 · 51 · 90-kit-feedback |
 | `lib\kitconfig.py` | Config loader used by every script (paths, layers, fields, DB; passwords only via environment variables) |
-| `standard\` | Data standard (logical layers and fields) · workflow · two pitfall notes (reading DXF / QGIS & PostGIS) |
-| `templates\` | `sewer.config.example.json` (a real project's layout as the example) · a `CLAUDE.md` for project folders |
+| `standard\` | Data standard (logical layers and fields) · **DB design guide** (entities, relations and rules when you build a DB from scratch) · workflow · two pitfall notes |
+| `templates\` | `sewer.config.example.json` (a real project's layout as the example) · `db_schema.json` (standard schema — generates an empty GPKG or PostGIS DDL) · a `CLAUDE.md` for project folders |
 | `docs\` | Images for this README |
 
 Skills 30 and 51 are method documents only (no scripts). Real implementations are tied too tightly to project data, so
@@ -73,6 +85,7 @@ each team's Claude writes them from the method.
 ## Companion tools
 - [Sewer Profile Viewer](https://github.com/taylee9809/qgis-sewer-profile) — QGIS plugin: route section tree + profile view. Claude installs it during setup.
 - [QGIS MCP](https://github.com/jjsantos01/qgis_mcp) (optional) — lets Claude drive a running QGIS.
+- [korean-engineering-mcp](https://github.com/taylee9809/korean-engineering-mcp) (optional) — search Korean construction standards (KDS/KCS) and statutes, verify citations, look up standard estimates. Skill 30 uses it to check clauses against the source. If the repository doesn't open, ask the maintainer for access; each user gets their own API keys.
 
 ## Sending changes back, and updating
 - Use the kit on a **`local`** branch (created at install). Each team's fixes stay there as commits and survive updates.

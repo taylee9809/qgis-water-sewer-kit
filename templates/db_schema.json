@@ -1,0 +1,242 @@
+{
+  "_설명": "킷 표준 DB 스키마. make_empty_db.py 가 이 정의로 빈 GPKG 또는 PostGIS DDL 을 만든다. 레이어 이름은 templates/sewer.config.example.json 과 같다(그대로 쓰면 설정을 안 고쳐도 킷이 돈다). 설계 근거는 standard/db-design.md.",
+  "_필드형식": "[이름, 형식(TEXT|REAL|INTEGER|DATE), 필수(true/false), 논리필드(설정 fields 키, 없으면 null), 설명]. DATE 는 'YYYY-MM-DD' 글자로 저장.",
+  "crs": "EPSG:5186",
+  "codes": {
+    "구분_관로": ["자연유하", "압송"],
+    "구분_준공": ["신설", "기존활용", "기존폐쇄"],
+    "구분_계획맨홀": ["계획맨홀", "맨홀펌프장", "기존맨홀"],
+    "구분_펌프장": ["신설", "기존"],
+    "기존_신규": ["기존", "신규"],
+    "검토상태": ["미조치", "조치", "반려", "보류"]
+  },
+  "tables": [
+    {
+      "key": "service_area", "name": "처리구역", "geom": "Polygon", "group": "기준",
+      "desc": "처리구역·처리분구 경계. 분구별 유량(유량기준)과 맞물린다.",
+      "fields": [
+        ["처리분구", "TEXT", true, "subarea", "분구 이름 — 유량기준.처리분구 와 같은 값"],
+        ["금회대상여부", "TEXT", false, "in_scope", "이번 과업 대상이면 'o'"],
+        ["기존/계획", "TEXT", false, "existing_or_plan", "기존 / 계획"],
+        ["읍면", "TEXT", false, null, ""],
+        ["리", "TEXT", false, null, ""],
+        ["면적_m2", "REAL", false, null, "도형에서 계산"],
+        ["출처", "TEXT", true, null, "기본계획 연도·도면"]
+      ]
+    },
+    {
+      "key": "flow_basis", "name": "유량기준", "geom": null, "group": "기준",
+      "desc": "분구별 계획하수량의 단일 원천. 수리계산은 이 표만 읽는다(엑셀 사본을 원천으로 쓰지 않는다).",
+      "fields": [
+        ["처리분구", "TEXT", true, null, ""],
+        ["목표연도", "INTEGER", true, null, ""],
+        ["계획인구", "REAL", false, null, "인"],
+        ["원단위_Lpcd", "REAL", false, null, "1인 1일 오수량"],
+        ["일평균_m3d", "REAL", false, null, ""],
+        ["일최대_m3d", "REAL", true, null, ""],
+        ["시간최대_m3d", "REAL", true, null, "수리계산에 쓰는 값"],
+        ["지하수_m3d", "REAL", false, null, "첨두 계수 미적용분"],
+        ["근거", "TEXT", true, null, "기본계획 표 번호·산식"],
+        ["자료기준일", "DATE", true, null, ""]
+      ]
+    },
+    {
+      "key": "plan_manhole", "name": "계획맨홀_실시설계", "geom": "Point", "group": "계획",
+      "desc": "계획 맨홀 = 관망의 노드. 점(Point)으로 둔다.",
+      "fields": [
+        ["맨홀번호", "TEXT", true, "mh_id", "지구 안에서 유일"],
+        ["지구", "TEXT", true, "district", ""],
+        ["처리구역", "TEXT", false, null, "처리분구"],
+        ["구분", "TEXT", true, "kind", "코드 구분_계획맨홀"],
+        ["맨홀호수", "TEXT", false, "mh_type", "1호·소형 등 규격"],
+        ["지반고", "REAL", true, "ground", "EL. m"],
+        ["유출관저고", "REAL", true, "out_invert", "EL. m"],
+        ["심도", "REAL", false, "depth", "지반고 − 유출관저고"],
+        ["단차", "REAL", false, "drop", "m"],
+        ["접속맨홀", "TEXT", false, "connect_to", "기존망 접속 시 준공 맨홀번호"],
+        ["자료기준일", "DATE", true, "asof", ""],
+        ["출처", "TEXT", true, null, "설계사 회차·자체 재설계 등"]
+      ]
+    },
+    {
+      "key": "plan_pipe", "name": "노선_실시설계", "geom": "LineString", "group": "계획",
+      "desc": "계획 관로 = 관망의 링크. 도형 방향은 상류 → 하류, 관번호 = 상류 맨홀번호.",
+      "fields": [
+        ["관번호", "TEXT", true, "pipe_id", "= 상류 맨홀번호, 지구 안에서 유일"],
+        ["지구", "TEXT", true, "district", ""],
+        ["처리구역", "TEXT", false, "area", "처리분구"],
+        ["구분", "TEXT", true, "kind", "코드 구분_관로"],
+        ["상류맨홀", "TEXT", false, null, "계획맨홀.맨홀번호"],
+        ["하류맨홀", "TEXT", false, null, "계획맨홀.맨홀번호 또는 준공 맨홀번호"],
+        ["관경", "REAL", true, "dia_mm", "mm"],
+        ["관종", "TEXT", false, null, ""],
+        ["연장_m", "REAL", true, "length_m", "도면 연장(도형 길이와 따로 둔다)"],
+        ["상류관저고", "REAL", true, "us_invert", "EL. m"],
+        ["하류관저고", "REAL", true, "ds_invert", "EL. m"],
+        ["상류지반고", "REAL", false, "us_ground", "EL. m"],
+        ["경사퍼밀", "REAL", false, "slope_permil", "‰"],
+        ["상류토피", "REAL", false, "us_cover", "m"],
+        ["누가유량_m3d", "REAL", false, "flow_m3d", "최신 수리계산 — 회차 이력은 수리계산_회차"],
+        ["실유속_mps", "REAL", false, "velocity_mps", "최신 수리계산"],
+        ["수리판정", "TEXT", false, "judge", "최신 수리계산"],
+        ["종단지장물", "TEXT", false, "obstacles", "'종류 D규격@측점(저면EL)' 을 ' / ' 로 이음"],
+        ["자료기준일", "DATE", true, "asof", ""],
+        ["출처", "TEXT", true, "source", ""]
+      ]
+    },
+    {
+      "key": "plan_pump", "name": "맨홀펌프장_실시설계", "geom": "Point", "group": "계획",
+      "desc": "맨홀펌프장. 기존은 준공 스펙 고정, 신설만 산정.",
+      "fields": [
+        ["펌프장", "TEXT", true, "pump_id", ""],
+        ["지구", "TEXT", true, "district", ""],
+        ["구분", "TEXT", true, "kind", "코드 구분_펌프장"],
+        ["맨홀번호", "TEXT", false, null, "설치 맨홀"],
+        ["토출대상", "TEXT", false, "discharge_to", "토출 맨홀번호"],
+        ["누가유량_m3d", "REAL", false, "flow_m3d", ""],
+        ["시간최대_m3min", "REAL", false, null, ""],
+        ["적용용량_m3min", "REAL", false, "q_m3min", ""],
+        ["유입관저고_m", "REAL", true, "in_invert", ""],
+        ["HWL", "REAL", false, null, ""],
+        ["LWL", "REAL", false, null, ""],
+        ["실양정_m", "REAL", false, null, ""],
+        ["전양정_m", "REAL", false, "head_m", ""],
+        ["적용동력_kW", "REAL", false, "power_kw", ""],
+        ["압송연장_m", "REAL", false, "force_main_m", ""],
+        ["압송관경_mm", "REAL", false, null, ""],
+        ["자료기준일", "DATE", true, "asof", ""],
+        ["출처", "TEXT", true, null, ""]
+      ]
+    },
+    {
+      "key": "house", "name": "배수설비가구_실시설계", "geom": "Point", "group": "계획",
+      "desc": "배수설비 가구 = 유량이 들어오는 점. 맨홀에 배정해 누가유량을 만든다.",
+      "fields": [
+        ["배수설비명", "TEXT", true, "house_id", ""],
+        ["지구", "TEXT", true, "district", ""],
+        ["처리구역", "TEXT", false, null, "처리분구"],
+        ["기존_신규", "TEXT", true, "new_or_old", "코드 기존_신규"],
+        ["Q_m3d", "REAL", true, "q_m3d", ""],
+        ["배정맨홀", "TEXT", false, "assigned_mh", "계획 또는 준공 맨홀번호"],
+        ["배정근거", "TEXT", false, null, "준공 접속노드 / 최근접 등"],
+        ["자가펌프필요", "TEXT", false, null, ""],
+        ["자료기준일", "DATE", true, null, ""],
+        ["출처", "TEXT", true, null, "배수설비 조사 회차"]
+      ]
+    },
+    {
+      "key": "asbuilt_manhole", "name": "asbuilt_manhole", "geom": "Point", "group": "준공",
+      "desc": "준공도에서 판독한 기존 맨홀. 원본 값 그대로(설계 판단을 섞지 않는다).",
+      "fields": [
+        ["맨홀번호", "TEXT", true, "mh_id", ""],
+        ["지구", "TEXT", true, "district", ""],
+        ["구분", "TEXT", true, "status", "코드 구분_준공"],
+        ["지반고", "REAL", true, "ground", ""],
+        ["맨홀깊이", "REAL", true, "depth", "지반고 − 깊이 = 유출관저고"],
+        ["유출관저고", "REAL", false, null, "도면에 있으면"],
+        ["자료출처", "TEXT", true, "source", "도면 번호·시트"]
+      ]
+    },
+    {
+      "key": "asbuilt_pipe", "name": "asbuilt_pipe_burwon", "geom": "LineString", "group": "준공",
+      "desc": "준공 관로. 기존폐쇄도 넣어 둔다(간섭·철거 검토용).",
+      "fields": [
+        ["관번호", "TEXT", true, "pipe_id", ""],
+        ["지구", "TEXT", true, "district", ""],
+        ["구분", "TEXT", true, "status", "코드 구분_준공"],
+        ["자연유하/압송", "TEXT", true, "flow_kind", "코드 구분_관로"],
+        ["관경", "REAL", true, "dia_mm", "mm"],
+        ["연장", "REAL", false, "length_m", "도면 연장"],
+        ["상류맨홀", "TEXT", false, "us_mh", ""],
+        ["하류맨홀", "TEXT", false, "ds_mh", ""],
+        ["상류지반고", "REAL", false, "us_ground", ""],
+        ["하류지반고", "REAL", false, "ds_ground", ""],
+        ["상류관저고", "REAL", true, "us_invert", ""],
+        ["하류관저고", "REAL", true, "ds_invert", ""],
+        ["구배", "REAL", false, "slope", ""],
+        ["관종", "TEXT", false, "material", ""],
+        ["자료출처", "TEXT", true, "source", ""]
+      ]
+    },
+    {
+      "key": "asbuilt_pump", "name": "asbuilt_pump_burwon", "geom": "Point", "group": "준공",
+      "desc": "준공 맨홀펌프장 제원(기기목록·용량계산서).",
+      "fields": [
+        ["펌프장명", "TEXT", true, null, ""],
+        ["지구", "TEXT", true, null, ""],
+        ["유입관저고", "REAL", false, null, ""],
+        ["맨홀깊이", "REAL", false, null, ""],
+        ["펌프토출량_m3min", "REAL", false, null, ""],
+        ["실양정", "REAL", false, null, ""],
+        ["펌프규격", "TEXT", false, null, ""],
+        ["자료출처", "TEXT", true, null, ""]
+      ]
+    },
+    {
+      "key": "asbuilt_service_pipe", "name": "asbuilt_service_pipe", "geom": "LineString", "group": "준공",
+      "desc": "배수설비 연결관(옥내·옥외).",
+      "fields": [["구분", "TEXT", false, null, ""], ["관경", "REAL", false, null, ""], ["접속맨홀", "TEXT", false, null, ""],
+                 ["접속가옥", "TEXT", false, null, ""], ["지구", "TEXT", true, null, ""]]
+    },
+    {
+      "key": "asbuilt_inlet", "name": "asbuilt_inlet", "geom": "Point", "group": "준공",
+      "desc": "오수받이·소형맨홀.",
+      "fields": [["구분", "TEXT", false, null, ""], ["지구", "TEXT", true, null, ""], ["자료출처", "TEXT", true, null, ""]]
+    },
+    {
+      "key": "asbuilt_house", "name": "asbuilt_house", "geom": "Point", "group": "준공",
+      "desc": "준공 배수설비 가옥 — 유량 배분 때 기존 가구는 여기 접속맨홀을 우선한다.",
+      "fields": [["가옥번호", "TEXT", true, null, ""], ["접속맨홀", "TEXT", false, null, ""], ["자가펌프", "TEXT", false, null, ""],
+                 ["지구", "TEXT", true, null, ""]]
+    },
+    {
+      "key": "obstacle_poly", "name": "지장물_폴리곤_정본", "geom": "Polygon", "group": "현황",
+      "desc": "11 스킬이 측량현황도에서 만든 지장물(근거 강한 것). 출력 스키마는 data-standard.md.",
+      "fields": [
+        ["지장물번호", "TEXT", true, "obs_id", ""], ["분류", "TEXT", false, "class", ""], ["종류", "TEXT", true, "type", ""],
+        ["표기", "TEXT", false, "label", "도면 원문"], ["규격_폭m", "REAL", false, "width_m", ""], ["규격_깊이m", "REAL", false, "height_m", ""],
+        ["연수", "INTEGER", false, null, ""], ["관경mm", "REAL", false, "dia_mm", ""], ["관경산출", "TEXT", false, null, "근거의 세기"],
+        ["생성방식", "TEXT", false, null, "폐합·체인쌍·단선버퍼·심볼"], ["구분", "TEXT", false, null, "현행·매립"],
+        ["관저_시점", "REAL", false, "invert_start", ""], ["관저_종점", "REAL", false, "invert_end", ""], ["관저_출처", "TEXT", false, null, ""],
+        ["보정기록", "TEXT", false, "fix_note", ""], ["출처", "TEXT", true, null, "측량 회차"]
+      ]
+    },
+    {
+      "key": "obstacle_line", "name": "지장물_중심선_정본", "geom": "LineString", "group": "현황",
+      "desc": "지장물 중심선(종단 교차 판정용). 필드는 지장물_폴리곤_정본 과 같은 지장물번호로 짝.",
+      "fields": [["지장물번호", "TEXT", true, "obs_id", ""], ["종류", "TEXT", true, "type", ""], ["관경mm", "REAL", false, "dia_mm", ""],
+                 ["관저_시점", "REAL", false, "invert_start", ""], ["관저_종점", "REAL", false, "invert_end", ""], ["출처", "TEXT", true, null, ""]]
+    },
+    {
+      "key": "hyd_result", "name": "수리계산_회차", "geom": null, "group": "회차",
+      "desc": "수리계산 결과 이력. 회차마다 행을 더한다(관로 레이어에 금회_·변경_YYMMDD 열을 쌓지 않는다).",
+      "fields": [
+        ["회차", "TEXT", true, null, "YYMMDD 또는 '설계사 3차' 등"], ["관번호", "TEXT", true, null, ""], ["지구", "TEXT", true, null, ""],
+        ["누가유량_m3d", "REAL", false, null, ""], ["만관유량_m3d", "REAL", false, null, ""], ["실유속_mps", "REAL", false, null, ""],
+        ["수심비_pct", "REAL", false, null, ""], ["경사퍼밀", "REAL", false, null, ""], ["판정", "TEXT", false, null, ""],
+        ["계산도구", "TEXT", false, null, "makesw · 자체 스크립트 등"], ["기준", "TEXT", false, null, "적용 기준값 요약"]
+      ]
+    },
+    {
+      "key": "delivery", "name": "납품회차", "geom": null, "group": "회차",
+      "desc": "외주 설계사 납품 회차 — 40 검토의 단위.",
+      "fields": [["회차", "TEXT", true, null, "YYMMDD(순번)"], ["설계사", "TEXT", false, null, ""], ["폴더", "TEXT", true, null, "납품 폴더명"],
+                 ["받은날", "DATE", false, null, ""], ["범위", "TEXT", false, null, "지구·계통"], ["비고", "TEXT", false, null, ""]]
+    },
+    {
+      "key": "review_finding", "name": "검토지적", "geom": "Point", "group": "회차",
+      "desc": "외주 검토 지적사항. 위치가 있으면 점으로 — 지도에서 지적을 본다.",
+      "fields": [
+        ["회차", "TEXT", true, null, "납품회차.회차"], ["항목", "TEXT", true, null, "A1~A5 등"], ["관번호", "TEXT", false, null, ""],
+        ["측점", "TEXT", false, null, ""], ["납품값", "TEXT", false, null, ""], ["기준값", "TEXT", false, null, ""], ["차이", "TEXT", false, null, ""],
+        ["영향", "TEXT", false, null, "구간수·연장·공사비"], ["상태", "TEXT", true, null, "코드 검토상태"], ["조치회차", "TEXT", false, null, ""]
+      ]
+    },
+    {
+      "key": "decision", "name": "결정기록", "geom": null, "group": "회차",
+      "desc": "기준값을 바꾸거나 대안을 고른 결정. 결정기록.md 로 대신해도 된다.",
+      "fields": [["날짜", "DATE", true, null, ""], ["대상", "TEXT", true, null, "단계·지구·관번호"], ["결정", "TEXT", true, null, ""],
+                 ["근거", "TEXT", true, null, "KDS 조문·협의·사례"], ["결정자", "TEXT", false, null, ""]]
+    }
+  ]
+}

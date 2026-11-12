@@ -44,10 +44,15 @@ Get-ChildItem "$kit\skills" -Directory | ForEach-Object {
 - **Sewer Profile Viewer**(종단도): https://github.com/taylee9809/qgis-sewer-profile 의 README 「AI용 설치 절차」대로.
 - **QGIS MCP**(선택 — Claude 가 켜져 있는 QGIS 를 직접 조작): https://github.com/jjsantos01/qgis_mcp — QGIS 플러그인 `qgis_mcp_plugin` 설치 + MCP 서버를 `uv` 로 등록. 플러그인에서 서버를 켜야 연결된다.
   - 주의: 이 연결로 150 dpi 이상 조판 내보내기를 하면 QGIS 가 죽는다 → 고해상 출력은 헤드리스로(51 스킬).
+- **korean-engineering-mcp**(선택 — KDS/KCS 건설기준·법제처 법령 검색, 인용 검증, 표준품셈): https://github.com/taylee9809/korean-engineering-mcp
+  - 저장소가 안 열리면 킷 관리자에게 접근 권한을 요청한다.
+  - 저장소 README 의 「AI 도구에 URL만 주고 설치하기」대로. API 키(`KCSC_API_KEY` 국가건설기준센터, `LAW_API_KEY` 법제처 OPEN API)는 **사용자가 직접 발급받아** MCP 설정의 `env` 에 넣는다(대화에 붙여 넣지 않는다). 표준품셈 검색은 키 없이도 된다.
+  - 연결되면 30 스킬이 조문을 원문으로 확인하고 인용을 검증하는 데 쓴다.
 
 ## 4. 프로젝트 세팅
 프로젝트 폴더에서 Claude Code 를 열고 **00-onboard 스킬**을 실행한다("이 프로젝트에 맞게 킷 세팅해줘").
 그 스킬이 데이터 조사 → 대응표 → 질문 → `sewer.config.json` → 설정 검사 → 프로젝트 `CLAUDE.md` 까지 한다.
+**DB 가 아직 없으면** 같은 스킬이 표준 스키마(`standard/db-design.md`)로 빈 GPKG 또는 PostGIS DDL 을 만들어 준다.
 
 ## 5. 확인
 - [ ] `<프로젝트>\sewer.config.json` 이 있고 `check_config.py` 치명 0

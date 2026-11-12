@@ -119,3 +119,7 @@ Claude 는 이 방법대로 프로젝트 `scripts\30_*` 에 파이프라인을 �
 
 상수관 이격 0.3 m: KDS 57 65 00 4.5(2), KDS 57 70 00 2.6(1). 최소토피의 **법정 수치는 없다**(도로관리청 점용조건 협의) — 1.0 m 는 KDS 기준값.
 인용한 조문은 원문을 발췌한 PDF 를 근거자료로 함께 남긴다.
+
+**korean-engineering-mcp 가 연결돼 있으면**(INSTALL.md 3절) 조문은 기억으로 쓰지 말고 원문으로 확인한다:
+`search_standards`(KDS/KCS 검색) → `get_standard_detail`(조문 원문) → 보고서·검토 의견에 넣기 전 `verify_citations`(인용 검증).
+법령은 `search_laws`·`get_law_detail`, 품셈은 `search_standard_estimation`. 이 표의 조 번호도 판이 바뀌면 달라질 수 있다.

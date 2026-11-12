@@ -23,6 +23,15 @@ description: qgis-water-sewer-kit 를 새 하수관로 프로젝트에 맞춘다
 2. 데이터 위치 — GPKG 폴더, PostGIS(host:port/dbname, 사용자명), QGIS 프로젝트(.qgz).
    `.qgz` 가 있으면 그게 가장 좋은 지도다(레이어 그룹 이름이 용도를 알려 준다).
 
+### DB 가 아직 없으면 — 2~5 대신 이것
+`standard\db-design.md` 를 읽고 사용자와 GPKG / PostGIS 를 고른 뒤, 표준 스키마로 빈 DB 와 설정을 만든다.
+```
+python -X utf8 "<킷>\skills\00-onboard\scripts\make_empty_db.py" --gpkg data\sewer.gpkg --write-config sewer.config.json
+python -X utf8 "<킷>\skills\00-onboard\scripts\make_empty_db.py" --sql schema.sql --schema public    # PostGIS: 사람이 확인 후 실행
+```
+그다음 6(검사)·7(자리 잡기)로 간다. 외부 자료(상수관·도로경계·교량·지적·DEM)는 들여온 뒤 설정에 더한다.
+일부만 있으면(예: 준공 DB 만 있음) 있는 것은 2~5 로 맞추고, 없는 엔티티만 스키마대로 새 GPKG 에 만든다.
+
 ## 2. 조사 — `scripts\probe.py`
 ```
 python -X utf8 "<킷>\skills\00-onboard\scripts\probe.py" <GPKG폴더 또는 파일…> <프로젝트.qgz> ^
