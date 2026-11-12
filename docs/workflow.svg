@@ -9,7 +9,7 @@
   <text x="24" y="50" font-size="12" fill="#57606a">Workflow 00–80 — build the database first; design and review stand on it</text>
 
   <!-- bands -->
-  <rect x="24" y="66" width="712" height="168" rx="8" fill="#f6f8fa"/>
+  <rect x="24" y="66" width="712" height="176" rx="8" fill="#f6f8fa"/>
   <text x="40" y="88" font-size="11.5" font-weight="700" fill="#57606a">착수 · 자료 → DB  ·  Data to DB</text>
   <rect x="24" y="262" width="712" height="206" rx="8" fill="#f6f8fa"/>
   <text x="40" y="284" font-size="11.5" font-weight="700" fill="#57606a">설계 · 검토  ·  Design &amp; review</text>
@@ -19,11 +19,12 @@
   <!-- connectors -->
   <g fill="none" stroke="#57606a" stroke-width="1.25">
     <path d="M170 156H200" marker-end="url(#f)"/>
-    <path d="M340 156H356V120H375" marker-end="url(#f)"/>
-    <path d="M340 156H356V192H375" marker-end="url(#f)"/>
-    <path d="M525 120H545V156H565" marker-end="url(#f)"/>
-    <path d="M525 192H545V156H565" marker-end="url(#f)"/>
-    <path d="M380 234V262" marker-end="url(#f)"/>
+    <path d="M340 156H356V115H375" marker-end="url(#f)"/>
+    <path d="M340 156H356V163H375" marker-end="url(#f)"/>
+    <path d="M340 156H356V211H375" marker-end="url(#f)"/>
+    <path d="M525 115H545V156H565" marker-end="url(#f)"/>
+    <path d="M525 163H545V156H565" marker-end="url(#f)"/>
+    <path d="M450 232V262" marker-end="url(#f)"/>
     <path d="M250 334H335" marker-end="url(#f)"/>
     <path d="M335 350H250" marker-end="url(#f)"/>
     <path d="M150 368V400" marker-end="url(#f)"/>
@@ -41,15 +42,18 @@
   <rect x="30" y="130" width="140" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
   <text x="100" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">00 착수</text>
   <text x="100" y="170" text-anchor="middle" font-size="11" fill="#57606a">Kickoff · onboarding</text>
-  <rect x="200" y="130" width="140" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <rect x="200" y="130" width="140" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
   <text x="270" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">10 자료수집</text>
   <text x="270" y="170" text-anchor="middle" font-size="11" fill="#57606a">Data intake</text>
-  <rect x="375" y="94" width="150" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="450" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">11 측량 → QGIS</text>
-  <text x="450" y="134" text-anchor="middle" font-size="11" fill="#57606a">Survey → obstacles</text>
-  <rect x="375" y="166" width="150" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="450" y="188" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">12 준공도 → QGIS</text>
-  <text x="450" y="206" text-anchor="middle" font-size="11" fill="#57606a">As-built → DB</text>
+  <rect x="375" y="94" width="150" height="42" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="450" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">11 측량 → QGIS</text>
+  <text x="450" y="128" text-anchor="middle" font-size="11" fill="#57606a">Survey → obstacles</text>
+  <rect x="375" y="142" width="150" height="42" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="450" y="160" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">12 준공도 → QGIS</text>
+  <text x="450" y="176" text-anchor="middle" font-size="11" fill="#57606a">As-built → DB</text>
+  <rect x="375" y="190" width="150" height="42" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
+  <text x="450" y="208" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">13 설계사 평면 → QGIS</text>
+  <text x="450" y="224" text-anchor="middle" font-size="11" fill="#57606a">Plan DXF → routes</text>
   <rect x="565" y="130" width="150" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
   <text x="640" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">20 기준 확정</text>
   <text x="640" y="170" text-anchor="middle" font-size="11" fill="#57606a">Areas &amp; design flows</text>
@@ -58,7 +62,7 @@
   <rect x="50" y="316" width="200" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
   <text x="150" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">30 노선 설계·수리계산</text>
   <text x="150" y="356" text-anchor="middle" font-size="11" fill="#57606a">Route design &amp; hydraulics</text>
-  <rect x="75" y="400" width="150" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <rect x="75" y="400" width="150" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
   <text x="150" y="422" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">31 펌프장 용량</text>
   <text x="150" y="440" text-anchor="middle" font-size="11" fill="#57606a">Pump station sizing</text>
   <rect x="335" y="316" width="150" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
@@ -69,7 +73,7 @@
   <text x="630" y="356" text-anchor="middle" font-size="11" fill="#57606a">Vendor review</text>
 
   <!-- band 3 -->
-  <rect x="40" y="536" width="120" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
+  <rect x="40" y="536" width="120" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
   <text x="100" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">50 종단면도</text>
   <text x="100" y="576" text-anchor="middle" font-size="11" fill="#57606a">Profiles</text>
   <rect x="180" y="536" width="120" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>

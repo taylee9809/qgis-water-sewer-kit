@@ -43,3 +43,29 @@ description: 하수도 보고서·제안서용 QGIS 삽도(위치도·검토도)
 
 ## 5. 외부 전달
 QGIS 프로젝트를 다른 사람에게 넘길 때는 킷 `standard\pitfalls-qgis-postgis.md` 「프로젝트 배포」 절대로. **커스텀 SVG 심볼 폴더를 같이 묶는다.**
+
+## 6. 스크립트 (`scripts\`)
+QGIS 에 딸린 파이썬으로 돌린다(일반 파이썬엔 `qgis` 모듈이 없다). PowerShell 이면 `cmd /c` 로 감싼다.
+`QT_QPA_PLATFORM=offscreen` 은 쓰지 않는다(한글 글꼴이 깨진다).
+
+```
+set Q="<QGIS 설치 폴더>\bin\python-qgis-ltr.bat"
+set S=<킷>\skills\51-layout-figure\scripts
+
+REM 빌드 + 고해상 출력 (프로젝트는 --save 를 줄 때만 백업 후 저장)
+%Q% %S%\run_headless.py <프로젝트.qgz> %S%\build_review_figure.py <출력\이름> --dpi 300 --args args.json [--save]
+
+REM 이미 손으로 만든 조판을 내보내기만 (저장 안 함)
+%Q% %S%\export_headless.py <프로젝트.qgz> --list
+%Q% %S%\export_headless.py <프로젝트.qgz> --layout "조판 이름" -o <출력 폴더> --dpi 300 [--legend-layers "A;B"] [--legend-corner br]
+```
+
+| 파일 | 역할 |
+|---|---|
+| `run_headless.py` | 프로젝트 열기 → 빌드 스크립트 exec(전역 `proj`·`BUILD_ARGS`·`HEADLESS`, 결과 조판은 전역 `l`/`layout`) → 범례 크기 확정(메모리 1차 렌더) 후 모서리 배치 → PNG/PDF. `--save` 면 `<이름>_bak_YYMMDD_HHMM.qgz` 백업 후 저장(깨진 레이어가 있으면 저장 안 함) |
+| `export_headless.py` | 조판 목록(`--list`)·이름별/전체(`--all`) 내보내기. `--legend-layers` 면 3절 2번 규칙대로 범례를 다시 채운다 |
+| `build_review_figure.py` | 빌드 예시 — 검토구간 위치도: 룰 기반 관로(흰 테두리 + 색띠, 심볼 레벨), 그 조판 지도에만 스타일 오버라이드(`setKeepLayerStyles`), 구간 알약 라벨(PAL 우선순위 10), 범례 제자리 재구성, 제목. 레이어 이름·구간·색은 `--args` JSON(파일 머리말 예시) |
+
+- 빌드 스크립트는 저장·내보내기를 하지 않는다(그건 `run_headless.py` 몫). 같은 스크립트를 QGIS MCP 로 돌릴 때는 내보내기 없이 조판만 만든다.
+- 다른 조판(제원 키표·시설 아이콘·조판 아이템 라벨)은 이 예시를 복사해 프로젝트 `scripts\` 에 늘려 쓴다. 지구별 좌표·관번호를 킷 파일에 박지 않는다.
+- 검수는 3절 6번대로 — 70 dpi 전체 + 150 dpi 크롭을 눈으로.

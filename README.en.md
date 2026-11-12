@@ -27,14 +27,28 @@ Requirements: Claude Code · QGIS 3.22+ (3.40 LTR recommended) · Python 3.10+. 
 ## What you can ask for
 | Say something like | Skill | Result | What a person checks |
 |---|---|---|---|
+| "Bring in the DEM, water mains, flows and household data" / "Export households to Excel" | 10 | 1 m / 5 m DEM, water-main GPKG, flow-basis table, household Excel round trip | Rows in = rows loaded; only rows edited in Excel changed |
 | "The survey came in — build the obstacle layer" | 11 | Obstacle polygons and centerlines + a **needs-review** layer | The needs-review list (usually 3–5 items), against drawings and street view |
 | "Load the as-built DXF into the DB" / "Is the as-built DB right?" | 12 | As-built pipes and manholes loaded + a comparison against the source | Coordinate offset converged (within 0.2 m); zero mismatches in names, ground levels, depths |
-| "Run inverts and hydraulics for this route" / "Size the pump station" | 30 | Inverts, diameters, flows, pass/fail, makesw `.flo`, pump head and power | Which values are standards and which are assumptions; sections short of cover or velocity |
+| "Turn the consultant's plan DXF into plan layers" | 13 | Planned pipe, manhole and pump-station layers + a comparison against the source | Zero mismatches in pipe IDs, diameters, lengths; existing pipes flagged |
+| "Run inverts and hydraulics for this route" | 30 | Inverts, diameters, flows, pass/fail, makesw `.flo`, SWMM `.inp`, `설계요약.md` | Which values are standards and which are assumptions; sections short of cover or velocity |
+| "Size the pump stations" / "Do the existing stations hold?" | 31 | Head, power and wet-well storage per station, capacity workbook | Static head and loss sources; verdict for existing stations |
 | "Can we drop this force main?" / "Compare connection manholes" | 32 | Feasible manholes + an alternatives table | Cover and deep-excavation stretches; operating cost |
 | "Review the consultant's delivery" (folder name only) | 40 | `검토요약.md` — findings on lengths, network, connection inverts, designer notes | Each finding as "delivered vs reference — difference — impact" |
+| "Print the profiles on A3" / "Draw a profile per route" | 50 | A3 sheet-set PDF (village names in titles), profile DXF in the consultant's format, review-profile PDF | Zero missing titles, zero clipped lines; rotated text intact |
 | "Make a location figure for this section" | 51 | Print layout + 300 dpi image | Overlaps, clipping, empty legends (by eye) |
 | Other stages (cost, report, review responses) | — | Claude writes project scripts under `scripts\` | Sources of numbers; standards vs assumptions |
 | "Send my kit changes back" | 90 | A bundle of fixes, failure notes and new tools → PR, issue or file | Zero hits in the name scan; what is being sent |
+
+## Starting from DXF files only
+No database needed. Say "Set up the kit for this project" and skill 00 builds an empty GPKG and config from the standard schema; then ask for each step in order.
+
+1. **00** empty DB and config → **10** bring in DEM, water mains, flow basis, households
+2. **11** survey DXF → obstacles · **12** as-built DXF → existing network · **13** consultant plan DXF → planned routes (or draw them in QGIS)
+3. **30** inverts, hydraulics, `.flo` → **31** pump-station capacity → **32** alternatives
+4. **50** A3 profiles · **51** layouts and figures → when a consultant delivers, **40** review
+
+Service areas and flows (20) and cost, report and review responses (60–80) have no skill — Claude writes project scripts under `scripts\` following `standard/workflow.md`.
 
 ## Workflow
 ![Workflow stages 00–80 — Korean](docs/workflow.svg)
@@ -66,17 +80,16 @@ Made on real projects; place names, pipe IDs and river names are masked (`OO`, `
 ## Layout
 | Folder | Contents |
 |---|---|
-| `skills\` | Eight skills — 00-onboard · 11 · 12 · 30 · 32 · 40 · 51 · 90-kit-feedback |
+| `skills\` | Twelve skills — 00-onboard · 10 · 11 · 12 · 13 · 30 · 31 · 32 · 40 · 50 · 51 · 90-kit-feedback |
 | `lib\kitconfig.py` | Config loader used by every script (paths, layers, fields, DB; passwords only via environment variables) |
+| `lib\flospec.py` | Read, validate and write makesw `.flo` files (shared by 13, 30, 31, 40) |
 | `standard\` | Data standard (logical layers and fields) · **DB design guide** (entities, relations and rules when you build a DB from scratch) · workflow · two pitfall notes |
 | `templates\` | `sewer.config.example.json` (a real project's layout as the example) · `db_schema.json` (standard schema — generates an empty GPKG or PostGIS DDL) · a `CLAUDE.md` for project folders |
 | `docs\` | Images for this README |
 
-Skills 30 and 51 are method documents only (no scripts). Real implementations are tied too tightly to project data, so
-each team's Claude writes them from the method.
-
 ## What was verified, and known limits
-- Scripts for 11, 12, 32 and 40 were run against real project data and **match the original tools** (11: CSVs byte-identical; 12 and 32: identical output; 40: identical A1–A5 results).
+- Every skill's scripts were run against real project data and **match the original tools** — 11: CSVs byte-identical; 12 and 32: identical output; 40: identical A1–A5; 13: 1,470 pipes, 1,234 manholes, 33 pump stations identical; 30: zero mismatches over 190 sections and 231 `.flo` lines; 31: zero differences over 17 stations × 38 items; 50: titles and pipe IDs identical on all 28 A3 sheets; 10: identical DEM arrays.
+- Skill 30's scripts do not place manholes automatically or design excavation and shoring (see 30 SKILL.md §10.6). makesw `.OUT` result tables need the makesw program itself.
 - PostGIS reading was checked against a real database for 12 and 32 only; 11 and 40 were checked with GPKG. Teams on PostGIS should eyeball the first run.
 - Skill 11 **writes obstacle layers to GPKG only**.
 - Skill 11's tools read the config first, so run them **inside a project folder** (outside one, even `--help` only prints the setup hint).

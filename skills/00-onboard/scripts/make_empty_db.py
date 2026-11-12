@@ -25,7 +25,7 @@ SCHEMA = json.loads((KIT / 'templates' / 'db_schema.json').read_text(encoding='u
 UNIQUE = {
     'plan_pipe': ['지구', '관번호'], 'plan_manhole': ['지구', '맨홀번호'], 'plan_pump': ['지구', '펌프장'],
     'asbuilt_pipe': ['지구', '관번호'], 'asbuilt_manhole': ['지구', '맨홀번호'],
-    'flow_basis': ['처리분구', '목표연도'], 'hyd_result': ['회차', '지구', '관번호'], 'delivery': ['회차'],
+    'flow_basis': ['처리분구', '구분', '목표연도'], 'hyd_result': ['회차', '지구', '관번호'], 'delivery': ['회차'],
 }
 FIONA_TYPE = {'TEXT': 'str', 'REAL': 'float', 'INTEGER': 'int', 'DATE': 'str'}
 PG_TYPE = {'TEXT': 'text', 'REAL': 'double precision', 'INTEGER': 'integer', 'DATE': 'date'}
@@ -106,6 +106,13 @@ def write_config(cfg_path: Path, gpkg: Path):
     ex['layers'] = layers
     ex['_layers'] = ('make_empty_db.py 가 만든 빈 GPKG 를 가리킨다. 상수관·도로·교량·지적 같은 외부 자료는 들여온 뒤 '
                      'water_pipe·road_boundary·bridge·parcel 키를 더한다.')
+    # 필드 매핑은 스키마의 논리 키에서 바로 만든다(예시 설정보다 스키마가 정확하다)
+    fields = {k: v for k, v in ex.get('fields', {}).items() if not k.startswith('_') and k not in keys}
+    for t in SCHEMA['tables']:
+        m = {logical: name for name, _typ, _req, logical, _desc in t['fields'] if logical}
+        if m:
+            fields[t['key']] = m
+    ex['fields'] = fields
     ex.pop('db', None)
     ex['dem'] = []
     ex['_dem'] = 'DEM(1 m 실측 → 5 m 순)을 넣으면 경로를 적는다. 비어 있으면 30·32 의 지반고 계산이 안 된다.'

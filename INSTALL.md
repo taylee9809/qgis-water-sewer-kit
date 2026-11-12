@@ -56,6 +56,6 @@ Get-ChildItem "$kit\skills" -Directory | ForEach-Object {
 ## 5. 확인
 - [ ] `<프로젝트>\sewer.config.json` 이 있고 `check_config.py` 치명 0
 - [ ] `<프로젝트>\CLAUDE.md` 의 킷 경로가 실제 경로
-- [ ] `%USERPROFILE%\.claude\skills\` 에 8개 정션
+- [ ] `%USERPROFILE%\.claude\skills\` 에 12개 정션
 - [ ] `git -C <킷> branch --show-current` 가 `local`
 - [ ] QGIS 에서 Sewer Profile Viewer 패널이 열리고 계획관로 레이어로 구간 트리가 뜬다

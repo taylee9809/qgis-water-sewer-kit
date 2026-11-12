@@ -31,9 +31,32 @@ REQUIRED = {
 DESIGN_KEYS = ['min_cover_m', 'min_slope_permil', 'manning_n', 'min_dia_mm', 'pressure_max_d_mm']
 
 
+def file_info(L):
+    """GPKG 가 아닌 파일(SHP·GeoJSON 등) — 속성만 메모리 SQLite 에 올려 같은 검사를 돌린다.
+    SHP 에 .cpg 가 없으면 cp949 로 읽는다(국가공간정보 SHP 의 한글 값)."""
+    import geopandas as gpd
+    p = L['path']
+    if not p.exists():
+        raise FileNotFoundError(f'파일 없음: {p}')
+    kw = {}
+    if p.suffix.lower() == '.shp' and not p.with_suffix('.cpg').exists():
+        kw['encoding'] = 'cp949'
+    gdf = gpd.read_file(p, **kw)
+    srs = gdf.crs.to_epsg() if gdf.crs is not None else None
+    t = L['layer']
+    cn = sqlite3.connect(':memory:')
+    gdf.drop(columns=gdf.geometry.name).to_sql(t, cn, index=False)
+
+    def run(sql):
+        return cn.execute(sql).fetchall()
+    return list(gdf.columns.drop(gdf.geometry.name)), len(gdf), srs, run, f'"{t}"'
+
+
 def table_info(cfg, key):
     """→ (columns:list, count:int, srid:int|None, sql_runner) 또는 예외"""
     L = cfg.layer(key)
+    if L['kind'] == 'gpkg' and L['path'] and L['path'].suffix.lower() != '.gpkg':
+        return file_info(L)
     if L['kind'] == 'gpkg':
         if not L['path'] or not L['path'].exists():
             raise FileNotFoundError(f'GPKG 없음: {L["path"]}')

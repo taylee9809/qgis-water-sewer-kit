@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 맨홀펌프장 아이콘(킷 예시) — 흰 원 + 빨간 테두리 + 토출 방향 삼각형. 그라디언트·그림자 없음(MuPDF 안전) -->
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="40" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="12"/>
+  <circle cx="50" cy="50" r="40" fill="#FFFFFF" stroke="#DB3F33" stroke-width="4"/>
+  <polygon points="36,24 36,76 80,50" fill="#DB3F33"/>
+</svg>

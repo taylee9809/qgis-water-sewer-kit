@@ -21,6 +21,7 @@
 - QGIS 기본 저장이 fid 충돌로 실패하면: 피처를 읽어 geopandas 로 새 GPKG 를 쓰고 레이어를 다시 붙인다(같은 GPKG 를 참조하는 레이어는 전부 먼저 제거).
 - GPKG 를 **덮어쓰기 전에 QGIS 에서 그 레이어를 `removeMapLayer`** — 파일 잠금. 사용자가 만든 심볼·라벨은 `saveNamedStyle` 로 QML 을 저장해 두었다가 다시 붙인 뒤 `loadNamedStyle`.
 - rtree 트리거 때문에 순수 sqlite3 `UPDATE` 가 막힌다 → SQL 에 `AFTER UPDATE ON` 이 들어간 트리거를 찾아 잠시 DROP 후 복원(이름으로 찾지 말 것).
+  속성만 바꿔도 트리거가 `ST_IsEmpty` 같은 공간 함수를 불러 `no such function` 으로 실패한다 → 트리거를 지우는 대신 그 함수들을 sqlite 연결에 직접 등록해 우회할 수 있다(31 스킬 `pumplib.py`).
 - **같은 커서로 select 돌면서 update 하면 첫 행만 반영**된다 → 먼저 `list()` 로 받는다.
 - fiona append 는 스키마의 전 필드를 요구한다(부분 dict 거부).
 - 속성만 바꾸는 수정은 PyQGIS `changeAttributeValue` + `commitChanges()` 가 가장 안전하다.

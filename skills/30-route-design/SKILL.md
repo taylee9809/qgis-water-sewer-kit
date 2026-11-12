@@ -3,10 +3,12 @@ name: 30-route-design
 description: 하수관로(오수관) 노선을 설계·재설계하고 관저고·관경·수리계산(makesw .flo/.OUT)·맨홀펌프장 용량(전양정·동력)을 산정한다. 도로 통로·지장물·상수관 이격·하천 하월·교량 관매달기·설계기준(토피·경사·유속·맨홀 간격)을 반영한 맨홀 배치와 종단 계산, 가구 유량 배분, 토피 부족 구간 검사, 터파기·가시설 판정. 노선 설계, 관저고 산정, 수리계산, 맨홀펌프장 용량, 상수관 이격, 지장물 교차, 하월 대안 요청 시 사용.
 ---
 
-# 30 노선 설계·수리계산 (방법서)
+# 30 노선 설계·수리계산
 
-이 스킬에는 스크립트가 없다. 우리 팀 구현은 프로젝트 데이터에 강하게 묶여 있어서 **방법·규칙·검증 기준만** 옮겼다.
-Claude 는 이 방법대로 프로젝트 `scripts\30_*` 에 파이프라인을 짠다. 경로·레이어·필드·기준값은 전부 `kitconfig`(킷 `lib\kitconfig.py`) 로 읽는다.
+1~9절은 방법·규칙·검증 기준이고, **10절이 그 일반 파이프라인**(`scripts\`)이다. 종단·압송·수리·산출·기존관 통수능은
+우리 팀 원 파이프라인을 설정·인자만 빼서 옮겼고, 같은 입력으로 원 스크립트와 결과가 같음을 대조했다(10.5).
+스크립트가 다루지 않는 부분(10.6 — 2절 노선·맨홀 배치, 8절 터파기·가시설 등)은 Claude 가 이 방법대로
+프로젝트 `scripts\30_*` 에 짠다. 경로·레이어·필드·기준값은 전부 `kitconfig`(킷 `lib\kitconfig.py`) 로 읽는다.
 
 | | |
 |---|---|
@@ -80,6 +82,7 @@ Claude 는 이 방법대로 프로젝트 `scripts\30_*` 에 파이프라인을 �
 - makesw `.flo` 내보내기는 설계사 원본 `.flo` 서식을 템플릿으로. **펌프 용량 항목이 없으니** 압송 첫 줄 주석으로만.
 
 ## 7. 맨홀펌프장 용량 (31 단계)
+**스크립트와 자세한 산식은 `31-pump-capacity` 스킬**에 있다(신설 산정·기존 검토·운전점·기기목록 판독·계산서). 아래는 요점.
 - **기존 펌프장은 준공도 스펙 고정, 신설만 산정**(최소 0.10 ㎥/min). 이 구분은 매번 요구된다.
 - 신설 토출량은 **압송관 최소유속 0.6 m/s 확보** 기준(D80 이면 약 0.18 ㎥/min). 유입보다 훨씬 크므로 간헐운전 + 유효저수량으로 기동횟수(6회/h 이내)를 맞춘다.
 - 산식(우리 원 계산서 방식):
@@ -104,6 +107,93 @@ Claude 는 이 방법대로 프로젝트 `scripts\30_*` 에 파이프라인을 �
 - **기준값(KDS·조례)과 자체 가정을 구분**해 쓰고, 바꾼 임계값을 숨기지 않는다.
 - 지장물·측량 공백 구간은 "교차 0" 이 아니라 **"미측량"**.
 - QGIS 에 결과 레이어를 다시 올릴 때 사용자 스타일 보존: `saveNamedStyle` → `removeMapLayer` → 내보내기 → 재등록 → `loadNamedStyle`.
+
+## 10. 스크립트 — `scripts\` (1~9절의 구현)
+
+### 10.1 실행
+```
+cd <프로젝트 폴더>                        :: sewer.config.json 을 현재 폴더에서 위로 찾는다(--config 로 직접 지정 가능)
+set K=<킷>\skills\30-route-design\scripts
+
+python -X utf8 %K%\run_all.py --run 1차 --step r1="--where 지구=OO" --step r5="--fixed-il 경계관저.csv"
+python -X utf8 %K%\run_all.py --run 완화2 --from 1차 --only r5 r6 --set cover_relax_max_m=2.0    :: 파라미터 스윕
+python -X utf8 %K%\r5_profile.py --run 1차 --help                                               :: 단계 단독(인자 같음)
+```
+산출 = `<outputs.root>\30-route\<run>\` — 단계별 JSON + `설계요약.md`(지표·펌프장·기존관·**기준값/자체 가정 구분표**).
+단계 인자는 `--step 단계="인자"` 또는 설정 `route_design.args = {"r5": ["--fixed-il", "경계.csv"]}`.
+스윕은 `--from` 으로 run 을 갈라 `--set 키=값`(또는 환경변수 `ROUTE_SET`)으로 — 파일을 고쳐 가며 돌리지 않는다(1절).
+`python -I` 로 돌리지 않는다(user site-packages 를 못 찾는다). 원본 레이어에는 쓰지 않는다(r8 `--overwrite` 만 예외, 백업 후).
+
+### 10.2 단계
+| 단계 | 스크립트 | 입력 | 산출 | 방법 |
+|---|---|---|---|---|
+| r1 | `r1_net.py` | `plan_pipe`(+`plan_manhole`·`plan_pump`·`asbuilt_manhole`) | `net.json` 자연유하 구간·압송 체인·노드·말단 경계 관저 | 2절 |
+| r2 | `r2_ground.py` | `dem` · `survey_point` · `road_boundary` · `bridge` · `river` | `ground.json` 노드 GL·맨홀 사이 표본·압송 측점·노폭·교량/하천 구간(하상) | 3·4절 |
+| r3 | `r3_cross.py` | `obstacle_line` · `water_pipe` 또는 교차표 | `cross.json` 교차점 관저·외저 | 3절 |
+| r4 | `r4_load.py` | `house`(+접속맨홀) | `load.json` 맨홀 자체유량 · `가구배정.csv` | 5절 |
+| r5 | `r5_profile.py` | 위 JSON | `profile.json` 관저고·단차·점검·자연유하 불가/펌프 후보 | 3·4절 |
+| r6 | `r6_hydraulic.py` | 위 + 유량 | `design.json` 구간별 종단·수리·판정 | 6절 |
+| r7 | `r7_force.py` | 압송 측점·교차 | `force.json` 압송 종단(구배구간·배니/공기밸브) + 신설 펌프장 1차 산정 | 4·7절 |
+| r8 | `r8_export.py` | 위 전부 | `route_design.gpkg`(설정 레이어·필드 이름) · CSV · `route_design.flo`(`lib\flospec.py`) · 선택 `.inp`·`.dxf` | 6·9절 |
+| r9 | `r9_existing.py` | `asbuilt_pipe` | `existing.json` · `기존관_통수능.csv` | 6절 |
+| 보조 | `swmm_check.py`(SWMM 교차검증) · `diag_water.py`(상수관 병행/사교차) · `routelib.py`(공통) · `run_all.py` | | | |
+
+사람이 정하는 것은 **인자**로 준다 — 기본값으로 숨기지 않는다.
+| 인자 | 단계 | 뜻 |
+|---|---|---|
+| `--fixed-il 표` | r5 | 고정 관저(기존 접속 맨홀·설계사 채택값). 말단이 준공 맨홀이면 r1 이 `out_invert` 또는 `ground − depth` 로 먼저 채운다 |
+| `--straighten 시점:k` | r5 | 간선 직선화(구배구간 최소 k, `max_depth_m` 지키는 최소 k 를 찾음) |
+| `--mid constrain\|check\|off` | r5 | 맨홀 사이 절점 제약(기본 constrain). 원안 재현·비교는 `off` |
+| `--special JSON` | r5 · r7 | 하천 하월 `{관번호:{mode:'하월', 하천:[{a,b,하상}]}}` · 관매달기 `{mode:'매달기', 교량:[[a,b]]}`. 하상 후보는 r2 `spans` 에 나온다 |
+| `--fixprof` · `--maxseg` | r7 | 지정 압송 종단 채택 · 구배구간 수 지정 |
+| `--split 관번호:거리` · `--join A=B` · `--snap-end m` | r1 | 토피제어 맨홀 삽입 · 다른 지구 말단을 접속 맨홀로 병합 · 말단/토출 맨홀 매칭 반경 |
+| `--mode assign\|assigned\|uniform` | r4 | 가구 배정(기존 가구는 접속맨홀 우선) · 배정 필드 그대로 · 연장 비례 |
+| `--flow load\|field` | r6 | 유량 = r4 배분 누가 / 관로 레이어의 누가유량 필드 |
+
+### 10.3 설정 (`sewer.config.json`)
+쓰는 키: `layers` 위 표의 레이어 · `fields.<레이어>.<논리필드>` · `values.kind_gravity/kind_pressure/status_abandon` · `dem` · `design.*` · `outputs.root`.
+예시 설정에 아직 없는 **선택 키**(없으면 기본값·끝점 연결로 동작):
+- `fields.plan_pipe.us_mh` · `ds_mh` · `route` · `flow_m3d` — 없으면 하류맨홀은 끝점 연결(1 m)·맨홀 매칭(`--snap-end`)으로, 노선은 관번호 앞부분으로
+- `layers.survey_point` + `fields.survey_point.elev` · `outlier` — 측량 표고점(반경 5 m 중앙값). `layers.river` — 하천 면
+- `fields.house.connect_mh` · `values.house_existing`(기본 '기존') · `values.kind_pump_mh`(기본 '맨홀펌프장') · `values.water_status_active`
+- `fields.asbuilt_manhole.out_invert`(없으면 ground − depth) · `fields.water_pipe.cover`(없으면 `design.water_cover_assume_m`)
+- `route_design.flo_template`(.flo 1·2행 — 2행은 지역 강우강도식 계수라 과업 것으로) · `route_design.dxf_layers` · `route_design.dxf_template` · `route_design.args`
+- `design.*` 추가 키 — 전체 목록과 근거는 `routelib.py` 의 `DESIGN` 표. `KDS` 근거가 아닌 것은 **자체 가정**이고 `설계요약.md` 에 그렇게 찍힌다.
+
+### 10.4 합격 기준 — 결과를 믿기 전에
+| 단계 | 볼 것 | 합격 |
+|---|---|---|
+| r1 | 경고(방향 뒤집음 · `_말단`/`_토출` 자리표시 · 안 이어진 압송 조각) | 0, 또는 이유를 안다(`--snap-end`·`--join`) |
+| r2 | 노드 지반고 출처 분포 · `없음` | 없음 0 |
+| r4 | 가구 합계 ↔ 맨홀 합계 | **불일치 0** · 100 m 넘는 가구는 확인 목록으로 보고 |
+| r5 | 경사 미달(±0.02‰) · 하류 토피 미달 · 지장물 위반 | 0 — 남으면 원인(고정 관저·설계사 채택선)을 적는다 |
+| r5 | `고정관저_상한초과` · `자연유하 불가` | 사람이 판단(노선변경·역사이펀·펌프 — 4절). Claude 가 임의로 정하지 않는다 |
+| r5 | 맨홀 사이 토피 미달(관 보호공) · 토피제어 맨홀 후보 · `지반출처차` | 보호공 구간 목록 보고. 출처차(측량 GL ↔ 5 m DEM) 구간은 측량 종단으로 확인 |
+| r6 | 유속 미달 | 사유 명기(6절 — 유량 부족은 관경·심도로 못 푼다) |
+| r7 | 토피위반 측점 · 배니/공기밸브 · 지장물 여유 | 여유 ≥ 0. 펌프 용량은 **1차 산정** — 정식 산정·기존 펌프장 검토·계산서는 `31-pump-capacity` |
+| r8 | `.flo` 자체 검증 | ERROR 0 (`lib\flospec.py`). makesw 가 없으면 DHSSPipe `.flo` 임포트로 사전검증 |
+| r9 | 만관초과 | 0. 접속점 0 이면 말단 이름이 준공 맨홀과 다르다(`--snap-end`/`--join`) |
+
+### 10.5 검증 기록 — 원 파이프라인과 같은 입력으로 대조
+원 입력 일부(측량 CSV·교차표·압송 지장물·지정 종단 파일)는 남아 있지 않아 원 중간 JSON·GPKG 에서 재구성했고,
+원 스크립트 사본도 같은 재구성 입력으로 다시 돌려 세 갈래(킷 · 원 사본 · 원이 남긴 결과)를 맞췄다.
+| 대조 | 결과 |
+|---|---|
+| r1 망 ↔ 원 위상 단계 | 자연유하 190구간 필드·좌표 불일치 0 · 압송 4계통 정점 일치 · 토출 맨홀 4/4 일치 |
+| r2 압송 측점 | 185점 누가·좌표·정점표시 불일치 0 |
+| r5+r6 ↔ 원 종단·수리 | 190구간 노드관저·도착관저·토피·경사·유속·수심비·판정 **불일치 0** (심도 최대 6.46 m · 직선화 IP 2개 일치) |
+| r7 ↔ 원 압송 직선화 | 4계통 196측점 관저 차 0 · 구배구간·배니/공기밸브 위치 일치 |
+| r8 `.flo` ↔ 원 makesw 재작성본 | 231줄 필드값·줄 순서·1·2행 일치, ERROR 0 |
+| r8 `.inp` ↔ 원 SWMM 생성기 | 6개 섹션 행 값 불일치 0 · `swmm_check` 수치 원과 같음 |
+| r9 ↔ 원 전체망 기존관 통수능 | 143구간 누가유량·유속·유량비율·판정 불일치 0(원과 같은 토출 맨홀 가정에서) |
+| r5 `--mid constrain` | 원 구현이 남아 있지 않아 대조 불가 — 방법(3절) 수식대로 다시 짰다. 완화 상한 스윕에서 무제한이면 심도가 6.5 → 13.9 m 로 폭주하고 2.0 이면 최대심도는 그대로 미달 절점만 545 → 32 로 준다(3절 서술과 같은 거동) |
+
+### 10.6 스크립트가 하지 않는 것
+- **2절 노선·맨홀 배치**(정관 현 체인·통로 침식·직선 최대화·꺾임/최대간격 맨홀) — 맨홀은 레이어에서 받는다. 토피제어 맨홀 삽입(`--split`)만 한다.
+- **8절 터파기·가시설**, 9절의 원안 대비 비교표 작성(같은 설정으로 원안 run 과 대안 run 을 각각 돌려 `설계요약.md` 를 나란히 놓는다).
+- makesw `.OUT` 생성(makesw 가 없다) — 등류 대조는 SWMM(`--inp` → `swmm_check.py`). makesw 는 자연유하 전용이라 `.OUT` 의 압송 수치는 믿지 않는다.
+- 설계사 DXF + `.flo` 로 평면 노선을 복원하는 일 — 납품물 판독이라 12·40 쪽 일이다.
+- 기존 펌프장 용량 검토·운전점·계산서 — `31-pump-capacity`.
 
 ## 참고 조문 — KDS 61 40 00 하수관로 설계기준
 | 조 | 내용 |

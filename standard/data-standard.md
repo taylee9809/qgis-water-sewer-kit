@@ -23,10 +23,10 @@
 
 | 논리 키 | 기하 | 필수 논리 필드 | 선택 논리 필드 | 쓰는 스킬 |
 |---|---|---|---|---|
-| `plan_pipe` 계획관로 | Line | `pipe_id` `dia_mm` `us_invert` `ds_invert` `kind` | `district` `area` `length_m` `us_ground` `slope_permil` `us_cover` `flow_m3d` `velocity_mps` `judge` `obstacles` `asof` `source` | 30 · 32 · 40 · 종단도 플러그인 |
-| `plan_manhole` 계획맨홀 | Point 또는 Polygon | `mh_id` `ground` `out_invert` | `district` `kind` `mh_type` `depth` `drop` `asof` `connect_to` | 30 · 40 |
-| `plan_pump` 맨홀펌프장 | Point | `pump_id` `in_invert` | `district` `kind` `discharge_to` `flow_m3d` `q_m3min` `head_m` `power_kw` `force_main_m` | 30 · 31 |
-| `house` 배수설비 가구 | Point | `house_id` `q_m3d` | `district` `new_or_old` `assigned_mh` | 30(유량 배분) |
+| `plan_pipe` 계획관로 | Line | `pipe_id` `dia_mm` `us_invert` `ds_invert` `kind` | `district` `area` `length_m` `us_ground` `slope_permil` `us_cover` `flow_m3d` `velocity_mps` `judge` `obstacles` `asof` `source` · `us_mh` `ds_mh` `self_flow_m3d` `obstacle_count` `pressure_profile` (13) · `full_flow_m3d` `flow_depth_m` `depth_ratio_pct` `geom_length_m` `length_diff_m` (13, 있으면) · `route` (30·50 — 없으면 관번호 앞부분) | 13 · 30 · 31 · 32 · 40 · 50 · 종단도 플러그인 |
+| `plan_manhole` 계획맨홀 | Point 또는 Polygon | `mh_id` `ground` `out_invert` | `district` `kind` `mh_type` `depth` `drop` `asof` `connect_to` · `area` `inner_mm` `outer_mm` `note` `source` (13 · `inner_mm` 은 50 도) | 13 · 30 · 40 · 50 |
+| `plan_pump` 맨홀펌프장 | Point | `pump_id` `in_invert` | `district` `kind` `discharge_to` `flow_m3d` `q_m3min` `head_m` `power_kw` `force_main_m` · `area` `mh_id` `peak_m3min` `depth_m` `top_bop` `mh_spec` `inner_mm` `basis` `source` (13) · `hwl` `lwl` `static_head_m` `force_main_dia_mm` (31) | 13 · 30 · 31 |
+| `house` 배수설비 가구 | Point | `house_id` `q_m3d` | `district` `new_or_old` `assigned_mh` `connect_mh`(기존 가구의 준공 접속맨홀 — 배정 때 우선) | 10(엑셀 왕복) · 30(유량 배분) |
 
 - `kind` 의 값은 `values.kind_gravity`(자연유하) / `values.kind_pressure`(압송).
 - `obstacles`(종단 지장물) 문자열 형식: `종류 D규격@측점(저면EL)` 을 ` / ` 로 이음. 예: `횡배수관 D600@13.3(74.70) / BOX D2.00X1.00@3.3(25.50)` — 측점은 관 시점부터 m. 원형관은 저면EL+0.30 을 관저로 본다(makesw 규약).
@@ -37,7 +37,7 @@
 |---|---|---|---|
 | `asbuilt_pipe` 준공 관로 | Line | `pipe_id` `dia_mm` `us_invert` `ds_invert` `status` | `district` `flow_kind` `length_m` `us_mh` `ds_mh` `us_ground` `ds_ground` `slope` `material` `source` |
 | `asbuilt_manhole` 준공 맨홀 | Point | `mh_id` `ground` `depth` | `district` `status` `source` |
-| `asbuilt_pump` 준공 펌프장 | Point | 펌프장명 · 유입관저고 · 펌프 제원 | (스킬 문서 참고) |
+| `asbuilt_pump` 준공 펌프장 | Point | `pump_id` | `district` `ground` `in_invert` `hwl` `lwl` `bottom` `bop` `force_main_m` `back_dia_mm` `well_dia_m` `effective_depth_m` `well_volume_m3` `static_head_m` `tag` `spec` `bore` `q_m3min` `head_m` `power_kw` `n_duty` `n_standby` `source` (31 — 제원이 비어도 `spec` 글자에서 읽는다) |
 | `asbuilt_service_pipe` 배수설비관 | Line | 관경 · 접속맨홀 | |
 | `asbuilt_inlet` 오수받이 | Point | 구분 | |
 | `asbuilt_house` 준공 배수설비 가옥 | Point | 가옥번호 · 접속맨홀 | |
@@ -57,6 +57,9 @@
 | `road_boundary` 도로경계면 | Polygon | 부설 통로·터파기 폭 검토 |
 | `bridge` 교량 | Polygon | 관매달기(교량 부착) 구간 |
 | `parcel` 지적 | Polygon | 사유지 통과·구거 필지(지목 구/천/유) 검증 |
+| `survey_point` 측량 표고점 | Point | 지반고(반경 5 m 중앙값 — DEM 보다 우선). `elev` · 선택 `outlier`(이상치 표시) — 10·30 |
+| `river` 하천 | Polygon | 하천 하월 구간·하상고 — 30 |
+| `admin_ri` 리 경계 | Polygon | 종단면도 장 제목의 리 이름(관 중점이 든 리). `name` · 선택 `kind` + `values.admin_ri_kind` — 50 |
 | DEM (`dem` 목록) | Raster | 지반고. 1 m 실측 우선, 없으면 5 m |
 
 ## 11 스킬 출력 스키마 (지장물)
@@ -88,3 +91,9 @@
 | `status_new` | 신설 | |
 | `status_reuse` | 기존활용 | |
 | `status_abandon` | 기존폐쇄 | |
+| `kind_existing` | 기존 | 계획 노선에 섞인 기존관(13) |
+| `pump_existing` | 기존 | 기존 펌프장 구분값 머리말(31) |
+| `house_existing` | 기존 | 기존 가구 — 접속맨홀 우선 배정(30) |
+| `kind_pump_mh` | 맨홀펌프장 | 펌프장 맨홀의 구분값(30) |
+| `water_status_active` | (선택) | 상수관 사용 중 상태값 — 있으면 폐관 제외(30) |
+| `admin_ri_kind` | (선택) | 행정경계 레이어에서 리를 고르는 값(50) |

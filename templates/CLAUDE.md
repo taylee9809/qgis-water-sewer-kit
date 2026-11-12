@@ -6,7 +6,7 @@
 - 킷 위치: `<킷 경로>` ← 00-onboard 가 실제 경로로 바꾼다
 - 설정: 이 폴더의 `sewer.config.json` — 레이어·필드·DB·기준값은 **전부 여기서** 읽는다
 - 표준: `<킷>\standard\data-standard.md`(논리 레이어·필드) · `workflow.md`(단계 00~80) · `pitfalls-dxf.md` · `pitfalls-qgis-postgis.md`
-- 스킬: 00-onboard · 11-survey-to-qgis · 12-asbuilt-ingest · 30-route-design · 32-route-optimize · 40-review-vendor · 51-layout-figure · 90-kit-feedback
+- 스킬: 00-onboard · 10-data-intake · 11-survey-to-qgis · 12-asbuilt-ingest · 13-plan-dxf-ingest · 30-route-design · 31-pump-capacity · 32-route-optimize · 40-review-vendor · 50-profile-sheets · 51-layout-figure · 90-kit-feedback
 
 ## 일하는 방식
 1. 요청이 오면 **어느 단계(00~80)인지** 먼저 정하고, 스킬이 있으면 그 스킬대로 한다. 없으면 `workflow.md` 의 「스킬 없는 단계」대로.

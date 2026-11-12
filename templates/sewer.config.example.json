@@ -42,7 +42,10 @@
     "service_area":         {"src": "postgis", "layer": "처리구역"},
     "road_boundary":        {"src": "postgis", "layer": "00도로경계_면"},
     "bridge":               {"src": "postgis", "layer": "00교량"},
-    "parcel":               {"src": "postgis", "layer": "지적"}
+    "parcel":               {"src": "postgis", "layer": "지적"},
+    "survey_point":         {"src": "postgis", "layer": "survey_elev_point"},
+    "river":                {"src": "postgis", "layer": "00하천"},
+    "admin_ri":             {"src": "data/리경계.shp", "layer": "리경계"}
   },
   "_layers": "논리 이름 → 실제 레이어. 논리 이름은 standard/data-standard.md 에 정의. 없는 레이어는 키를 지운다(그 레이어를 쓰는 검토는 건너뛴다고 안내된다).",
 
@@ -53,23 +56,31 @@
       "us_invert": "상류관저고", "ds_invert": "하류관저고", "us_ground": "상류지반고",
       "slope_permil": "경사퍼밀", "us_cover": "상류토피",
       "flow_m3d": "누가유량_m3d", "velocity_mps": "실유속_mps", "judge": "수리판정",
-      "obstacles": "종단지장물", "asof": "자료기준일", "source": "출처"
+      "obstacles": "종단지장물", "asof": "자료기준일", "source": "출처",
+      "self_flow_m3d": "자체유량_m3d", "obstacle_count": "지장물수", "pressure_profile": "압송_종단"
     },
+    "_plan_pipe": "레이어에 있으면 매핑하는 선택 필드: us_mh ds_mh(없으면 30 이 끝점 연결로 찾는다) · route(노선명 — 없으면 30·50 이 관번호 앞부분으로 묶는다) · 13 스킬이 더 쓰는 full_flow_m3d flow_depth_m depth_ratio_pct geom_length_m length_diff_m — 레이어에 있으면 매핑. 만관유량·수심비 같은 회차 결과는 수리계산_회차 표가 더 맞는 자리다.",
     "plan_manhole": {
       "mh_id": "맨홀번호", "district": "지구", "kind": "구분", "mh_type": "맨홀호수",
       "ground": "지반고", "out_invert": "유출관저고", "depth": "심도", "drop": "단차",
-      "asof": "자료기준일", "connect_to": "접속맨홀"
+      "asof": "자료기준일", "connect_to": "접속맨홀",
+      "area": "처리구역", "inner_mm": "내경_mm", "outer_mm": "외경_mm", "note": "비고", "source": "출처"
     },
     "plan_pump": {
       "pump_id": "펌프장", "district": "지구", "kind": "구분", "discharge_to": "토출대상",
       "flow_m3d": "누가유량_m3d", "q_m3min": "적용용량_m3min", "head_m": "전양정_m",
       "power_kw": "적용동력_kW", "force_main_m": "압송연장_m", "in_invert": "유입관저고_m",
-      "asof": "자료기준일"
+      "asof": "자료기준일",
+      "area": "처리구역", "peak_m3min": "시간최대_m3min", "depth_m": "맨홀깊이_m", "top_bop": "압송최상단BOP",
+      "mh_spec": "맨홀규격", "inner_mm": "내경_mm", "basis": "용량근거", "source": "출처",
+      "hwl": "HWL", "lwl": "LWL", "static_head_m": "실양정_m"
     },
+    "_plan_pump": "선택 필드 mh_id(설치 맨홀번호)·force_main_dia_mm(압송관경)은 레이어에 있으면 매핑.",
     "house": {
       "house_id": "배수설비명", "district": "지구", "new_or_old": "기존_신규",
       "q_m3d": "Q_m3d", "assigned_mh": "배정맨홀"
     },
+    "_house": "선택 필드 connect_mh(기존 가구가 붙어 있는 준공 맨홀 — 있으면 30 이 배정 때 우선)는 레이어에 있으면 매핑.",
     "asbuilt_pipe": {
       "pipe_id": "관번호", "district": "지구", "status": "구분", "flow_kind": "자연유하/압송",
       "dia_mm": "관경", "length_m": "연장",
@@ -83,6 +94,14 @@
       "ground": "지반고", "depth": "맨홀깊이", "source": "자료출처",
       "_out_invert": "유출관저고 필드가 있으면 \"out_invert\" 로 매핑. 없으면 40 스킬이 지반고 − 맨홀깊이로 계산한다."
     },
+    "asbuilt_pump": {
+      "pump_id": "펌프장명", "district": "지구", "q_m3min": "펌프토출량_m3min", "head_m": "펌프전양정_m",
+      "power_kw": "펌프동력_kw", "spec": "펌프규격", "tag": "펌프기기번호", "hwl": "hwl", "lwl": "lwl",
+      "bottom": "저면고", "bop": "압송관최상단BOP", "force_main_m": "압송연장_m", "back_dia_mm": "후단관경_mm",
+      "bore": "펌프토출구경", "well_dia_m": "맨홀내경", "effective_depth_m": "유효수심", "well_volume_m3": "유효저수량_m3",
+      "n_duty": "가동대수", "n_standby": "예비대수", "in_invert": "유입관저고", "static_head_m": "실양정",
+      "ground": "지반고", "source": "자료출처"
+    },
     "obstacle_poly": {
       "obs_id": "지장물번호", "class": "분류", "type": "종류", "label": "표기",
       "width_m": "규격_폭m", "height_m": "규격_깊이m", "dia_mm": "관경mm",
@@ -90,6 +109,8 @@
       "fix_note": "보정기록"
     },
     "parcel": {"jibun": "JIBUN"},
+    "survey_point": {"elev": "elev", "outlier": "outlier"},
+    "admin_ri": {"name": "RI_NM"},
     "water_pipe": {"dia_mm": "관경", "material": "관종", "status": "상태", "cover": "토피_GIS"},
     "service_area": {"subarea": "처리분구", "in_scope": "금회대상여부", "existing_or_plan": "기존/계획"}
   },
@@ -100,9 +121,13 @@
     "kind_pressure": "압송",
     "status_new": "신설",
     "status_reuse": "기존활용",
-    "status_abandon": "기존폐쇄"
+    "status_abandon": "기존폐쇄",
+    "kind_existing": "기존",
+    "pump_existing": "기존",
+    "house_existing": "기존",
+    "kind_pump_mh": "맨홀펌프장"
   },
-  "_values": "코드값. 같은 뜻을 그 팀이 다른 말로 쓰면(예: 압송 → 가압) 여기만 바꾼다.",
+  "_values": "코드값. 같은 뜻을 그 팀이 다른 말로 쓰면(예: 압송 → 가압) 여기만 바꾼다. kind_existing = 계획 노선에 섞인 기존관 구분값(13), pump_existing = 기존 펌프장 구분값의 머리말(31), house_existing = 기존 가구 구분값(30 가구 배정), kind_pump_mh = 맨홀펌프장 맨홀의 구분값(30). 선택: water_status_active(상수관 '사용' 상태값 — 있으면 폐관 제외), mh_type_pump(펌프장 맨홀 호수값), admin_ri_kind(행정경계 한 레이어에 시·읍면·리가 섞였을 때 리 구분값 — fields.admin_ri.kind 와 같이).",
 
   "dem": ["data/DEM_실측_1m.tif", "data/DEM_통합_5m.tif"],
   "_dem": "앞에서부터 우선. 1 m 실측이 없으면 5 m 로 내려간다. 지반고·토피 계산에 쓴다.",
@@ -116,9 +141,52 @@
     "drop_manhole_m": 0.6,
     "mh_max_spacing_m": 75,
     "min_velocity_mps": 0.6,
-    "max_velocity_mps": 3.0
+    "max_velocity_mps": 3.0,
+    "pump": {
+      "q_min_m3min": 0.10, "q_roundup_digits": 2, "n_duty": 1,
+      "hwl_below_inlet_m": 0.05, "effective_depth_m": 0.5, "dead_depth_m": 0.55, "well_dia_m": 1.5,
+      "head_margin_m": 1.5, "head_round": "round",
+      "efficiency": 0.23, "power_margin": 1.15, "hw_c": 100,
+      "max_starts_per_h": 10, "existing_head_check": "no_margin"
+    }
   },
-  "_design": "설계기준 값. KDS 61 40 00 기준값이 기본. 과업 기준(발주처 협의·사내 기준)이 다르면 여기서 바꾸고 근거를 standard 노트에 남긴다. pressure_max_d_mm 이하 관경은 압송으로 본다.",
+  "_design": "설계기준 값. KDS 61 40 00 기준값이 기본. 과업 기준(발주처 협의·사내 기준)이 다르면 여기서 바꾸고 근거를 standard 노트에 남긴다. pressure_max_d_mm 이하 관경은 압송으로 본다. design.pump = 맨홀펌프장 산식 상수(31 스킬) — 생략한 키(손실항목·전동기표·토출구경 등)는 31 SKILL.md 2절 내장값. 30 스킬은 키 약 25개를 더 읽는다(토피·지장물 이격·압송 토피 등) — 목록·기본값·근거(KDS 인지 자체 가정인지)는 30 scripts/routelib.py 의 DESIGN 표, 바꾸면 설계요약.md 에 '설정'으로 찍힌다.",
+
+  "route_design": {
+    "flo_template": "",
+    "dxf_template": "",
+    "dxf_layers": {},
+    "args": {}
+  },
+  "_route_design": "30-route-design 스크립트 묶음. flo_template = .flo 1·2행을 가져올 기존 .flo(2행은 지역 강우강도식 계수라 과업 것으로 — 비우면 기본값과 경고), dxf_template = 노선 DXF 를 얹을 설계사 도면 서식, dxf_layers = 출력 레이어 이름 바꾸기, args = run_all.py 가 단계별(r1~r9)로 늘 붙일 인자. 자세한 것은 30 SKILL.md 10절.",
+
+  "profile": {
+    "strip": {"unit_h": 1000, "unit_v": 200, "title_block": "title"},
+    "a3": {"vk": 1.0, "row_labels": {}},
+    "draw": {"sheet_max_m": 500.0, "station_pitch_m": 20.0}
+  },
+  "_profile": "50-profile-sheets: 종단면도 서식 상수. strip = 설계사 긴 스트립 DXF 서식(레이어·밴드 y·표제 블록), a3 = A3 분할 출력(축척 후보·세로 압축·부제), draw = 계획관로로 새로 그릴 때. 적은 키만 덮어쓰고 나머지는 50 scripts/profcommon.py 의 DEFAULTS. 처음 받는 서식이면 a3_split.py --probe 로 재어서 고친다. 리 경계는 layers.admin_ri.",
+
+  "plan_ingest": {
+    "dxf": {
+      "pipe_layers": ["0계획관로_일반", "0계획관로_압송", "d압송관로"],
+      "pressure_layers": ["0계획관로_압송", "d압송관로"],
+      "mh_layers": {"0계획맨홀": "plan", "0기존맨홀": "existing", "+0-펌프장": "pump"},
+      "label_layers": ["0관로명", "0관로명_압송"],
+      "attrib_block": "속성맨홀", "obstacle_block": "기타데이터",
+      "ext_node_layers": null
+    },
+    "attrib": {"up": "관로명1", "down": ["관로명2A", "관로명2"], "ground": "지반고",
+               "us_invert": "관저고1", "ds_invert": "관저고2", "dia": "관경", "kind": "관종", "mh_type": "맨홀"},
+    "kind_map": {"신설오수": "gravity", "신설압송": "pressure", "기존오수": "existing"},
+    "mh_types": {"1호맨홀": {"role": "plan", "type": "1호맨홀", "inner_mm": 900, "outer_mm": 1200},
+                 "맨홀펌프장": {"role": "pump", "type": "3호맨홀", "inner_mm": 1500, "outer_mm": 1800},
+                 "1호기존": {"role": "existing", "type": "1호기존", "inner_mm": 900, "outer_mm": 1200}},
+    "mh_kind": {"plan": "계획맨홀", "pump": "맨홀펌프장", "existing": "기존맨홀"},
+    "write_mh_roles": ["plan", "pump"],
+    "pressure": "fold", "pressure_hyd": "keep", "ext_node": "polyline"
+  },
+  "_plan_ingest": "13-plan-dxf-ingest: 설계사 납품 평면 DXF 의 작도 규약(레이어·블록·속성 태그·관종 값). 위는 한 설계사 예시 — 다른 설계사면 p1_scan.py 의 census.txt 를 보고 dxf·attrib·kind_map·mh_types 만 바꾼다. 나머지 키(out·prefixes·district_by_prefix·pump·tolerance 등)는 13 SKILL.md 2절.",
 
   "survey": {
     "dxf_dir": "00 측량조사",

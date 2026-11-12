@@ -8,7 +8,8 @@
     "구분_계획맨홀": ["계획맨홀", "맨홀펌프장", "기존맨홀"],
     "구분_펌프장": ["신설", "기존"],
     "기존_신규": ["기존", "신규"],
-    "검토상태": ["미조치", "조치", "반려", "보류"]
+    "검토상태": ["미조치", "조치", "반려", "보류"],
+    "유량구분": ["전체", "기존", "계획"]
   },
   "tables": [
     {
@@ -29,6 +30,7 @@
       "desc": "분구별 계획하수량의 단일 원천. 수리계산은 이 표만 읽는다(엑셀 사본을 원천으로 쓰지 않는다).",
       "fields": [
         ["처리분구", "TEXT", true, null, ""],
+        ["구분", "TEXT", true, null, "코드 유량구분 — 분구 전체·기존·계획"],
         ["목표연도", "INTEGER", true, null, ""],
         ["계획인구", "REAL", false, null, "인"],
         ["원단위_Lpcd", "REAL", false, null, "1인 1일 오수량"],
@@ -41,21 +43,36 @@
       ]
     },
     {
+      "key": "flow_point", "name": "점유량", "geom": null, "group": "기준",
+      "desc": "분구 유량과 따로 잡는 특정 시설·구역의 유량(산단·대형시설 등). 10 스킬 flow_basis_load 는 지금 CSV(유량기준_점유량.csv)로 낸다.",
+      "fields": [
+        ["이름", "TEXT", true, null, "시설·구역 이름"],
+        ["처리분구", "TEXT", false, null, ""],
+        ["면적_ha", "REAL", false, null, ""],
+        ["시간최대_m3d", "REAL", true, null, ""],
+        ["근거", "TEXT", true, null, "기본계획 표·시트"],
+        ["자료기준일", "DATE", false, null, ""]
+      ]
+    },
+    {
       "key": "plan_manhole", "name": "계획맨홀_실시설계", "geom": "Point", "group": "계획",
       "desc": "계획 맨홀 = 관망의 노드. 점(Point)으로 둔다.",
       "fields": [
         ["맨홀번호", "TEXT", true, "mh_id", "지구 안에서 유일"],
         ["지구", "TEXT", true, "district", ""],
-        ["처리구역", "TEXT", false, null, "처리분구"],
+        ["처리구역", "TEXT", false, "area", "처리분구"],
         ["구분", "TEXT", true, "kind", "코드 구분_계획맨홀"],
         ["맨홀호수", "TEXT", false, "mh_type", "1호·소형 등 규격"],
+        ["내경_mm", "REAL", false, "inner_mm", ""],
+        ["외경_mm", "REAL", false, "outer_mm", ""],
         ["지반고", "REAL", true, "ground", "EL. m"],
         ["유출관저고", "REAL", true, "out_invert", "EL. m"],
         ["심도", "REAL", false, "depth", "지반고 − 유출관저고"],
         ["단차", "REAL", false, "drop", "m"],
         ["접속맨홀", "TEXT", false, "connect_to", "기존망 접속 시 준공 맨홀번호"],
+        ["비고", "TEXT", false, "note", ""],
         ["자료기준일", "DATE", true, "asof", ""],
-        ["출처", "TEXT", true, null, "설계사 회차·자체 재설계 등"]
+        ["출처", "TEXT", true, "source", "설계사 회차·자체 재설계 등"]
       ]
     },
     {
@@ -66,8 +83,9 @@
         ["지구", "TEXT", true, "district", ""],
         ["처리구역", "TEXT", false, "area", "처리분구"],
         ["구분", "TEXT", true, "kind", "코드 구분_관로"],
-        ["상류맨홀", "TEXT", false, null, "계획맨홀.맨홀번호"],
-        ["하류맨홀", "TEXT", false, null, "계획맨홀.맨홀번호 또는 준공 맨홀번호"],
+        ["상류맨홀", "TEXT", false, "us_mh", "계획맨홀.맨홀번호"],
+        ["하류맨홀", "TEXT", false, "ds_mh", "계획맨홀.맨홀번호 또는 준공 맨홀번호"],
+        ["노선", "TEXT", false, "route", "노선(계통) 이름 — 비우면 관번호 앞부분(XX-A-001 → XX-A)"],
         ["관경", "REAL", true, "dia_mm", "mm"],
         ["관종", "TEXT", false, null, ""],
         ["연장_m", "REAL", true, "length_m", "도면 연장(도형 길이와 따로 둔다)"],
@@ -76,10 +94,13 @@
         ["상류지반고", "REAL", false, "us_ground", "EL. m"],
         ["경사퍼밀", "REAL", false, "slope_permil", "‰"],
         ["상류토피", "REAL", false, "us_cover", "m"],
+        ["자체유량_m3d", "REAL", false, "self_flow_m3d", "그 구간에 직접 들어오는 유량"],
         ["누가유량_m3d", "REAL", false, "flow_m3d", "최신 수리계산 — 회차 이력은 수리계산_회차"],
         ["실유속_mps", "REAL", false, "velocity_mps", "최신 수리계산"],
         ["수리판정", "TEXT", false, "judge", "최신 수리계산"],
         ["종단지장물", "TEXT", false, "obstacles", "'종류 D규격@측점(저면EL)' 을 ' / ' 로 이음"],
+        ["지장물수", "INTEGER", false, "obstacle_count", ""],
+        ["압송_종단", "TEXT", false, "pressure_profile", "압송 구간 종단 요약(13 스킬)"],
         ["자료기준일", "DATE", true, "asof", ""],
         ["출처", "TEXT", true, "source", ""]
       ]
@@ -90,22 +111,28 @@
       "fields": [
         ["펌프장", "TEXT", true, "pump_id", ""],
         ["지구", "TEXT", true, "district", ""],
+        ["처리구역", "TEXT", false, "area", "처리분구"],
         ["구분", "TEXT", true, "kind", "코드 구분_펌프장"],
-        ["맨홀번호", "TEXT", false, null, "설치 맨홀"],
+        ["맨홀번호", "TEXT", false, "mh_id", "설치 맨홀"],
+        ["맨홀규격", "TEXT", false, "mh_spec", "3호 등"],
+        ["내경_mm", "REAL", false, "inner_mm", ""],
+        ["맨홀깊이_m", "REAL", false, "depth_m", ""],
         ["토출대상", "TEXT", false, "discharge_to", "토출 맨홀번호"],
         ["누가유량_m3d", "REAL", false, "flow_m3d", ""],
-        ["시간최대_m3min", "REAL", false, null, ""],
+        ["시간최대_m3min", "REAL", false, "peak_m3min", ""],
         ["적용용량_m3min", "REAL", false, "q_m3min", ""],
         ["유입관저고_m", "REAL", true, "in_invert", ""],
-        ["HWL", "REAL", false, null, ""],
-        ["LWL", "REAL", false, null, ""],
-        ["실양정_m", "REAL", false, null, ""],
+        ["HWL", "REAL", false, "hwl", ""],
+        ["LWL", "REAL", false, "lwl", ""],
+        ["압송최상단BOP", "REAL", false, "top_bop", "실양정 기준점"],
+        ["실양정_m", "REAL", false, "static_head_m", ""],
         ["전양정_m", "REAL", false, "head_m", ""],
         ["적용동력_kW", "REAL", false, "power_kw", ""],
         ["압송연장_m", "REAL", false, "force_main_m", ""],
-        ["압송관경_mm", "REAL", false, null, ""],
+        ["압송관경_mm", "REAL", false, "force_main_dia_mm", ""],
+        ["용량근거", "TEXT", false, "basis", "산정 방식·출처 메모"],
         ["자료기준일", "DATE", true, "asof", ""],
-        ["출처", "TEXT", true, null, ""]
+        ["출처", "TEXT", true, "source", ""]
       ]
     },
     {
@@ -117,8 +144,13 @@
         ["처리구역", "TEXT", false, null, "처리분구"],
         ["기존_신규", "TEXT", true, "new_or_old", "코드 기존_신규"],
         ["Q_m3d", "REAL", true, "q_m3d", ""],
+        ["점유량_m3d", "REAL", false, null, "가구 대신 점유량으로 잡을 때"],
         ["배정맨홀", "TEXT", false, "assigned_mh", "계획 또는 준공 맨홀번호"],
+        ["접속맨홀", "TEXT", false, "connect_mh", "기존 가구가 이미 붙어 있는 맨홀(준공) — 30 이 배정 때 우선"],
         ["배정근거", "TEXT", false, null, "준공 접속노드 / 최근접 등"],
+        ["반영여부", "TEXT", false, null, "포함 / 제외 (10 스킬 엑셀 왕복)"],
+        ["제외사유", "TEXT", false, null, "폐가·개인처리 등"],
+        ["검토일", "DATE", false, null, ""],
         ["자가펌프필요", "TEXT", false, null, ""],
         ["자료기준일", "DATE", true, null, ""],
         ["출처", "TEXT", true, null, "배수설비 조사 회차"]
@@ -126,13 +158,14 @@
     },
     {
       "key": "asbuilt_manhole", "name": "asbuilt_manhole", "geom": "Point", "group": "준공",
-      "desc": "준공도에서 판독한 기존 맨홀. 원본 값 그대로(설계 판단을 섞지 않는다).",
+      "desc": "준공도에서 판독한 기존 맨홀. 원본 값 그대로(설계 판단을 섞지 않는다). 도면에 없는 값은 지어내지 않고 비워 둔다 — 대신 채움률을 검사기로 본다.",
       "fields": [
-        ["맨홀번호", "TEXT", true, "mh_id", ""],
+        ["맨홀번호", "TEXT", false, "mh_id", "이름 없는 소형맨홀·오수받이성 맨홀은 빈 값"],
         ["지구", "TEXT", true, "district", ""],
         ["구분", "TEXT", true, "status", "코드 구분_준공"],
-        ["지반고", "REAL", true, "ground", ""],
-        ["맨홀깊이", "REAL", true, "depth", "지반고 − 깊이 = 유출관저고"],
+        ["맨홀종류", "TEXT", false, null, "1호·소형·펌프장 등(도면 심볼)"],
+        ["지반고", "REAL", false, "ground", "도면 값 — 없으면 빈 값"],
+        ["맨홀깊이", "REAL", false, "depth", "지반고 − 깊이 = 유출관저고"],
         ["유출관저고", "REAL", false, null, "도면에 있으면"],
         ["자료출처", "TEXT", true, "source", "도면 번호·시트"]
       ]
@@ -151,10 +184,11 @@
         ["하류맨홀", "TEXT", false, "ds_mh", ""],
         ["상류지반고", "REAL", false, "us_ground", ""],
         ["하류지반고", "REAL", false, "ds_ground", ""],
-        ["상류관저고", "REAL", true, "us_invert", ""],
-        ["하류관저고", "REAL", true, "ds_invert", ""],
+        ["상류관저고", "REAL", false, "us_invert", "기존폐쇄 관로는 도면에 없어 빈 값"],
+        ["하류관저고", "REAL", false, "ds_invert", "기존폐쇄 관로는 도면에 없어 빈 값"],
         ["구배", "REAL", false, "slope", ""],
         ["관종", "TEXT", false, "material", ""],
+        ["비고", "TEXT", false, null, "판독 메모(MATCH LINE 분할 등)"],
         ["자료출처", "TEXT", true, "source", ""]
       ]
     },
@@ -162,14 +196,30 @@
       "key": "asbuilt_pump", "name": "asbuilt_pump_burwon", "geom": "Point", "group": "준공",
       "desc": "준공 맨홀펌프장 제원(기기목록·용량계산서).",
       "fields": [
-        ["펌프장명", "TEXT", true, null, ""],
-        ["지구", "TEXT", true, null, ""],
-        ["유입관저고", "REAL", false, null, ""],
+        ["펌프장명", "TEXT", true, "pump_id", ""],
+        ["지구", "TEXT", true, "district", ""],
+        ["지반고", "REAL", false, "ground", ""],
+        ["유입관저고", "REAL", false, "in_invert", ""],
         ["맨홀깊이", "REAL", false, null, ""],
-        ["펌프토출량_m3min", "REAL", false, null, ""],
-        ["실양정", "REAL", false, null, ""],
-        ["펌프규격", "TEXT", false, null, ""],
-        ["자료출처", "TEXT", true, null, ""]
+        ["맨홀내경", "REAL", false, "well_dia_m", "m"],
+        ["hwl", "REAL", false, "hwl", ""],
+        ["lwl", "REAL", false, "lwl", ""],
+        ["저면고", "REAL", false, "bottom", ""],
+        ["유효수심", "REAL", false, "effective_depth_m", ""],
+        ["유효저수량_m3", "REAL", false, "well_volume_m3", ""],
+        ["실양정", "REAL", false, "static_head_m", ""],
+        ["압송관최상단BOP", "REAL", false, "bop", ""],
+        ["압송연장_m", "REAL", false, "force_main_m", ""],
+        ["후단관경_mm", "REAL", false, "back_dia_mm", ""],
+        ["펌프기기번호", "TEXT", false, "tag", ""],
+        ["펌프규격", "TEXT", false, "spec", "예 50A × 0.1㎥/min × 5mH"],
+        ["펌프토출구경", "REAL", false, "bore", "mm"],
+        ["펌프토출량_m3min", "REAL", false, "q_m3min", ""],
+        ["펌프전양정_m", "REAL", false, "head_m", ""],
+        ["펌프동력_kw", "REAL", false, "power_kw", ""],
+        ["가동대수", "INTEGER", false, "n_duty", ""],
+        ["예비대수", "INTEGER", false, "n_standby", ""],
+        ["자료출처", "TEXT", true, "source", ""]
       ]
     },
     {

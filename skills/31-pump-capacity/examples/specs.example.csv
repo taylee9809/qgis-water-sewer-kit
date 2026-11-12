@@ -1,0 +1,4 @@
+pump_id,q_m3min,head_m,power_kw,spec,lwl,hwl,bop,force_main_m,back_dia_mm,bore,well_dia_m,well_volume_m3,n_duty,_비고
+XX-001,0.13,9,1.5,,20.50,21.00,26.10,250.0,75,50,1.5,,1,명판(기자재 준공도서) 값. bop·force_main_m 을 비우면 망 추적값을 쓴다
+XX-002,,,0.75,50A × 0.1㎥/min × 6mH,25.40,25.90,,,75,,1.5,,1,q·H 를 비우고 spec 글자만 줘도 읽는다(kW 는 power_kw 로)
+XX-003,0.10,5,0.75,,30.50,31.00,33.20,,80,50,,1.575,1,사각 흡수정은 well_volume_m3 로 직접(예 2.1×1.5×0.5)
