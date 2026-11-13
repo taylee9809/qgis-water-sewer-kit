@@ -5,6 +5,7 @@ share.json 이 없거나 "share": false 면 아무것도 기록하지도 보내�
 
     python -X utf8 kit_usage.py hook            # Claude Code 훅(SessionStart·SessionEnd)이 부른다. stdin = 훅 JSON
     python -X utf8 kit_usage.py sync [--transcripts <폴더> ...] [--cwd <프로젝트>] [--no-push]
+    python -X utf8 kit_usage.py approve [--head <커밋>] [--no-send]   # 저장에 동의한 지점 표시(90 스킬이 커밋 뒤에 부른다)
     python -X utf8 kit_usage.py status          # 무엇이 기록됐고 무엇이 막혔는지
 
 기록하는 것 (대화 기록에서 킷에 관한 것만 뽑는다)
@@ -12,7 +13,10 @@ share.json 이 없거나 "share": false 면 아무것도 기록하지도 보내�
   - 킷 스크립트 실행: 스크립트 이름, 옵션 이름(값은 버림), 성공/실패, 실패면 마지막 오류 한 줄(경로·고유명 지움)
   - 프로젝트 설정의 모양: 레이어 종류(gpkg/postgis/shp), 매핑한 논리 필드 이름, design 값 — 경로·이름·코드값은 뺀다
 기록하지 않는 것: 대화 내용, 데이터·설정 파일·산출물, 프로젝트 경로·지구·업체 이름, 비밀번호
-보내는 것: local 브랜치 커밋(고유명 검사 통과분만) → fork 의 local 브랜치, 사용 기록 → fork 의 usage 브랜치
+보내는 것: 사용 기록 → fork 의 usage 브랜치(설치 때 받은 동의 범위),
+        킷 수정 커밋 → fork 의 local 브랜치 — **사용자가 저장에 동의한 지점까지만**(.kit-usage/approved.json), 고유명 검사 통과분만
+훅은 작업 폴더를 건드리지 않는다: 커밋하지 않은 킷 수정을 대신 커밋하지 않고 blocked.md 로 알리기만 한다
+        (저장 여부는 사용자가 90 스킬의 저장 질문으로 정한다).
 고유명 검사에 걸리면 코드는 보내지 않고 .kit-usage/blocked.md 에 적는다(다음 세션 시작 때 Claude 에게 알린다).
 """
 from __future__ import annotations
@@ -36,6 +40,7 @@ SHARE = U / 'share.json'
 STATE = U / 'state.json'
 USAGE = U / 'usage.jsonl'
 TERMS = U / 'terms.json'
+APPROVED = U / 'approved.json'
 BLOCKED = U / 'blocked.md'
 LOG = U / 'sync.log'
 LOCK = U / 'sync.lock'
@@ -291,31 +296,74 @@ def update_usage(transcript_dirs, cwd, terms):
     return n_new, len(recs)
 
 
-def autocommit():
+def pending_changes():
+    """커밋하지 않은 킷 수정을 알리기만 한다 — 훅은 사용자 동의 없이 커밋하지 않는다.
+
+    반환: (현재 브랜치, 알릴 말 또는 None)
+    """
     br = git('rev-parse', '--abbrev-ref', 'HEAD').stdout.strip()
     dirty = git('status', '--porcelain').stdout.strip()
     if not dirty:
         return br, None
-    if br != 'local':
-        return br, f'킷이 `{br}` 브랜치에서 고쳐졌다 — local 로 옮겨 커밋해야 보낼 수 있다'
     files = [l[3:].strip().strip('"') for l in dirty.splitlines()]
-    git('add', '-A')
-    msg = '[auto] 세션 중 킷 수정 — ' + ', '.join(Path(f).name for f in files[:6]) + (' 외' if len(files) > 6 else '')
-    p = git('commit', '-q', '-m', msg, env=ident_env())
-    return br, (None if p.returncode == 0 else f'자동 커밋 실패: {p.stderr.strip()[:120]}')
+    names = ', '.join(Path(f).name for f in files[:6]) + (' 외' if len(files) > 6 else '')
+    ask = '사용자에게 「오늘 작업한 스킬과 도구를 Git에 저장하고 GitHub에 올릴까요?」를 묻고, 동의하면'
+    if br != 'local':
+        return br, (f'킷이 `{br}` 브랜치에서 고쳐졌다({names}) — 저장하려면 local 로 옮겨야 한다. '
+                    f'{ask} local 에서 커밋한 뒤 `kit_usage.py approve` 를 돌릴 것.')
+    return br, (f'커밋하지 않은 킷 수정이 있다({names}) — 훅은 대신 커밋하지 않는다. '
+                f'{ask} 일반화·커밋 후 `kit_usage.py approve` 를 돌릴 것.')
 
 
-def code_hits(terms):
+def approved_head():
+    """사용자가 저장에 동의하고 **전송까지 동의한** 커밋(local 의 조상)만 반환한다. 없으면 None."""
+    a = load_json(APPROVED, {}) or {}
+    h = a.get('head', '')
+    if not h or not a.get('send', True):
+        return None
+    sha = git('rev-parse', '-q', '--verify', f'{h}^{{commit}}').stdout.strip()
+    if not sha or git('merge-base', '--is-ancestor', sha, 'local').returncode:
+        return None
+    return sha
+
+
+def approve(head='', send=True):
+    """90 스킬이 사용자 동의를 받아 커밋한 뒤 부른다 — 그 지점까지만 전송 대상이 된다.
+
+    send=False: 「저장은 하되 올리진 마」 — 커밋만 남기고 fork 로 보내지 않는다.
+    """
+    br = git('rev-parse', '--abbrev-ref', 'HEAD').stdout.strip()
+    ref = head or 'local'
+    sha = git('rev-parse', '-q', '--verify', f'{ref}^{{commit}}').stdout.strip()
+    if not sha:
+        print(f'그런 커밋이 없다: {ref}')
+        return 1
+    if git('merge-base', '--is-ancestor', sha, 'local').returncode:
+        print(f'{ref} 은 local 브랜치의 커밋이 아니다 — local 에서 커밋한 뒤 다시 돌릴 것(현재 브랜치 {br}).')
+        return 1
+    U.mkdir(exist_ok=True)
+    save_json(APPROVED, {'head': sha, 'send': bool(send),
+                         'at': dt.datetime.now().isoformat(timespec='seconds')})
+    subj = git('log', '-1', '--format=%s', sha).stdout.strip()[:60]
+    print(f'저장 동의 표시: {sha[:9]} ({subj}) · 전송 {"동의" if send else "보류 — 커밋만 남긴다"}')
+    dirty = git('status', '--porcelain').stdout.strip()
+    if dirty:
+        print('커밋하지 않은 변경은 저장·전송 대상이 아니다:\n' + dirty)
+    return 0
+
+
+def code_hits(terms, head='local'):
+    """origin/main..head(보통 사용자가 동의한 지점)의 추가 줄·커밋 메시지에서 고유명을 찾는다."""
     mf = scrub_patterns()
     base = 'origin/main'
     if git('rev-parse', '--verify', '-q', base).returncode:
         return [], ''
-    log_ = git('log', '--format=%h %s', f'{base}..local').stdout.strip()
+    log_ = git('log', '--format=%h %s', f'{base}..{head}').stdout.strip()
     if not log_:
         return [], ''
-    patch = git('format-patch', '--stdout', f'{base}..local').stdout
+    patch = git('format-patch', '--stdout', f'{base}..{head}').stdout
     added = '\n'.join(l[1:] for l in patch.splitlines() if l.startswith('+') and not l.startswith('+++'))
-    msgs = git('log', '--format=%s%n%b', f'{base}..local').stdout
+    msgs = git('log', '--format=%s%n%b', f'{base}..{head}').stdout
     hits = []
     mf.scan(added, 'patch', terms, hits)
     mf.scan(msgs, '커밋 메시지', terms, hits)
@@ -361,9 +409,17 @@ def sync(transcript_dirs, cwd, push=True):
     try:
         terms = project_terms(cwd) if cwd else load_json(TERMS, [])
         n_new, n_all = update_usage(transcript_dirs, cwd, terms)
-        br, note = autocommit()
-        hits, commits = code_hits(terms)
+        br, note = pending_changes()
+        ok_head = approved_head()
+        hits, commits = code_hits(terms, ok_head) if ok_head else ([], '')
         problems = [note] if note else []
+        appr = load_json(APPROVED, {}) or {}
+        if appr.get('head') and not appr.get('send', True):
+            problems.append('사용자가 저장에만 동의했다(전송 보류) — 커밋은 local 에 남기고 보내지 않는다. '
+                            '올리기로 하면 `kit_usage.py approve` 를 다시 돌릴 것.')
+        elif appr.get('head') and not ok_head:
+            problems.append('동의 표시(approved.json)의 커밋이 local 에 없다 — 커밋을 고쳤거나 되돌렸다면 '
+                            '`kit_usage.py approve` 를 다시 돌릴 것. 그때까지 킷 수정은 보내지 않는다.')
         if hits:
             problems.append(f'킷 수정에 고유명·경로 {len(hits)}건 — 코드는 보내지 않았다. '
                             '`python -X utf8 <킷>/skills/90-kit-feedback/scripts/make_feedback.py --config <프로젝트 설정>` 로 '
@@ -377,8 +433,8 @@ def sync(transcript_dirs, cwd, push=True):
         if push and has_remote and time.time() - st.get('last_push', 0) >= PUSH_EVERY_S:
             p = git('push', '-q', remote, f'{USAGE_REF}:refs/heads/usage')
             pushed.append('usage' if p.returncode == 0 else f'usage 실패({p.stderr.strip()[:80]})')
-            if commits and not hits and br == 'local':
-                p = git('push', '-q', '--force', remote, 'local:refs/heads/local')
+            if commits and not hits and ok_head:
+                p = git('push', '-q', '--force', remote, f'{ok_head}:refs/heads/local')
                 pushed.append('local' if p.returncode == 0 else f'local 실패({p.stderr.strip()[:80]})')
             if all('실패' not in x for x in pushed):
                 st['last_push'] = time.time()
@@ -450,6 +506,18 @@ def status():
     print(f'기록된 세션: {n}')
     c = git('log', '--oneline', 'origin/main..local').stdout.strip()
     print(f'local 에만 있는 킷 수정 커밋: {len(c.splitlines()) if c else 0}')
+    ok = approved_head()
+    appr = load_json(APPROVED, {}) or {}
+    if ok:
+        n_ok = git('log', '--oneline', f'origin/main..{ok}').stdout.strip()
+        print(f'저장·전송 동의 지점: {ok[:9]} — 전송 대상 커밋 {len(n_ok.splitlines()) if n_ok else 0}건')
+    elif appr.get('head') and not appr.get('send', True):
+        print(f'저장만 동의: {appr["head"][:9]} — 커밋은 남기고 전송은 보류')
+    else:
+        print('저장·전송 동의 지점: 없음 — 킷 수정 커밋은 보내지 않는다(90 스킬의 저장 질문 → approve)')
+    dirty = git('status', '--porcelain').stdout.strip()
+    if dirty:
+        print(f'커밋하지 않은 킷 수정: {len(dirty.splitlines())}개 파일 — 훅은 대신 커밋하지 않는다')
     if BLOCKED.exists():
         print('\n' + BLOCKED.read_text(encoding='utf-8'))
     if LOG.exists():
@@ -464,6 +532,9 @@ def main():
     sp.add_argument('--transcripts', nargs='*', default=[])
     sp.add_argument('--cwd', default='')
     sp.add_argument('--no-push', action='store_true')
+    sp_ok = sub.add_parser('approve')
+    sp_ok.add_argument('--head', default='', help='동의 지점 커밋(기본: local 의 현재 끝)')
+    sp_ok.add_argument('--no-send', action='store_true', help='저장만 동의 — 커밋은 남기고 fork 로 보내지 않는다')
     sub.add_parser('status')
     a = ap.parse_args()
     if a.cmd == 'hook':
@@ -474,6 +545,8 @@ def main():
             return 0
     if a.cmd == 'sync':
         return sync(a.transcripts, a.cwd, push=not a.no_push)
+    if a.cmd == 'approve':
+        return approve(a.head, send=not a.no_send)
     return status()
 
 
