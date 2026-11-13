@@ -90,7 +90,7 @@ python -X utf8 %K%\p6_book.py [--template "<원 계산서 양식>.xlsx"]
 | `hwl_below_inlet_m` · `effective_depth_m` · `dead_depth_m` · `well_dia_m` | 0.05 · 0.5 · 0.55 · 1.5 | 흡수정(3호 맨홀 Φ1,500 기준) |
 | `head_margin_m` · `head_round` | 1.5 · `round` | H = ROUND(ha+hf+hl+1.5, 0). `ceil` = 올림, `none` = 그대로 |
 | `efficiency` · `power_margin` · `specific_gravity` | 0.23 · 1.15 · 1.0 | P = 0.163·γ·q·H/η × 1.15 |
-| `hw_c` · `pi` · `g` | 100 · 3.1415 · 9.8 | 원 계산서가 π 대신 3.1415 를 쓴다(엑셀 재계산과 일치시키려면 그대로) |
+| `hw_c` · `pi` · `g` | 100 · 3.1415 · 9.8 | 원 계산서가 π 대신 3.1415 를 쓴다(엑셀 재계산과 일치시키려면 그대로). C 100 은 원 계산서 값 — KDS 61 40 00 1.2(2)③ 표준은 110(직선부만 130)이라 손실을 약 19 % 크게 잡는 보수적 가정이다 |
 | `bore_sizes_mm` · `bore_velocity_mps` · `bore_min_mm` | [50,65,80,100,125,150] · [1.5,3.0] · 50 | 토출구경 |
 | `existing_bore_mm` · `existing_back_dia_mm` | 50 · null | 기존 펌프 토출구경 / 후단관경(null = 망 압송관경) |
 | `max_starts_per_h` | 10 | 자체기준(소형 수중펌프 제조사 통상 10~15 회/h) |
