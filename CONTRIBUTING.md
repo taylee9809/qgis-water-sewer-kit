@@ -1,7 +1,8 @@
 # 기여 안내 · Contributing
 
 킷을 쓰다가 고친 것·안 된 것·새로 만든 도구는 관리자에게 돌려보내 주세요. 다음 판에서 모두가 받습니다.
-대부분은 **Claude 에게 "킷 고친 거 보내줘" 라고 하면** 90-kit-feedback 스킬이 정리해서 보냅니다(보내기 전에 꼭 확인을 받습니다).
+설치 때 **쓰는 방식 공유**를 켜면(INSTALL.md 1-2) 따로 할 일이 없습니다 — 킷 수정과 사용 기록이 고유명을 지운 채 내 fork 로 올라가고, 관리자가 모아 봅니다.
+켜지 않았으면 **Claude 에게 "킷 고친 거 보내줘" 라고 하면** 90-kit-feedback 스킬이 정리해서 보냅니다(보내기 전에 꼭 확인을 받습니다).
 
 ## 흐름
 1. 킷은 **`local` 브랜치**에서만 고칩니다(설치 때 만듦). 고칠 때마다 커밋 하나 — `[스킬번호] 무엇을 — 왜`.
@@ -20,7 +21,8 @@
 ---
 
 ## English
-Send back what you fixed, what failed and what you built — ask Claude "send my kit changes" and the **90-kit-feedback** skill packages it (and asks you before sending anything).
+If you turned on **usage sharing** at install (INSTALL.md 1-2), there is nothing to do — kit changes and usage records go to your fork with project names stripped, and the maintainer gathers them.
+Otherwise ask Claude "send my kit changes" and the **90-kit-feedback** skill packages them (and asks you before sending anything).
 
 1. Change the kit only on the **`local`** branch, one commit per fix: `[skill] what — why`.
 2. Log unfixed failures under `_산출\kit-feedback\notes\` in your project.

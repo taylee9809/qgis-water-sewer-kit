@@ -102,7 +102,9 @@ Made on real projects; place names, pipe IDs and river names are masked (`OO`, `
 
 ## Sending changes back, and updating
 - Use the kit on a **`local`** branch (created at install). Each team's fixes stay there as commits and survive updates.
-- To send fixes, failures or new tools back, tell Claude **"send my kit changes back"** — 90-kit-feedback bundles them, scans for your project's place names, paths and passwords, and **asks you before** sending a PR, an issue or a file.
+- **Usage sharing** (one-time opt-in at install): each team changes the kit with its own Claude. When a Claude Code session starts or ends, a hook pulls out **only kit-related facts** — which skills and scripts ran, success or failure with the last error line, `local`-branch changes, the shape of the config — and pushes them to that team's fork. Project paths, place names and company names are stripped; anything that still matches is held back. Conversations and data are never sent.
+- The maintainer runs `collect_feedback.py` once to gather every team: usage per team, failures grouped by error, and each team's kit changes as patches.
+- Teams that don't opt in can tell Claude **"send my kit changes back"** — 90-kit-feedback bundles them, scans for project names, paths and passwords, and **asks you before** sending a PR, an issue or a file.
 - The maintainer reviews (including a regression run) and merges; everyone gets it on the next update. Anything not merged stays on your `local` branch.
 - Update: `git -C <kit> fetch origin` → `git -C <kit> rebase origin/main`. Skills are linked by junctions, so nothing needs re-linking.
 - Details: [CONTRIBUTING.md](CONTRIBUTING.md) · maintainer process: [MAINTAINING.md](MAINTAINING.md) · [CHANGELOG.md](CHANGELOG.md)

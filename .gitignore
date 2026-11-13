@@ -11,3 +11,6 @@ _산출/
 *.flo
 *.OUT
 *.log
+
+# 쓰는 방식 공유(90-kit-feedback) — 이 PC 의 기록·설정. 저장소에 올리지 않는다
+.kit-usage/

@@ -106,10 +106,36 @@ def config_terms(cfg):
                     terms |= {t for t in re.split(r'[\s,/·]+', base) if len(t) >= 2}
         except (Exception, SystemExit) as e:  # 접속 불가 등 — 검사는 계속
             print(f'  (지구값 읽기 건너뜀: {key} — {str(e)[:60]})')
+    # 경로는 \ 와 / 두 표기 다
+    terms |= {t.replace('\\', '/') for t in terms} | {t.replace('/', '\\') for t in terms}
+    # 폴더·파일 이름을 낱말로 쪼갠다 — '○○,△△지구 …용역' 의 '○○' 처럼 낱말 하나만 섞여도 잡으려고.
+    # 킷 본판(main)에 이미 나오는 낱말(기본·설계·하수도 …)은 일반어로 보고 뺀다.
+    words = set()
+    for t in list(terms):
+        for w in re.split(r'[\s,()（）\[\]{}_·~.:;\\/+=-]+', t):
+            if len(w) >= 2 and not w.isdigit() and re.search(r'[가-힣A-Za-z]', w) and not re.fullmatch(r'\d+[A-Za-z]?', w):
+                words.add(w)
+    terms |= words - kit_known(words - terms)
     # 너무 일반적인 낱말은 뺀다(오탐 방지)
     generic = {'data', 'gpkg', 'postgis', '기존', '계획', '신설', '기타', '자연유하', '압송', '_산출', 'tools', 'scripts',
                '추가', '금회', '준공', '연계', '변경', '검토', '확인', '전체', '본선', '지선', '처리장', '처리구역', '.', '..'}
     return sorted((t for t in terms if t and t.lower() not in generic and len(t) >= 2), key=len, reverse=True)
+
+
+def kit_known(words):
+    """킷 본판(origin/main, 없으면 HEAD)에 이미 나오는 낱말 → 일반어."""
+    words = sorted(w for w in words if w)
+    if not words:
+        return set()
+    rev = 'origin/main' if git('rev-parse', '-q', '--verify', 'origin/main', check=False).strip() else 'HEAD'
+    known = set()
+    for i in range(0, len(words), 200):
+        chunk = words[i:i + 200]
+        args = ['grep', '-h', '-o', '-F', '-I']
+        for w in chunk:
+            args += ['-e', w]
+        known |= set(git(*args, rev, check=False).splitlines()) & set(chunk)
+    return known
 
 
 def scan(text, where, terms, hits):

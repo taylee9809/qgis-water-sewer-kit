@@ -3,6 +3,14 @@
 관리자가 들어온 이슈·PR·꾸러미를 흡수하는 절차. 관리자 쪽 Claude 도 이 순서로 검토한다.
 
 ## 1. 모으기 (주 1회 또는 알림 때)
+쓰는 방식 공유를 켠 팀은 fork 에 수정(`local`)과 사용 기록(`usage`)이 저절로 쌓인다. 한 번에 모은다:
+```
+python -X utf8 <킷>\skills\90-kit-feedback\scripts\collect_feedback.py
+```
+→ `<킷 옆>\<킷이름>-feedback\<YYMMDD_HHMM>\report.md`(팀별 사용량 · 같은 오류끼리 묶은 실패 순위 · 팀별 킷 수정) + `patches\<계정>.patch`.
+실패 순위 상위는 버그·문서 부족 후보, 여러 팀이 같은 파일을 고쳤으면 본판에서 일반화할 후보다. 받아들일 커밋은 아래 2·3 을 거쳐 `git cherry-pick`.
+
+공유를 안 켠 팀은 이슈·PR·꾸러미로 온다:
 ```
 gh issue list --repo taylee9809/qgis-water-sewer-kit --state open
 gh pr list    --repo taylee9809/qgis-water-sewer-kit --state open
@@ -39,4 +47,4 @@ python -X utf8 <회귀도구>\regress.py --kit <임시폴더>
 ---
 
 ## English (summary)
-Collect open issues/PRs (or bundle zips), review them against the table above (no project names or passwords, config via `kitconfig`, justified threshold changes, docs updated), run the maintainer's **private regression harness** (kept outside this repo, runs on real project data) against the PR worktree, merge, re-save the baseline only for intended changes, and add a line to `CHANGELOG.md`.
+Run `skills/90-kit-feedback/scripts/collect_feedback.py` to gather every opted-in team's fork (`local` changes + `usage` records) into one report with patches; collect open issues/PRs (or bundle zips) from teams that did not opt in. Review them against the table above (no project names or passwords, config via `kitconfig`, justified threshold changes, docs updated), run the maintainer's **private regression harness** (kept outside this repo, runs on real project data) against the PR worktree, merge, re-save the baseline only for intended changes, and add a line to `CHANGELOG.md`.

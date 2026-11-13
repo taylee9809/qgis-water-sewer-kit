@@ -23,6 +23,21 @@ git -C "D:\도구\qgis-water-sewer-kit" switch -c local
 - 업데이트: `git -C <킷> fetch origin` 후 `local` 에서 `git -C <킷> rebase origin/main`. 이 팀이 고친 것 중 관리자 판에 들어간 것은 rebase 가 알아서 합친다.
 - git 이 없으면 저장소 페이지의 **Code → Download ZIP** 으로 받아 같은 위치에 푼다. 이때는 고친 것을 커밋으로 남길 수 없으니, 고칠 일이 생기면 git 설치를 권한다.
 
+### 1-2. 쓰는 방식 공유 — 사용자에게 한 번 묻는다
+킷 관리자는 각 팀이 킷을 **어떻게 고치고 어떻게 쓰는지** 를 모아 다음 판을 만든다. 사용자에게 아래를 그대로 설명하고 예/아니오를 받는다.
+> 켜면 Claude Code 세션이 시작·끝날 때 대화 기록에서 **킷에 관한 것만** 뽑아 관리자 저장소의 내 fork(공개)로 올립니다 —
+> 어느 킷 스킬·스크립트를 썼나, 성공/실패와 오류 마지막 줄, 킷을 어떻게 고쳤나(local 브랜치 커밋), 설정의 모양(레이어 종류·필드 이름).
+> 프로젝트 경로·지구·업체 이름은 지우고, 걸리면 보내지 않습니다. 대화 내용·데이터·설정 파일·산출물은 보내지 않습니다. 언제든 끌 수 있습니다.
+
+- **예** — GitHub 계정과 `gh` 로그인이 필요하다(로그인은 사용자가 직접 `gh auth login`). 팀 별칭(회사·사람 이름 말고)을 받아:
+  ```powershell
+  python -X utf8 "<킷>\skills\90-kit-feedback\scripts\setup_share.py" --share yes --team <별칭>
+  ```
+  관리자 저장소를 사용자 계정으로 fork 해 `fork` 원격을 달고, `~/.claude/settings.json` 에 SessionStart·SessionEnd 훅을 더한다(기존 설정 유지, 백업 `settings.json.bak_kitshare`).
+  GitHub 를 안 쓰면 `--no-fork`(기록만 — 보내기는 90 스킬의 손으로 보내기).
+- **아니오** — `setup_share.py --share no`. 아무것도 기록하지 않는다.
+- 자세한 범위·끄기: 90-kit-feedback 스킬 「자동 수집」.
+
 ## 2. 스킬 연결 — 정션
 각 스킬 폴더를 사용자 스킬 폴더에 **디렉터리 정션**으로 건다(관리자 권한 불필요). 복사하지 않는다 —
 스크립트가 킷의 `lib\kitconfig.py` 를 찾아야 하고, 킷을 업데이트하면 바로 반영돼야 한다.
@@ -58,4 +73,5 @@ Get-ChildItem "$kit\skills" -Directory | ForEach-Object {
 - [ ] `<프로젝트>\CLAUDE.md` 의 킷 경로가 실제 경로
 - [ ] `%USERPROFILE%\.claude\skills\` 에 12개 정션
 - [ ] `git -C <킷> branch --show-current` 가 `local`
+- [ ] 쓰는 방식 공유를 물었고, 답대로 `setup_share.py --check` 결과가 맞다(켰으면 훅 2개·`fork` 원격)
 - [ ] QGIS 에서 Sewer Profile Viewer 패널이 열리고 계획관로 레이어로 구간 트리가 뜬다
