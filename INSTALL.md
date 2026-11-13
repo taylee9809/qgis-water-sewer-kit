@@ -36,7 +36,7 @@ git -C "D:\도구\qgis-water-sewer-kit" switch -c local
   관리자 저장소를 사용자 계정으로 fork 해 `fork` 원격을 달고, `~/.claude/settings.json` 에 SessionStart·SessionEnd 훅을 더한다(기존 설정 유지, 백업 `settings.json.bak_kitshare`).
   GitHub 를 안 쓰면 `--no-fork`(기록만 — 보내기는 90 스킬의 손으로 보내기).
 - **아니오** — `setup_share.py --share no`. 아무것도 기록하지 않는다.
-- 자동 공유는 사용자가 저장에 동의해 `local` 에 남긴 변경을 전송하는 설정이다. 프로젝트 작업을 임의로 스킬화하지 않는다. 재사용 후보가 있으면 작업 종료 시 Claude 가 `오늘 작업한 스킬과 도구를 Git에 저장하고 GitHub에 올릴까요?`라고 먼저 묻는다.
+- 자동 공유는 사용자가 저장에 동의해 `local` 에 커밋한 변경만 전송한다 — 훅은 대신 커밋하지 않고, 90 스킬이 `kit_usage.py approve` 로 표시한 지점까지만 올린다. 프로젝트 작업을 임의로 스킬화하지 않는다. 재사용 후보가 있으면 작업 종료 시 Claude 가 `오늘 작업한 스킬과 도구를 Git에 저장하고 GitHub에 올릴까요?`라고 먼저 묻는다.
 - 자세한 범위·끄기: 90-kit-feedback 스킬 「자동 수집」.
 
 ## 2. 스킬 연결 — 정션

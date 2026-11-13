@@ -31,7 +31,7 @@ Requirements: Claude Code · QGIS 3.22+ (3.40 LTR recommended) · Python 3.10+. 
 | "The survey came in — build the obstacle layer" | 11 | Obstacle polygons and centerlines + a **needs-review** layer | The needs-review list (usually 3–5 items), against drawings and street view |
 | "Load the as-built DXF into the DB" / "Is the as-built DB right?" | 12 | As-built pipes and manholes loaded + a comparison against the source | Coordinate offset converged (within 0.2 m); zero mismatches in names, ground levels, depths |
 | "Turn the consultant's plan DXF into plan layers" | 13 | Planned pipe, manhole and pump-station layers + a comparison against the source | Zero mismatches in pipe IDs, diameters, lengths; existing pipes flagged |
-| "Run inverts and hydraulics for this route" | 30 | Inverts, diameters, flows, pass/fail, makesw `.flo`, SWMM `.inp`, `설계요약.md` | Which values are standards and which are assumptions; sections short of cover or velocity |
+| "Run inverts and hydraulics for this route" | 30 | Inverts, diameters, flows, pass/fail, makesw `.flo`, optionally SWMM `.inp`, `설계요약.md` | Which values are standards and which are assumptions; sections short of cover or velocity |
 | "Size the pump stations" / "Do the existing stations hold?" | 31 | Head, power and wet-well storage per station, capacity workbook | Static head and loss sources; verdict for existing stations |
 | "Can we drop this force main?" / "Compare connection manholes" | 32 | Feasible manholes + an alternatives table | Cover and deep-excavation stretches; operating cost |
 | "Review the consultant's delivery" (folder name only) | 40 | `검토요약.md` — findings on lengths, network, connection inverts, designer notes | Each finding as "delivered vs reference — difference — impact" |
@@ -40,8 +40,8 @@ Requirements: Claude Code · QGIS 3.22+ (3.40 LTR recommended) · Python 3.10+. 
 | Other stages (cost, report, review responses) | — | Claude writes project scripts under `scripts\` | Sources of numbers; standards vs assumptions |
 | At the end, Claude asks: "Save today's skills and tools in Git and push them to GitHub?" | 90 | Generalize and scan → `local` commit → GitHub feedback | What will be saved and sent; zero name-scan hits |
 
-## Starting from DXF files only
-No database needed. Say "Set up the kit for this project" and skill 00 builds an empty GPKG and config from the standard schema; then ask for each step in order.
+## The database builds itself
+No database needed up front. Put what you have — DXF, DEM, Excel — in the project folder and say "Set up the kit for this project": skill 00 surveys the data and builds an empty GPKG and the config from the standard schema, asking only about what it cannot settle. Loading then continues **one stage per request**, in this order, and runs on into design and review in the same flow.
 
 1. **00** empty DB and config → **10** bring in DEM, water mains, flow basis, households
 2. **11** survey DXF → obstacles · **12** as-built DXF → existing network · **13** consultant plan DXF → planned routes (or draw them in QGIS)
@@ -54,6 +54,8 @@ Service areas and flows (20) and cost, report and review responses (60–80) hav
 ![Workflow stages 00–80 — Korean](docs/workflow.svg)
 
 ![Workflow stages 00–80 — English](docs/workflow.en.svg)
+
+**Blue circles** are stages with a dedicated skill, **grey circles** stages that exist in the workflow but have no skill yet. `90-kit-feedback` is a real skill, but it is maintenance outside the 00–80 design flow, so it is not in the diagram.
 
 For each request Claude first decides which stage it belongs to. Stages with a skill follow the skill; the rest get
 project-specific scripts. **Vendor review (40) only holds if the as-built DB (12) is right** — check stage 12 before
@@ -89,10 +91,23 @@ Made on real projects; place names, pipe IDs and river names are masked (`OO`, `
 | `docs\` | Images for this README |
 
 ## What was verified, and known limits
-- Every skill's scripts were run against real project data and **match the original tools** — 11: CSVs byte-identical; 12 and 32: identical output; 40: identical A1–A5; 13: 1,470 pipes, 1,234 manholes, 33 pump stations identical; 30: zero mismatches over 190 sections and 231 `.flo` lines; 31: zero differences over 17 stations × 38 items; 50: titles and pipe IDs identical on all 28 A3 sheets; 10: identical DEM arrays.
+The scripts of the skills below were run against real project data and compared with the existing per-project tools. Skills 00, 51 and 90 have no such comparison.
+
+| Skill | Result |
+|---|---|
+| 10 | Identical DEM arrays |
+| 11 | CSVs byte-identical |
+| 12 · 32 | Identical output |
+| 13 | 1,470 pipes, 1,234 manholes, 33 pump stations identical |
+| 30 | Zero mismatches over 190 sections and 231 `.flo` lines |
+| 31 | Zero differences over 17 stations × 38 items |
+| 40 | Identical A1–A5 |
+| 50 | Titles and pipe IDs identical on all 28 A3 sheets |
+
 - Skill 30's scripts do not place manholes automatically or design excavation and shoring (see 30 SKILL.md §10.6). makesw `.OUT` result tables need the makesw program itself.
 - PostGIS reading was checked against a real database for 12 and 32 only; 11 and 40 were checked with GPKG. Teams on PostGIS should eyeball the first run.
 - Skill 11 **writes obstacle layers to GPKG only**.
+- Skill 13 also **writes to GPKG only**, and only with `--write` (after a backup).
 - Skill 11's tools read the config first, so run them **inside a project folder** (outside one, even `--help` only prints the setup hint).
 - DXF layer names and label radii are **one surveyor's / designer's drawing conventions**. For other firms' drawings, change them in the config (`asbuilt.dxf_layers`, `review_vendor.profile`) or via arguments; for 11, edit the layer list in the tool README.
 
@@ -104,8 +119,8 @@ Made on real projects; place names, pipe IDs and river names are masked (`OO`, `
 ## Sending changes back, and updating
 - Use the kit on a **`local`** branch (created at install). Each team's fixes stay there as commits and survive updates.
 - When reusable skills or tools were created, Claude shows a short list and asks once: **"Save today's skills and tools in Git and push them to GitHub?"** The user does not need to remember a command.
-- If the user agrees, Claude removes project-specific details, runs the name scan, commits only clean changes to `local`, and sends them to GitHub. If the user declines, they remain project-only. If there is nothing reusable, Claude does not ask.
-- **Usage sharing** (one-time opt-in at install): when enabled, the hook pushes approved saved commits and kit-only usage facts to that team's fork. Project paths, place names and company names are stripped; anything that still matches is held back. Conversations and data are never sent. Without usage sharing, 90-kit-feedback uses the same answer as approval for the appropriate PR, issue or file route; without a GitHub connection it saves in Git only and reports that.
+- If the user agrees, Claude removes project-specific details, runs the name scan, commits only clean changes to `local`, marks that point as approved, and sends them to GitHub. "Save it but don't push it" is a valid answer — the commit stays local. If the user declines, nothing is committed or sent. If there is nothing reusable, Claude does not ask.
+- **Usage sharing** (one-time opt-in at install): when enabled, the hook pushes kit-only usage facts and the kit commits up to the point the user approved (`kit_usage.py approve`) to that team's fork. The hook never commits for you — uncommitted kit changes are reported back and asked about again next session. Project paths, place names and company names are stripped; anything that still matches is held back. Conversations and data are never sent. Without usage sharing, 90-kit-feedback uses the same answer as approval for the appropriate PR, issue or file route; without a GitHub connection it saves in Git only and reports that.
 - The maintainer runs `collect_feedback.py` once to gather every team: usage per team, failures grouped by error, and each team's kit changes as patches.
 - The maintainer reviews (including a regression run) and merges; everyone gets it on the next update. Anything not merged stays on your `local` branch.
 - Update: `git -C <kit> fetch origin` → `git -C <kit> rebase origin/main`. Skills are linked by junctions, so nothing needs re-linking.
