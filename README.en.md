@@ -38,7 +38,7 @@ Requirements: Claude Code · QGIS 3.22+ (3.40 LTR recommended) · Python 3.10+. 
 | "Print the profiles on A3" / "Draw a profile per route" | 50 | A3 sheet-set PDF (village names in titles), profile DXF in the consultant's format, review-profile PDF | Zero missing titles, zero clipped lines; rotated text intact |
 | "Make a location figure for this section" | 51 | Print layout + 300 dpi image | Overlaps, clipping, empty legends (by eye) |
 | Other stages (cost, report, review responses) | — | Claude writes project scripts under `scripts\` | Sources of numbers; standards vs assumptions |
-| "Send my kit changes back" | 90 | A bundle of fixes, failure notes and new tools → PR, issue or file | Zero hits in the name scan; what is being sent |
+| At the end, Claude asks: "Save today's skills and tools in Git and push them to GitHub?" | 90 | Generalize and scan → `local` commit → GitHub feedback | What will be saved and sent; zero name-scan hits |
 
 ## Starting from DXF files only
 No database needed. Say "Set up the kit for this project" and skill 00 builds an empty GPKG and config from the standard schema; then ask for each step in order.
@@ -103,9 +103,10 @@ Made on real projects; place names, pipe IDs and river names are masked (`OO`, `
 
 ## Sending changes back, and updating
 - Use the kit on a **`local`** branch (created at install). Each team's fixes stay there as commits and survive updates.
-- **Usage sharing** (one-time opt-in at install): each team changes the kit with its own Claude. When a Claude Code session starts or ends, a hook pulls out **only kit-related facts** — which skills and scripts ran, success or failure with the last error line, `local`-branch changes, the shape of the config — and pushes them to that team's fork. Project paths, place names and company names are stripped; anything that still matches is held back. Conversations and data are never sent.
+- When reusable skills or tools were created, Claude shows a short list and asks once: **"Save today's skills and tools in Git and push them to GitHub?"** The user does not need to remember a command.
+- If the user agrees, Claude removes project-specific details, runs the name scan, commits only clean changes to `local`, and sends them to GitHub. If the user declines, they remain project-only. If there is nothing reusable, Claude does not ask.
+- **Usage sharing** (one-time opt-in at install): when enabled, the hook pushes approved saved commits and kit-only usage facts to that team's fork. Project paths, place names and company names are stripped; anything that still matches is held back. Conversations and data are never sent. Without usage sharing, 90-kit-feedback uses the same answer as approval for the appropriate PR, issue or file route; without a GitHub connection it saves in Git only and reports that.
 - The maintainer runs `collect_feedback.py` once to gather every team: usage per team, failures grouped by error, and each team's kit changes as patches.
-- Teams that don't opt in can tell Claude **"send my kit changes back"** — 90-kit-feedback bundles them, scans for project names, paths and passwords, and **asks you before** sending a PR, an issue or a file.
 - The maintainer reviews (including a regression run) and merges; everyone gets it on the next update. Anything not merged stays on your `local` branch.
 - Update: `git -C <kit> fetch origin` → `git -C <kit> rebase origin/main`. Skills are linked by junctions, so nothing needs re-linking.
 - Details: [CONTRIBUTING.md](CONTRIBUTING.md) · maintainer process: [MAINTAINING.md](MAINTAINING.md) · [CHANGELOG.md](CHANGELOG.md)
