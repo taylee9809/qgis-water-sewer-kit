@@ -93,5 +93,5 @@
   <rect x="24" y="626" width="28" height="16" rx="4" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
   <text x="60" y="639" font-size="12" fill="#24292f">스킬이 있는 단계 · stage with a skill</text>
   <line x1="300" y1="634" x2="336" y2="634" stroke="#57606a" stroke-width="1.25" stroke-dasharray="4 4"/>
-  <text x="344" y="639" font-size="12" fill="#24292f">되먹임 · feedback</text>
+  <text x="344" y="639" font-size="12" fill="#24292f">피드백</text>
 </svg>
