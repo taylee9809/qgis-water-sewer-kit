@@ -47,11 +47,13 @@ DB를 미리 만들어 둘 필요는 없다. DXF·DEM·엑셀 등 보유 자료�
 3. **설계 계산** — <img src="docs/skill-badges/30.svg" alt="30" width="24"> 관저고·수리 계산 → <img src="docs/skill-badges/31.svg" alt="31" width="24"> 펌프장 용량 산정 → <img src="docs/skill-badges/32.svg" alt="32" width="24"> 대안 비교
 4. **도면·납품물 검토** — <img src="docs/skill-badges/50.svg" alt="50" width="24"> 종단면도 → <img src="docs/skill-badges/51.svg" alt="51" width="24"> 조판·삽도 → <img src="docs/skill-badges/40.svg" alt="40" width="24"> 외주 납품물 검토
 
-처리 구역·유량 확정(20)과 사업비·보고서 작성(60~80)은 아직 전용 스킬이 없다. Claude가 방법서(`standard/workflow.md`)에 따라 프로젝트의 `scripts\`에 필요한 스크립트를 작성한다.
+<img src="docs/stage-badges/20.svg" alt="20" width="24"> 처리 구역·유량 확정, <img src="docs/stage-badges/60.svg" alt="60" width="24"> 사업비, <img src="docs/stage-badges/70.svg" alt="70" width="24"> 보고서, <img src="docs/stage-badges/80.svg" alt="80" width="24"> 검토 대응은 업무 단계만 있고 아직 전용 스킬이 없다. Claude가 방법서(`standard/workflow.md`)에 따라 프로젝트의 `scripts\`에 필요한 스크립트를 작성한다.
 
 ## 업무 흐름
 
 ![업무 흐름 00~80](docs/workflow.svg)
+
+<img src="docs/skill-badges/10.svg" alt="10" width="24"> **파란 원**은 전용 스킬이 있는 단계, <img src="docs/stage-badges/60.svg" alt="60" width="24"> **회색 원**은 업무 단계만 있고 전용 스킬이 없는 단계다. `90-kit-feedback`은 실제 스킬이지만 00~80 설계 업무 흐름 밖의 유지관리 단계라 그림에는 넣지 않았다.
 
 요청을 받으면 Claude가 해당 작업의 단계를 판단한다. 전용 스킬이 있는 단계는 스킬에 따라 실행하고, 나머지 단계는 프로젝트 전용 스크립트를 작성한다.
 
@@ -82,9 +84,32 @@ DB를 미리 만들어 둘 필요는 없다. DXF·DEM·엑셀 등 보유 자료�
 
 ## 구성
 
+스킬 번호는 개수를 세는 연번이 아니라 **업무 흐름 단계 코드**다. 현재 실제 스킬은 12개이며, 폴더 이름과 번호가 일치한다.
+
+### 스킬 목록 (12개)
+
+| 스킬 | 폴더 | 역할 |
+|---|---|---|
+| <img src="docs/skill-badges/00.svg" alt="00" width="24"> | `00-onboard` | 프로젝트 조사, 설정·빈 DB 구축 |
+| <img src="docs/skill-badges/10.svg" alt="10" width="24"> | `10-data-intake` | DEM·상수관·유량·가구 등 기초 자료 적재 |
+| <img src="docs/skill-badges/11.svg" alt="11" width="24"> | `11-survey-to-qgis` | 측량 DXF를 지장물 레이어로 변환·검사 |
+| <img src="docs/skill-badges/12.svg" alt="12" width="24"> | `12-asbuilt-ingest` | 준공도 DXF 적재 및 준공 DB 정합성 검증 |
+| <img src="docs/skill-badges/13.svg" alt="13" width="24"> | `13-plan-dxf-ingest` | 설계 평면·종단·`.flo`를 계획 레이어로 적재 |
+| <img src="docs/skill-badges/30.svg" alt="30" width="24"> | `30-route-design` | 노선·관저고·관경·수리 계산 |
+| <img src="docs/skill-badges/31.svg" alt="31" width="24"> | `31-pump-capacity` | 펌프장 용량·전양정·동력·저류 검토 |
+| <img src="docs/skill-badges/32.svg" alt="32" width="24"> | `32-route-optimize` | 압송 제거·접속 맨홀 등 노선 대안 비교 |
+| <img src="docs/skill-badges/40.svg" alt="40" width="24"> | `40-review-vendor` | 외주 납품물 검토 |
+| <img src="docs/skill-badges/50.svg" alt="50" width="24"> | `50-profile-sheets` | 종단면도·A3 도면집 작성 |
+| <img src="docs/skill-badges/51.svg" alt="51" width="24"> | `51-layout-figure` | QGIS 조판·위치도·삽도 작성 |
+| <img src="docs/skill-badges/90.svg" alt="90" width="24"> | `90-kit-feedback` | 키트 수정·사용 기록 피드백 수집·공유 |
+
+전용 스킬이 없는 업무 단계는 <img src="docs/stage-badges/20.svg" alt="20" width="24"> 처리 구역·설계 유량, <img src="docs/stage-badges/60.svg" alt="60" width="24"> 사업비, <img src="docs/stage-badges/70.svg" alt="70" width="24"> 보고서, <img src="docs/stage-badges/80.svg" alt="80" width="24"> 검토 대응이다.
+
+### 공통 구성
+
 | 폴더 | 내용 |
 |---|---|
-| `skills\` | 스킬 12개 — 00-onboard · 10 · 11 · 12 · 13 · 30 · 31 · 32 · 40 · 50 · 51 · 90-kit-feedback |
+| `skills\` | 위 12개 스킬 폴더 |
 | `lib\kitconfig.py` | 모든 스크립트가 사용하는 설정 로더(경로·레이어·필드·DB, 비밀번호는 환경변수로만 관리) |
 | `lib\flospec.py` | makesw `.flo` 읽기·검증·쓰기(13·30·31·40 공용) |
 | `standard\` | 데이터 표준(논리 레이어·필드) · **DB 설계 가이드**(엔티티·관계·규칙) · 업무 흐름 · 함정 노트 2개 |

@@ -62,8 +62,10 @@
   <text x="461" y="208" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Plan DXF → QGIS</text>
   <text x="461" y="224" text-anchor="middle" font-size="11" fill="#57606a">Consultant plan → routes</text>
   <rect x="565" y="130" width="150" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
-  <text x="640" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">20 Basis</text>
-  <text x="640" y="170" text-anchor="middle" font-size="11" fill="#57606a">areas &amp; design flows</text>
+  <circle cx="587" cy="156" r="11" fill="#8c959f"/>
+  <text x="587" y="159" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ffffff">20</text>
+  <text x="655" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Basis</text>
+  <text x="655" y="170" text-anchor="middle" font-size="11" fill="#57606a">areas &amp; design flows</text>
 
   <rect x="50" y="316" width="200" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
   <circle cx="74" cy="342" r="11" fill="#0969da"/>
@@ -97,17 +99,27 @@
   <text x="252" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Layouts</text>
   <text x="252" y="576" text-anchor="middle" font-size="11" fill="#57606a">QGIS print</text>
   <rect x="320" y="536" width="120" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
-  <text x="380" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">60 Cost</text>
-  <text x="380" y="576" text-anchor="middle" font-size="11" fill="#57606a">unit costs</text>
+  <circle cx="340" cy="562" r="10" fill="#8c959f"/>
+  <text x="340" y="565" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">60</text>
+  <text x="392" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Cost</text>
+  <text x="392" y="576" text-anchor="middle" font-size="11" fill="#57606a">unit costs</text>
   <rect x="460" y="536" width="120" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
-  <text x="520" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">70 Report</text>
-  <text x="520" y="576" text-anchor="middle" font-size="11" fill="#57606a">HWP document</text>
+  <circle cx="480" cy="562" r="10" fill="#8c959f"/>
+  <text x="480" y="565" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">70</text>
+  <text x="532" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Report</text>
+  <text x="532" y="576" text-anchor="middle" font-size="11" fill="#57606a">HWP document</text>
   <rect x="600" y="536" width="120" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
-  <text x="660" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">80 Responses</text>
-  <text x="660" y="576" text-anchor="middle" font-size="11" fill="#57606a">back to 30</text>
+  <circle cx="620" cy="562" r="10" fill="#8c959f"/>
+  <text x="620" y="565" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">80</text>
+  <text x="672" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Responses</text>
+  <text x="672" y="576" text-anchor="middle" font-size="11" fill="#57606a">back to 30</text>
 
-  <rect x="24" y="626" width="28" height="16" rx="4" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="60" y="639" font-size="12" fill="#24292f">stage with a skill</text>
-  <line x1="220" y1="634" x2="256" y2="634" stroke="#57606a" stroke-width="1.25" stroke-dasharray="4 4"/>
-  <text x="264" y="639" font-size="12" fill="#24292f">feedback loop</text>
+  <circle cx="34" cy="634" r="9" fill="#0969da"/>
+  <text x="34" y="637" text-anchor="middle" font-size="7.5" font-weight="700" fill="#ffffff">10</text>
+  <text x="50" y="639" font-size="12" fill="#24292f">dedicated skill</text>
+  <circle cx="220" cy="634" r="9" fill="#8c959f"/>
+  <text x="220" y="637" text-anchor="middle" font-size="7.5" font-weight="700" fill="#ffffff">60</text>
+  <text x="236" y="639" font-size="12" fill="#24292f">no dedicated skill</text>
+  <line x1="430" y1="634" x2="466" y2="634" stroke="#57606a" stroke-width="1.25" stroke-dasharray="4 4"/>
+  <text x="474" y="639" font-size="12" fill="#24292f">feedback</text>
 </svg>
