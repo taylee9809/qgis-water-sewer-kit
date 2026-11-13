@@ -5,11 +5,11 @@
     </marker>
   </defs>
   <rect x="0" y="0" width="760" height="660" rx="12" fill="#ffffff"/>
-  <text x="24" y="32" font-size="16" font-weight="700" fill="#24292f">Build the database first — design and review stand on it</text>
+  <text x="24" y="32" font-size="16" font-weight="700" fill="#24292f">Upload data → Claude builds the database → design &amp; review</text>
   <text x="24" y="50" font-size="12" fill="#57606a">Workflow stages 00–80</text>
 
   <rect x="24" y="66" width="712" height="176" rx="8" fill="#f6f8fa"/>
-  <text x="40" y="88" font-size="11.5" font-weight="700" fill="#57606a">Kickoff · data to database</text>
+  <text x="40" y="88" font-size="11.5" font-weight="700" fill="#57606a">Upload → Claude builds the database</text>
   <rect x="24" y="262" width="712" height="206" rx="8" fill="#f6f8fa"/>
   <text x="40" y="284" font-size="11.5" font-weight="700" fill="#57606a">Design &amp; review</text>
   <rect x="24" y="496" width="712" height="108" rx="8" fill="#f6f8fa"/>
@@ -37,43 +37,65 @@
   <text x="517" y="332" text-anchor="middle" font-size="11" fill="#57606a">findings</text>
 
   <rect x="30" y="130" width="140" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="100" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">00 Kickoff</text>
-  <text x="100" y="170" text-anchor="middle" font-size="11" fill="#57606a">onboarding</text>
+  <circle cx="52" cy="156" r="11" fill="#0969da"/>
+  <text x="52" y="159" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ffffff">00</text>
+  <text x="112" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">DB setup</text>
+  <text x="112" y="170" text-anchor="middle" font-size="11" fill="#57606a">onboarding</text>
   <rect x="200" y="130" width="140" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="270" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">10 Data intake</text>
-  <text x="270" y="170" text-anchor="middle" font-size="11" fill="#57606a">plans · DXF · DEM</text>
+  <circle cx="222" cy="156" r="11" fill="#0969da"/>
+  <text x="222" y="159" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ffffff">10</text>
+  <text x="282" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Data intake</text>
+  <text x="282" y="170" text-anchor="middle" font-size="11" fill="#57606a">plans · DXF · DEM</text>
   <rect x="375" y="94" width="150" height="42" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="450" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">11 Survey → QGIS</text>
-  <text x="450" y="128" text-anchor="middle" font-size="11" fill="#57606a">obstacles</text>
+  <circle cx="396" cy="115" r="10" fill="#0969da"/>
+  <text x="396" y="118" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">11</text>
+  <text x="461" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Survey → QGIS</text>
+  <text x="461" y="128" text-anchor="middle" font-size="11" fill="#57606a">obstacles</text>
   <rect x="375" y="142" width="150" height="42" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="450" y="160" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">12 As-built → QGIS</text>
-  <text x="450" y="176" text-anchor="middle" font-size="11" fill="#57606a">existing-pipe DB</text>
+  <circle cx="396" cy="163" r="10" fill="#0969da"/>
+  <text x="396" y="166" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">12</text>
+  <text x="461" y="160" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">As-built → QGIS</text>
+  <text x="461" y="176" text-anchor="middle" font-size="11" fill="#57606a">existing-pipe DB</text>
   <rect x="375" y="190" width="150" height="42" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="450" y="208" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">13 Plan DXF → QGIS</text>
-  <text x="450" y="224" text-anchor="middle" font-size="11" fill="#57606a">Consultant plan → routes</text>
+  <circle cx="396" cy="211" r="10" fill="#0969da"/>
+  <text x="396" y="214" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">13</text>
+  <text x="461" y="208" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Plan DXF → QGIS</text>
+  <text x="461" y="224" text-anchor="middle" font-size="11" fill="#57606a">Consultant plan → routes</text>
   <rect x="565" y="130" width="150" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
   <text x="640" y="152" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">20 Basis</text>
   <text x="640" y="170" text-anchor="middle" font-size="11" fill="#57606a">areas &amp; design flows</text>
 
   <rect x="50" y="316" width="200" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="150" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">30 Route design</text>
-  <text x="150" y="356" text-anchor="middle" font-size="11" fill="#57606a">inverts &amp; hydraulics</text>
+  <circle cx="74" cy="342" r="11" fill="#0969da"/>
+  <text x="74" y="345" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ffffff">30</text>
+  <text x="164" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Route design</text>
+  <text x="164" y="356" text-anchor="middle" font-size="11" fill="#57606a">inverts &amp; hydraulics</text>
   <rect x="75" y="400" width="150" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="150" y="422" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">31 Pump stations</text>
-  <text x="150" y="440" text-anchor="middle" font-size="11" fill="#57606a">head &amp; power</text>
+  <circle cx="97" cy="426" r="11" fill="#0969da"/>
+  <text x="97" y="429" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ffffff">31</text>
+  <text x="165" y="422" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Pump stations</text>
+  <text x="165" y="440" text-anchor="middle" font-size="11" fill="#57606a">head &amp; power</text>
   <rect x="335" y="316" width="150" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="410" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">32 Optimization</text>
-  <text x="410" y="356" text-anchor="middle" font-size="11" fill="#57606a">route alternatives</text>
+  <circle cx="357" cy="342" r="11" fill="#0969da"/>
+  <text x="357" y="345" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ffffff">32</text>
+  <text x="425" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Optimization</text>
+  <text x="425" y="356" text-anchor="middle" font-size="11" fill="#57606a">route alternatives</text>
   <rect x="550" y="316" width="160" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="630" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">40 Vendor review</text>
-  <text x="630" y="356" text-anchor="middle" font-size="11" fill="#57606a">vs as-built DB</text>
+  <circle cx="573" cy="342" r="11" fill="#0969da"/>
+  <text x="573" y="345" text-anchor="middle" font-size="8.5" font-weight="700" fill="#ffffff">40</text>
+  <text x="645" y="338" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Vendor review</text>
+  <text x="645" y="356" text-anchor="middle" font-size="11" fill="#57606a">vs as-built DB</text>
 
   <rect x="40" y="536" width="120" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="100" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">50 Profiles</text>
-  <text x="100" y="576" text-anchor="middle" font-size="11" fill="#57606a">A3 PDF</text>
+  <circle cx="60" cy="562" r="10" fill="#0969da"/>
+  <text x="60" y="565" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">50</text>
+  <text x="112" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Profiles</text>
+  <text x="112" y="576" text-anchor="middle" font-size="11" fill="#57606a">A3 PDF</text>
   <rect x="180" y="536" width="120" height="52" rx="8" fill="#ddf4ff" stroke="#0969da" stroke-width="2"/>
-  <text x="240" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">51 Layouts</text>
-  <text x="240" y="576" text-anchor="middle" font-size="11" fill="#57606a">QGIS print</text>
+  <circle cx="200" cy="562" r="10" fill="#0969da"/>
+  <text x="200" y="565" text-anchor="middle" font-size="8" font-weight="700" fill="#ffffff">51</text>
+  <text x="252" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">Layouts</text>
+  <text x="252" y="576" text-anchor="middle" font-size="11" fill="#57606a">QGIS print</text>
   <rect x="320" y="536" width="120" height="52" rx="8" fill="#ffffff" stroke="#8c959f" stroke-width="1.25"/>
   <text x="380" y="558" text-anchor="middle" font-size="13" font-weight="700" fill="#24292f">60 Cost</text>
   <text x="380" y="576" text-anchor="middle" font-size="11" fill="#57606a">unit costs</text>

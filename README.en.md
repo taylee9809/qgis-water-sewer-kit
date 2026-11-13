@@ -1,6 +1,6 @@
 English | [한국어](README.md)
 
-# qgis-water-sewer-kit — water & sewer design with Claude
+# qgis-water-sewer-kit: Claude + QGIS for Water & Sewer Network Design & Review
 
 A skill kit for doing water-supply and sewer design and review on top of QGIS data while handing the repetitive
 work to [Claude Code](https://claude.com/claude-code) — packaged so **each team can adapt it to its own project**.
