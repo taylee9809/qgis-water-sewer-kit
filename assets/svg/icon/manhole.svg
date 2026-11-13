@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.8 -0.8 1.6 1.6" width="128" height="128">
+  <!-- 오수맨홀: 이중원 + '오'(ㅇ+ㅗ) 선 기호 -->
+  <circle cx="0" cy="0" r="0.725" fill="#ffffff" stroke="#000000" stroke-width="0.06"/>
+  <circle cx="0" cy="0" r="0.525" fill="none" stroke="#000000" stroke-width="0.06"/>
+  <g fill="none" stroke="#000000" stroke-width="0.06" stroke-linecap="round">
+    <ellipse cx="-0.0029" cy="-0.1649" rx="0.1963" ry="0.1143"/>
+    <line x1="-0.2681" y1="0.1456" x2="0.2584" y2="0.1456"/>
+    <line x1="-0.0041" y1="0.1456" x2="-0.0040" y2="0.0137"/>
+  </g>
+</svg>

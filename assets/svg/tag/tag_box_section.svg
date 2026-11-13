@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94.5 35.03">
+<rect x="6.23" y="5.27" width="81.33" height="24.22" rx="0.85" fill="#FFFFFF"/>
+<path d="M6.23,18.53V6.12a.85.85,0,0,1,.85-.85H86.71a.85.85,0,0,1,.85.85V18.53Z" fill="#000000"/>
+<text text-anchor="middle" transform="translate(46.9 15.56) scale(0.9 1)" font-family="Gulim" font-size="10.28" letter-spacing="-0.2" fill="#FFFFFF">① XX-A-001~005</text>
+<text text-anchor="middle" transform="translate(46.9 27.18) scale(0.92 1)" font-family="Gulim" font-size="9.07" letter-spacing="-0.18" fill="#000000">D200  L=000.0 m</text>
+<rect x="6.23" y="5.27" width="81.33" height="24.22" rx="0.85" fill="none" stroke="#000000" stroke-width="0.7"/>
+</svg>

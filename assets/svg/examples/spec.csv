@@ -1,0 +1,9 @@
+type,out,no,text,kind,fill,preset,lines
+tag_pill,구간1.svg,1,XX-A-001~004,grav,,,
+tag_pill,구간2.svg,2,XX-B-001~011,grav,,,
+tag_pill,구간3.svg,"5,6","XX-C-001~003, XX-D-001~005",grav,,,
+tag_pill,압송1.svg,3,#1 압송관,press,,,
+capsule,검토_하천하월.svg,,하천하월,,#7B2FBE,,
+capsule,검토_구거횡단.svg,,구거횡단,,#00897B,,
+capsule,펌프장_가나1.svg,,가나#1,,,pump,
+label_note,메모.svg,,,,,cream,[가나리](가나)|하수도정비 : 64가구|금회조사 : 63가구

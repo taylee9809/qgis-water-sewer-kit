@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 52">
+<rect x="0.3" y="0.3" width="189.4" height="51.4" rx="1.2" fill="#FFFFFF" stroke="#2A5346" stroke-width="0.6"/>
+<path d="M0.3,1.5 a1.2,1.2 0 0 1 1.2,-1.2 H188.5 a1.2,1.2 0 0 1 1.2,1.2 V9.3 H0.3 Z" fill="#2A5346"/>
+<text x="15" y="6.6" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" font-weight="bold" fill="#F5E6B8">구분</text>
+<text x="36" y="6.6" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" font-weight="bold" fill="#F5E6B8">번호</text>
+<text x="74" y="6.6" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" font-weight="bold" fill="#F5E6B8">시설명</text>
+<text x="136" y="6.6" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" font-weight="bold" fill="#F5E6B8">제원 · 연장</text>
+<text x="178" y="6.6" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" font-weight="bold" fill="#F5E6B8">교체여부</text>
+<rect x="0.3" y="9.3" width="29.7" height="42" fill="#E4EEE2"/>
+<rect x="30" y="17.7" width="159.7" height="8.4" fill="#F4F7F3"/>
+<rect x="30" y="34.5" width="159.7" height="8.4" fill="#F4F7F3"/>
+<text x="15" y="19.6" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" font-weight="bold" fill="#2A5346">맨홀펌프장</text>
+<line x1="0.3" y1="26.1" x2="189.7" y2="26.1" stroke="#2A5346" stroke-width="0.5"/>
+<text x="15" y="32.2" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" font-weight="bold" fill="#2A5346">압송관</text>
+<line x1="0.3" y1="34.5" x2="189.7" y2="34.5" stroke="#2A5346" stroke-width="0.5"/>
+<text x="15" y="44.8" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" font-weight="bold" fill="#2A5346">자연유하관</text>
+<line x1="30" y1="9.3" x2="30" y2="51.3" stroke="#C5D2C3" stroke-width="0.3"/>
+<line x1="42" y1="9.3" x2="42" y2="51.3" stroke="#C5D2C3" stroke-width="0.3"/>
+<line x1="106" y1="9.3" x2="106" y2="51.3" stroke="#C5D2C3" stroke-width="0.3"/>
+<line x1="166" y1="9.3" x2="166" y2="51.3" stroke="#C5D2C3" stroke-width="0.3"/>
+<circle cx="36" cy="13.5" r="3.9" fill="#FFFFFF" stroke="#2A1650" stroke-width="0.45"/>
+<text x="36" y="16.1" text-anchor="middle" font-family="Malgun Gothic" font-size="7.2" font-weight="bold" fill="#2A1650">①</text>
+<text x="74" y="15.4" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">맨홀펌프장 #1</text>
+<text x="136" y="15.4" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">0.00㎥/min × 0m</text>
+<text x="178" y="15.4" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">-</text>
+<circle cx="36" cy="21.9" r="3.9" fill="#FFFFFF" stroke="#2A1650" stroke-width="0.45"/>
+<text x="36" y="24.5" text-anchor="middle" font-family="Malgun Gothic" font-size="7.2" font-weight="bold" fill="#2A1650">②</text>
+<text x="74" y="23.8" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">맨홀펌프장 #2</text>
+<text x="136" y="23.8" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">0.00㎥/min × 0m</text>
+<text x="178" y="23.8" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">-</text>
+<circle cx="36" cy="30.3" r="3.9" fill="#2A1650" stroke="#2A1650" stroke-width="0.45"/>
+<text x="36" y="32.9" text-anchor="middle" font-family="Malgun Gothic" font-size="7.2" font-weight="bold" fill="#FFFFFF">③</text>
+<text x="74" y="32.2" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">#1 압송관</text>
+<text x="136" y="32.2" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">D80  L=000.0m</text>
+<text x="178" y="32.2" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">-</text>
+<circle cx="36" cy="38.7" r="3.9" fill="#8A5A00" stroke="#8A5A00" stroke-width="0.45"/>
+<text x="36" y="41.3" text-anchor="middle" font-family="Malgun Gothic" font-size="7.2" font-weight="bold" fill="#FFFFFF">④</text>
+<text x="74" y="40.6" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">XX-A-001~004</text>
+<text x="136" y="40.6" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">D200  L=000.0m</text>
+<text x="178" y="40.6" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" font-weight="bold" fill="#C94040">교체</text>
+<circle cx="36" cy="47.1" r="3.9" fill="#8A5A00" stroke="#8A5A00" stroke-width="0.45"/>
+<text x="36" y="49.7" text-anchor="middle" font-family="Malgun Gothic" font-size="7.2" font-weight="bold" fill="#FFFFFF">⑤</text>
+<text x="74" y="49" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">XX-B-001~011</text>
+<text x="136" y="49" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">D200  L=000.0m</text>
+<text x="178" y="49" text-anchor="middle" font-family="Malgun Gothic" font-size="5.42" fill="#222222">-</text>
+</svg>

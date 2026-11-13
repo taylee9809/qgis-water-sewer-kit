@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 241.7 52">
+<defs><linearGradient id="sheen" x1="0" y1="34.57" x2="0" y2="17.56" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.12" stop-color="#fff" stop-opacity="0.02"/><stop offset="0.25" stop-color="#fff" stop-opacity="0.07"/><stop offset="0.37" stop-color="#fff" stop-opacity="0.15"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.26"/><stop offset="0.63" stop-color="#fff" stop-opacity="0.41"/><stop offset="0.76" stop-color="#fff" stop-opacity="0.59"/><stop offset="0.89" stop-color="#fff" stop-opacity="0.8"/><stop offset="1" stop-color="#fff" stop-opacity="1"/></linearGradient></defs>
+<path d="M14.86,17.56v15a2,2,0,0,0,2,2H228.15 a3.74,3.74,0,0,0,2.95,-1.73l8.55,-15.28Z" fill="#BA585E"/>
+<path d="M66,17.56l-45.21,15c-3.28,1.1,-5.07,2,-4,2H228.15 a4.09,4.09,0,0,0,3.08,-1.73l8.42,-15.28Z" fill="url(#sheen)" opacity="0.25"/>
+<text transform="translate(22.02 30.31) scale(0.92 1)" font-family="GulimChe" font-size="12" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="0.3">○○지구 농어촌마을하수도 정비사업</text>
+</svg>

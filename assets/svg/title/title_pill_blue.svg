@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 52">
+<path d="M252,36.4 a8,8,0,0,1,-8,8 H24 a8,8,0,0,1,-8,-8 V19.6 a8,8,0,0,1,8,-8 H244 a8,8,0,0,1,8,8 Z" fill="#6894B3"/>
+<path d="M248,34.4 a8,8,0,0,1,-8,8 H20 a8,8,0,0,1,-8,-8 V17.6 a8,8,0,0,1,8,-8 H240 a8,8,0,0,1,8,8 Z" fill="#C5DBEA" stroke="#84BBE0" stroke-width="0.7"/>
+<text x="130" y="31.5" text-anchor="middle" font-family="Malgun Gothic" font-size="15" font-weight="bold" fill="#003F73">○○처리구역</text>
+</svg>

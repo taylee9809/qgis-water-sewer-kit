@@ -85,6 +85,7 @@ Made on real projects; place names, pipe IDs and river names are masked (`OO`, `
 | `lib\flospec.py` | Read, validate and write makesw `.flo` files (shared by 13, 30, 31, 40) |
 | `standard\` | Data standard (logical layers and fields) · **DB design guide** (entities, relations and rules when you build a DB from scratch) · workflow · two pitfall notes |
 | `templates\` | `sewer.config.example.json` (a real project's layout as the example) · `db_schema.json` (standard schema — generates an empty GPKG or PostGIS DDL) · a `CLAUDE.md` for project folders |
+| `assets\svg\` | SVG templates for print layouts and figures — title boxes, legends, key tables, section tags, road-view badges, place labels, map icons; `make_svg.py` fills in the text (tag width computed) · preview `preview.png` |
 | `docs\` | Images for this README |
 
 ## What was verified, and known limits

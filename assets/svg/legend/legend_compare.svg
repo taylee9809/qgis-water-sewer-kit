@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 125.5">
+<path d="M5,0.8h180.0c2.3,0,4.2,1.9,4.2,4.2v115.6c0,2.3-1.9,4.2-4.2,4.2H5c-2.3,0-4.2-1.9-4.2-4.2V4.8C1,2.4,2.7,0.8,5,0.8z" fill="none" stroke="#FFFFFF" stroke-width="1.5"/>
+<path d="M5,0.8h180.0c2.3,0,4.2,1.9,4.2,4.2v115.6c0,2.3-1.9,4.2-4.2,4.2H5c-2.3,0-4.2-1.9-4.2-4.2V4.8C1,2.4,2.7,0.8,5,0.8z" fill="none" stroke="#6A8942" stroke-width="0.6"/>
+<path d="M5,0.8h180.0c2.3,0,4.2,1.9,4.2,4.2v115.6c0,2.3-1.9,4.2-4.2,4.2H5c-2.3,0-4.2-1.9-4.2-4.2V4.8C1,2.4,2.7,0.8,5,0.8z" fill="#D2E4E0"/>
+<path d="M187.8,120.2c0,1.7-1.3,2.9-2.9,2.9H5.4c-1.7,0-2.9-1.3-2.9-2.9V26.9c0-1.7,1.3-2.9,2.9-2.9h61.4c1.9,0,3.4-1.1,4.2-2.7L78.2,5c0.8-1.7,2.3-2.7,4.2-2.7h103.4c1.7,0,2.9,1.3,2.9,2.9C187.8,5.2,187.8,120.2,187.8,120.2z" fill="#FFFFFF"/>
+<path d="M56.2,121.4H6.7c-1.7,0-2.9-1.5-2.9-2.9V28.1c0-1.7,1.3-2.9,2.9-2.9h49.5" fill="#E6E6E6"/>
+<rect x="56.0" y="63.9" width="22.0" height="19.3" fill="#E6E6E6"/>
+<rect x="78.0" y="63.9" width="108.5" height="19.3" fill="#F2F2F2"/>
+<line x1="17" y1="44.5" x2="186.5" y2="44.5" stroke="#333333" stroke-width="0.3"/>
+<line x1="17" y1="25.2" x2="17" y2="83.2" stroke="#333333" stroke-width="0.3"/>
+<line x1="17" y1="63.9" x2="186.5" y2="63.9" stroke="#333333" stroke-width="0.3"/>
+<line x1="3.7" y1="83.2" x2="186.5" y2="83.2" stroke="#333333" stroke-width="0.3"/>
+<line x1="3.7" y1="102.5" x2="186.5" y2="102.5" stroke="#333333" stroke-width="0.3"/>
+<line x1="56" y1="25.2" x2="56" y2="63.9" stroke="#333333" stroke-width="0.3"/>
+<line x1="56" y1="83.2" x2="56" y2="121.4" stroke="#333333" stroke-width="0.3"/>
+<line x1="78" y1="25.2" x2="78" y2="121.4" stroke="#333333" stroke-width="0.3"/>
+<line x1="132.3" y1="8" x2="132.3" y2="121.4" stroke="#333333" stroke-width="0.3"/>
+<line x1="78" y1="8" x2="78" y2="25.2" stroke="#333333" stroke-width="0.3"/>
+<text transform="matrix(0.85 0 0 1 7.79 18.38)" font-family="GulimChe" font-size="16.83" fill="#231815">계획시설</text>
+<text transform="matrix(0.85 0 0 1 7.79 18.38)" font-family="GulimChe" font-size="16.83" fill="none" stroke="#000000" stroke-width="0.2">계획시설</text>
+<text x="105.1" y="19.2" text-anchor="middle" font-family="GulimChe" font-size="11" fill="#231815">기본계획</text>
+<text x="159.4" y="19.2" text-anchor="middle" font-family="GulimChe" font-size="11" fill="#231815">금회</text>
+<text x="10.35" y="52.3" text-anchor="middle" font-family="GulimChe" font-size="11.5" fill="#231815">관</text>
+<text x="10.35" y="65.3" text-anchor="middle" font-family="GulimChe" font-size="11.5" fill="#231815">로</text>
+<text transform="matrix(0.85 0 0 1 36.5 39.1)" text-anchor="middle" font-family="GulimChe" font-size="11.5" fill="#231815">압송관</text>
+<text transform="matrix(0.66 0 0 1 36.5 58.4)" text-anchor="middle" font-family="GulimChe" font-size="11.5" fill="#231815">자연유하관</text>
+<text x="47.5" y="77.7" text-anchor="middle" font-family="GulimChe" font-size="11.5" fill="#231815">계</text>
+<text transform="matrix(0.85 0 0 1 6.1 97)" font-family="GulimChe" font-size="11.5" fill="#231815">맨홀펌프장</text>
+<text transform="matrix(0.85 0 0 1 10.9 116.3)" font-family="GulimChe" font-size="11.5" fill="#231815">배수설비</text>
+<line x1="58.35" y1="34.85" x2="75.65" y2="34.85" stroke="#FFFFFF" stroke-width="4.6" stroke-linecap="round"/>
+<line x1="58.35" y1="34.85" x2="75.65" y2="34.85" stroke="#E31A1C" stroke-width="2.8" stroke-dasharray="5,2.6"/>
+<line x1="58.35" y1="54.2" x2="75.65" y2="54.2" stroke="#FFFFFF" stroke-width="4.6" stroke-linecap="round"/>
+<line x1="58.35" y1="54.2" x2="75.65" y2="54.2" stroke="#1F78FF" stroke-width="2.8" stroke-linecap="round"/>
+<g transform="translate(67.00,92.55) scale(1.45)"><circle cx="0" cy="0" r="2.9" fill="none" stroke="#FFFFFF" stroke-width="1.4"/><circle cx="0" cy="0" r="2.9" fill="#FFFFFF" stroke="#DB3F33" stroke-width="0.5"/><polygon points="-1.1,-2.5 -1.1,2.4 2.7,0" fill="#DB3F33"/></g>
+<path transform="translate(59.05,107.7) scale(0.085)" d="M50,12L88,46H78V88H60V58H40V88H22V46H12Z" fill="#FEF2F2" stroke="#DC2626" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>
+<path transform="translate(66.45,107.7) scale(0.085)" d="M50,12L88,46H78V88H60V58H40V88H22V46H12Z" fill="#FFE200" stroke="#166534" stroke-width="12" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="105.1" y="39.1" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">0,000m</text>
+<text x="159.4" y="39.1" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">0,000m</text>
+<text x="105.1" y="58.4" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">00,000m</text>
+<text x="159.4" y="58.4" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">00,000m</text>
+<text x="105.1" y="77.7" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">00,000m</text>
+<text x="159.4" y="77.7" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">00,000m</text>
+<text x="105.1" y="97" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">00개소</text>
+<text x="159.4" y="97" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">00개소</text>
+<text x="105.1" y="116.3" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">000가구</text>
+<text x="159.4" y="116.3" text-anchor="middle" font-family="GulimChe" font-size="10" fill="#231815">000가구</text>
+</svg>

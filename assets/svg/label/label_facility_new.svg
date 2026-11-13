@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94.5 35.03">
+<rect x="6.23" y="5.27" width="81.33" height="24.22" rx="0.85" fill="#fff"/>
+<polyline points="6.23 18.53 6.23 5.27 87.56 5.27 87.56 18.53" fill="#DB3F33"/>
+<text text-anchor="middle" transform="translate(46.89 15.56) scale(0.73 1)" font-family="Gulim" font-size="10.28" letter-spacing="-0.2" fill="#231815">○○하수처리시설(안)</text><text text-anchor="middle" transform="translate(46.89 15.56) scale(0.73 1)" font-family="Gulim" font-size="10.28" letter-spacing="-0.2" fill="none" stroke="#fff" stroke-linejoin="round" stroke-width="0.3">○○하수처리시설(안)</text><text text-anchor="middle" transform="translate(46.89 15.56) scale(0.73 1)" font-family="Gulim" font-size="10.28" letter-spacing="-0.2" fill="#fff">○○하수처리시설(안)</text>
+<path d="M34.91,29.49H7.4a.88.88,0,0,1-.87-.83V18.55H34.91Z" fill="#DF6E1F"/>
+<text transform="translate(20.7 27.18) scale(0.92 1)" text-anchor="middle" font-family="Gulim" font-size="9.07" letter-spacing="-0.18" fill="#fff" stroke="#fff" stroke-width="0.2">신 설</text>
+<text transform="translate(61.2 27.18) scale(0.92 1)" text-anchor="middle" font-family="Gulim" font-size="9.07" letter-spacing="-0.18" fill="#231815">Q=000㎥/일</text>
+<rect x="6.23" y="5.27" width="81.33" height="24.22" rx="0.85" fill="none" stroke="#DB3F33" stroke-width="0.7"/>
+</svg>

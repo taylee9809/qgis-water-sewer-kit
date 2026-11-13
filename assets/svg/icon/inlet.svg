@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1.2 -1.2 2.4 2.4" width="128" height="128">
+  <!-- 오수받이: 녹색 원 + 대각선 X -->
+  <circle cx="0" cy="0" r="1.08" fill="#ffffff" stroke="#00a651" stroke-width="0.2"/>
+  <g stroke="#00a651" stroke-width="0.2" stroke-linecap="round" fill="none">
+    <line x1="-0.7637" y1="0.7637" x2="0.7637" y2="-0.7637"/>
+    <line x1="0.7637" y1="0.7637" x2="-0.7637" y2="-0.7637"/>
+  </g>
+</svg>

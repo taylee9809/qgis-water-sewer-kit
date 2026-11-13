@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 94.5 35.03">
+<rect x="6.23" y="5.27" width="81.33" height="24.22" rx="0.85" fill="#F3EEF8"/>
+<path d="M6.23,18.53V6.12a.85.85,0,0,1,.85-.85H86.71a.85.85,0,0,1,.85.85V18.53Z" fill="#2A1650"/>
+<circle cx="14.2" cy="11.9" r="5.1" fill="#FFFFFF"/>
+<text x="14.2" y="15.1" text-anchor="middle" font-family="Gulim" font-size="8.6" fill="#2A1650">①</text>
+<text x="53.6" y="15.3" text-anchor="middle" font-family="Malgun Gothic" font-size="7.17" font-weight="bold" fill="#FFFFFF">맨홀펌프장 #1</text>
+<text x="46.9" y="26.9" text-anchor="middle" font-family="Gulim" font-size="8.79" fill="#2A1650">0.00 ㎥/min × 0 m</text>
+<rect x="6.23" y="5.27" width="81.33" height="24.22" rx="0.85" fill="none" stroke="#2A1650" stroke-width="1.3"/>
+</svg>

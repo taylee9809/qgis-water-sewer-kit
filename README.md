@@ -76,9 +76,10 @@ DB 가 없어도 된다. "이 프로젝트에 맞게 킷 세팅해줘" 하면 00
 |---|---|
 | `skills\` | 스킬 12개 — 00-onboard · 10 · 11 · 12 · 13 · 30 · 31 · 32 · 40 · 50 · 51 · 90-kit-feedback |
 | `lib\kitconfig.py` | 모든 스크립트가 쓰는 설정 로더(경로·레이어·필드·DB, 비밀번호는 환경변수만) |
-| `liblospec.py` | makesw `.flo` 읽기·검증·쓰기(13·30·31·40 공용) |
+| `lib\flospec.py` | makesw `.flo` 읽기·검증·쓰기(13·30·31·40 공용) |
 | `standard\` | 데이터 표준(논리 레이어·필드) · **DB 설계 가이드**(처음 DB 를 잡을 때 엔티티·관계·규칙) · 업무 흐름 · 함정 노트 2장 |
 | `templates\` | `sewer.config.example.json`(실제 프로젝트 구성 예시) · `db_schema.json`(표준 스키마 — 빈 GPKG·PostGIS DDL 생성) · 프로젝트용 `CLAUDE.md` |
+| `assets\svg\` | 조판·삽도 SVG 양식 — 제목 상자·범례·키표·검토구간 딱지·로드뷰 배지·지명 라벨·지도 아이콘, 글자 넣는 생성기 `make_svg.py`(딱지 폭 자동) · 미리보기 `preview.png` |
 | `docs\` | README 그림 |
 
 ## 검증 범위와 알려진 한계
